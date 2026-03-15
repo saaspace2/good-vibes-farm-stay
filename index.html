@@ -7,9 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   GLOBAL RESET & VARIABLES
-============================================================ */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{
   --green:#2d6a4f;--green2:#52b788;--yellow:#f4a261;--red:#ef4444;
@@ -18,75 +15,11 @@
   --indigo:#4f46e5;--indigo2:#818cf8;
   --cooking:#3b82f6;--ready:#22c55e;
 }
-
-/* Firebase setup banner */
-.fb-banner{
-  position:fixed;bottom:0;left:0;right:0;z-index:9999;
-  background:#1a1a2e;border-top:2px solid #f4a261;
-  padding:14px 20px;font-size:13px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  animation:slideUpBanner .4s ease;
-}
-@keyframes slideUpBanner{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.fb-banner.hidden{display:none;}
-.fb-banner-text{color:rgba(255,255,255,.85);line-height:1.5;flex:1;}
-.fb-banner-text b{color:#f4a261;}
-.fb-banner-btn{
-  background:#f4a261;color:#1a1a2e;border:none;
-  padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;
-  cursor:pointer;white-space:nowrap;
-}
-.fb-setup-modal{
-  position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;
-  display:flex;align-items:center;justify-content:center;padding:20px;
-}
-.fb-setup-modal.hidden{display:none;}
-.fb-setup-box{
-  background:#131e2b;border:1px solid rgba(255,255,255,.1);
-  border-radius:20px;padding:28px 24px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
-}
-.fb-step{
-  background:rgba(255,255,255,.04);border-radius:12px;
-  padding:14px 16px;margin-bottom:10px;
-}
-.fb-step-num{
-  display:inline-flex;width:24px;height:24px;background:#f4a261;color:#1a1a2e;
-  border-radius:50%;align-items:center;justify-content:center;font-size:12px;font-weight:900;
-  margin-right:8px;flex-shrink:0;
-}
-.fb-step-title{font-weight:800;font-size:14px;color:#fff;display:flex;align-items:center;}
-.fb-step-body{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;margin-top:6px;padding-left:32px;}
-.fb-step-body b{color:rgba(255,255,255,.8);}
-.fb-code{
-  background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);
-  border-radius:8px;padding:8px 12px;font-family:monospace;font-size:11px;
-  color:#52b788;margin-top:6px;line-height:1.8;word-break:break-all;
-}
-.fb-dismiss{
-  width:100%;padding:12px;background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.1);border-radius:12px;color:rgba(255,255,255,.5);
-  font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-top:12px;
-}
-
 html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);color:var(--text);}
-
-/* ============================================================
-   SCREEN SYSTEM — only one screen visible at a time
-============================================================ */
 .screen{display:none;min-height:100vh;flex-direction:column;}
 .screen.active{display:flex;}
-
-/* ============================================================
-   HOME SCREEN
-============================================================ */
-#homeScreen{
-  align-items:center;justify-content:center;padding:24px;
-  background:var(--dark);position:relative;overflow:hidden;
-}
-#homeScreen::before,#homeScreen::after{
-  content:'';position:fixed;border-radius:50%;filter:blur(80px);opacity:.2;z-index:0;
-  animation:blob 8s ease-in-out infinite alternate;
-}
+#homeScreen{align-items:center;justify-content:center;padding:24px;background:var(--dark);position:relative;overflow:hidden;}
+#homeScreen::before,#homeScreen::after{content:'';position:fixed;border-radius:50%;filter:blur(80px);opacity:.2;z-index:0;animation:blob 8s ease-in-out infinite alternate;}
 #homeScreen::before{width:500px;height:500px;background:var(--green);top:-100px;left:-100px;}
 #homeScreen::after{width:400px;height:400px;background:var(--yellow);bottom:-80px;right:-80px;animation-delay:-4s;}
 @keyframes blob{from{transform:scale(1);}to{transform:scale(1.2) translate(30px,20px);}}
@@ -97,12 +30,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .home-brand span{color:var(--yellow);}
 .home-tagline{font-size:13px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:5px;margin-bottom:36px;animation:fadeDown .7s ease both .2s;}
 .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;animation:fadeUp .7s ease both .3s;}
-.role-card{
-  background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);
-  border-radius:20px;padding:26px 14px 22px;cursor:pointer;
-  transition:transform .2s,border-color .2s,background .2s;
-  display:flex;flex-direction:column;align-items:center;gap:9px;
-}
+.role-card{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:20px;padding:26px 14px 22px;cursor:pointer;transition:transform .2s,border-color .2s,background .2s;display:flex;flex-direction:column;align-items:center;gap:9px;}
 .role-card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.11);}
 .role-icon{font-size:40px;line-height:1;}
 .role-name{font-size:15px;font-weight:800;color:#fff;}
@@ -112,87 +40,47 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .pill-k{background:var(--red);color:#fff;}
 .pill-c{background:var(--yellow);color:#1a1a2e;}
 .home-footer{margin-top:36px;font-size:12px;color:rgba(255,255,255,.18);animation:fadeUp .7s ease both .5s;}
-
 @keyframes fadeDown{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-
-/* ============================================================
-   SHARED TOP BAR
-============================================================ */
-.topbar{
-  padding:13px 16px;display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:100;flex-shrink:0;
-}
+.topbar{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-shrink:0;}
 .topbar-w{background:linear-gradient(135deg,#1B4332,#2D6A4F);box-shadow:0 2px 18px rgba(0,0,0,.4);}
 .topbar-k{background:#111820;border-bottom:1px solid var(--border);}
 .topbar-c{background:linear-gradient(135deg,#1e1b4b,#312e81);box-shadow:0 2px 18px rgba(0,0,0,.4);}
 .topbar-left{display:flex;align-items:center;gap:10px;}
-.back-btn{
-  background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.7);
-  width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:18px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
+.back-btn{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.7);width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .back-btn:hover{background:rgba(255,255,255,.18);color:#fff;}
 .tb-title{font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;color:#fff;line-height:1;}
 .tb-sub{font-size:11px;color:rgba(255,255,255,.45);}
-.icon-btn{
-  background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--muted);
-  padding:6px 11px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;
-  font-family:inherit;transition:all .15s;white-space:nowrap;
-}
+.icon-btn{background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--muted);padding:6px 11px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:all .15s;white-space:nowrap;}
 .icon-btn:hover{background:rgba(255,255,255,.12);color:var(--text);}
 .icon-btn.sound-on{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#22c55e;}
 .icon-btn.danger:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:var(--red);}
 .live-badge{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#22c55e;}
 .live-badge::before{content:'';width:7px;height:7px;background:#22c55e;border-radius:50%;animation:livepulse 1.5s ease-in-out infinite;}
 @keyframes livepulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
-
-/* ============================================================
-   WAITER SCREEN
-============================================================ */
 #waiterScreen{background:var(--dark);}
 .w-scroll{flex:1;overflow-y:auto;}
-
-/* Table select */
 #tableSelectView{padding:20px;}
 .table-prompt{font-size:17px;font-weight:800;margin-bottom:16px;text-align:center;}
 .table-prompt span{color:var(--green2);}
 .table-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;max-width:360px;margin:0 auto;}
-.table-btn{
-  aspect-ratio:1;background:var(--card);border:1.5px solid var(--border);
-  border-radius:13px;cursor:pointer;font-size:17px;font-weight:900;color:var(--text);
-  transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
-}
+.table-btn{aspect-ratio:1;background:var(--card);border:1.5px solid var(--border);border-radius:13px;cursor:pointer;font-size:17px;font-weight:900;color:var(--text);transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
 .table-btn:hover{background:#243040;border-color:var(--green2);color:var(--green2);transform:scale(1.05);}
 .table-btn.occupied{border-color:var(--yellow);color:var(--yellow);}
 .table-lbl{font-size:9px;font-weight:600;color:var(--muted);}
 .table-btn.occupied .table-lbl{color:var(--yellow);}
-
-/* Menu view */
 #menuView{display:none;}
 .search-wrap{padding:11px 16px;position:relative;}
 .search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
-.search-input{
-  width:100%;background:var(--card);border:1.5px solid var(--border);
-  border-radius:11px;padding:9px 14px 9px 38px;color:var(--text);
-  font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;
-}
+.search-input{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:11px;padding:9px 14px 9px 38px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;}
 .search-input:focus{border-color:var(--green2);}
 .cat-pills{display:flex;gap:7px;overflow-x:auto;padding:0 16px 11px;scrollbar-width:none;}
 .cat-pills::-webkit-scrollbar{display:none;}
-.cat-pill{
-  flex-shrink:0;padding:5px 13px;border-radius:20px;
-  background:var(--card);border:1.5px solid var(--border);
-  color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;
-  transition:all .15s;white-space:nowrap;
-}
+.cat-pill{flex-shrink:0;padding:5px 13px;border-radius:20px;background:var(--card);border:1.5px solid var(--border);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .cat-pill.active,.cat-pill:hover{background:var(--green);border-color:var(--green2);color:#fff;}
 .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 16px 130px;}
 .cat-hdr{grid-column:1/-1;font-family:'Bebas Neue';font-size:18px;letter-spacing:2px;color:var(--green2);padding-top:6px;border-bottom:1px solid var(--border);padding-bottom:5px;}
-.menu-item{
-  background:var(--card);border:1.5px solid var(--border);
-  border-radius:15px;padding:13px 11px;cursor:pointer;transition:all .15s;
-}
+.menu-item{background:var(--card);border:1.5px solid var(--border);border-radius:15px;padding:13px 11px;cursor:pointer;transition:all .15s;}
 .menu-item:hover{border-color:rgba(82,183,136,.4);transform:translateY(-2px);}
 .menu-item.in-cart{border-color:var(--green2);background:#1a2e25;}
 .item-emoji{font-size:30px;display:block;margin-bottom:5px;line-height:1;}
@@ -204,29 +92,12 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .qty-plus{background:rgba(82,183,136,.2);color:var(--green2);}
 .qty-add{background:rgba(82,183,136,.2);color:var(--green2);width:100%;border-radius:7px;border:none;cursor:pointer;font-size:13px;font-weight:800;padding:5px 0;}
 .qty-num{font-weight:900;font-size:14px;color:#fff;min-width:18px;text-align:center;}
-
-/* Cart bar */
-.cart-bar{
-  position:fixed;bottom:0;left:0;right:0;padding:12px 16px;
-  background:rgba(15,17,23,.95);border-top:1px solid var(--border);
-  backdrop-filter:blur(10px);z-index:90;
-  transform:translateY(100%);transition:transform .3s ease;
-}
+.cart-bar{position:fixed;bottom:0;left:0;right:0;padding:12px 16px;background:rgba(15,17,23,.95);border-top:1px solid var(--border);backdrop-filter:blur(10px);z-index:90;transform:translateY(100%);transition:transform .3s ease;}
 .cart-bar.visible{transform:translateY(0);}
-.cart-bar-btn{
-  width:100%;padding:14px;background:linear-gradient(135deg,var(--green),var(--green2));
-  border:none;border-radius:15px;color:#fff;font-family:'Nunito';
-  font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;
-}
-
-/* Cart drawer */
+.cart-bar-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;border-radius:15px;color:#fff;font-family:'Nunito';font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;}
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;backdrop-filter:blur(4px);}
 .drawer-overlay.open{display:block;}
-.drawer{
-  position:fixed;bottom:0;left:0;right:0;max-height:82vh;
-  background:#131e2b;border-radius:22px 22px 0 0;z-index:201;
-  transform:translateY(100%);transition:transform .3s ease;display:flex;flex-direction:column;
-}
+.drawer{position:fixed;bottom:0;left:0;right:0;max-height:82vh;background:#131e2b;border-radius:22px 22px 0 0;z-index:201;transform:translateY(100%);transition:transform .3s ease;display:flex;flex-direction:column;}
 .drawer.open{transform:translateY(0);}
 .drawer-handle{width:38px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:11px auto 0;}
 .drawer-hdr{padding:14px 18px 11px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
@@ -242,47 +113,25 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;}
 .total-lbl{font-size:15px;font-weight:800;}
 .total-amt{font-size:22px;font-weight:900;color:var(--yellow);}
-.send-btn{
-  width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green2));
-  border:none;border-radius:15px;color:#fff;font-family:'Nunito';font-size:15px;font-weight:900;cursor:pointer;
-}
-.toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
-  background:var(--green);color:#fff;padding:13px 26px;border-radius:15px;
-  font-weight:800;font-size:14px;z-index:999;transition:transform .3s ease;
-  box-shadow:0 8px 30px rgba(0,0,0,.4);
-}
+.send-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;border-radius:15px;color:#fff;font-family:'Nunito';font-size:15px;font-weight:900;cursor:pointer;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:13px 26px;border-radius:15px;font-weight:800;font-size:14px;z-index:999;transition:transform .3s ease;box-shadow:0 8px 30px rgba(0,0,0,.4);}
 .toast.show{transform:translateX(-50%) translateY(0);}
-
-/* ============================================================
-   KITCHEN SCREEN
-============================================================ */
 #kitchenScreen{background:var(--dark);}
 .k-scroll{flex:1;overflow-y:auto;}
 .k-stats{display:flex;gap:10px;padding:14px 16px 8px;overflow-x:auto;scrollbar-width:none;}
 .k-stats::-webkit-scrollbar{display:none;}
-.stat-chip{
-  flex-shrink:0;display:flex;align-items:center;gap:6px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:9px;padding:5px 11px;font-size:12px;font-weight:700;
-}
+.stat-chip{flex-shrink:0;display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:5px 11px;font-size:12px;font-weight:700;}
 .s-dot{width:7px;height:7px;border-radius:50%;}
 .k-filters{display:flex;gap:7px;padding:0 16px 11px;overflow-x:auto;scrollbar-width:none;}
 .k-filters::-webkit-scrollbar{display:none;}
-.k-filt{
-  flex-shrink:0;padding:5px 14px;border-radius:18px;border:1.5px solid var(--border);
-  background:var(--card);color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;
-}
+.k-filt{flex-shrink:0;padding:5px 14px;border-radius:18px;border:1.5px solid var(--border);background:var(--card);color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
 .k-filt[data-f="active"].active{background:#1f2937;border-color:#6b7280;color:#fff;}
 .k-filt[data-f="pending"].active{background:#7c3d12;border-color:#f4a261;color:#f4a261;}
 .k-filt[data-f="cooking"].active{background:#1e3a5f;border-color:var(--cooking);color:var(--cooking);}
 .k-filt[data-f="ready"].active{background:#14532d;border-color:var(--ready);color:var(--ready);}
 .k-filt[data-f="paid"].active,.k-filt[data-f="all"].active{background:#1f2937;border-color:#6b7280;color:#9ca3af;}
 .k-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;padding:0 16px 28px;}
-.k-card{
-  background:var(--card);border:2px solid var(--border);
-  border-radius:17px;overflow:hidden;animation:kslide .3s ease;
-}
+.k-card{background:var(--card);border:2px solid var(--border);border-radius:17px;overflow:hidden;animation:kslide .3s ease;}
 @keyframes kslide{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .k-card.pending{border-color:rgba(244,162,97,.4);}
 .k-card.cooking{border-color:rgba(59,130,246,.4);}
@@ -305,13 +154,8 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .k-item-row:last-child{border-bottom:none;}
 .ki-name{font-size:12px;font-weight:700;}
 .ki-qty{font-size:16px;font-weight:900;color:#fff;}
-.k-card-foot{
-  padding:9px 11px;display:flex;gap:5px;border-top:1px solid var(--border);flex-wrap:wrap;
-}
-.k-act{
-  flex:1;padding:8px 7px;border-radius:9px;border:none;cursor:pointer;
-  font-family:'Nunito';font-size:12px;font-weight:800;transition:opacity .15s;white-space:nowrap;
-}
+.k-card-foot{padding:9px 11px;display:flex;gap:5px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.k-act{flex:1;padding:8px 7px;border-radius:9px;border:none;cursor:pointer;font-family:'Nunito';font-size:12px;font-weight:800;transition:opacity .15s;white-space:nowrap;}
 .k-act:hover{opacity:.85;}
 .k-cook{background:rgba(59,130,246,.15);color:var(--cooking);border:1px solid rgba(59,130,246,.3);}
 .k-ready{background:rgba(34,197,94,.15);color:var(--ready);border:1px solid rgba(34,197,94,.3);}
@@ -320,27 +164,15 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .k-del{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.3);}
 .k-empty{grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--muted);}
 .k-empty-icon{font-size:58px;display:block;margin-bottom:10px;}
-
-/* ============================================================
-   CASHIER SCREEN
-============================================================ */
 #cashierScreen{background:var(--dark);}
 .c-scroll{flex:1;overflow-y:auto;}
 .c-tabs{display:flex;gap:6px;padding:14px 16px 10px;}
-.c-tab{
-  padding:6px 14px;border-radius:9px;border:1.5px solid rgba(255,255,255,.15);
-  background:transparent;color:rgba(255,255,255,.45);font-family:inherit;
-  font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;
-}
+.c-tab{padding:6px 14px;border-radius:9px;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.45);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
 .c-tab.active{background:var(--indigo);border-color:var(--indigo2);color:#fff;}
-
-/* Stats */
 .c-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;padding:0 16px 14px;}
 .c-stat{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px 11px;text-align:center;}
 .c-stat-val{font-size:17px;font-weight:900;line-height:1;margin-bottom:3px;}
 .c-stat-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
-
-/* Order filters */
 .c-ofilt-row{display:flex;gap:7px;padding:0 16px 10px;overflow-x:auto;scrollbar-width:none;}
 .c-ofilt-row::-webkit-scrollbar{display:none;}
 .c-ofilt{flex-shrink:0;padding:5px 14px;border-radius:18px;border:1.5px solid var(--border);background:var(--card);color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
@@ -349,8 +181,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .c-sec-lbl{font-size:12px;color:var(--muted);font-weight:700;}
 .clear-btn{padding:4px 11px;border-radius:8px;border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.1);color:var(--red);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;}
 .clear-btn:hover{background:rgba(239,68,68,.2);}
-
-/* Order cards (cashier) */
 .c-orders{display:flex;flex-direction:column;gap:9px;padding:0 16px 28px;}
 .c-order{background:var(--card);border:1.5px solid var(--border);border-radius:15px;overflow:hidden;transition:border-color .15s;}
 .c-order.ready{border-color:rgba(34,197,94,.4);}
@@ -374,8 +204,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .coa-bill{background:rgba(79,70,229,.2);color:var(--indigo2);border:1px solid rgba(79,70,229,.3);}
 .coa-del{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.3);}
 .coa-reprint{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border);}
-
-/* Bill panel */
 #billPanel{display:none;padding:0 16px 28px;}
 .bill-back{display:flex;align-items:center;gap:10px;padding:14px 0 12px;}
 .bill-back-btn{background:rgba(255,255,255,.07);border:none;color:var(--muted);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:17px;}
@@ -399,8 +227,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .pay-btn:disabled{opacity:.45;cursor:default;}
 .print-btn{width:100%;padding:10px;background:transparent;border:1.5px solid var(--border);border-radius:13px;color:var(--muted);font-family:'Nunito';font-size:13px;font-weight:700;cursor:pointer;}
 .print-btn:hover{border-color:var(--indigo2);color:var(--text);}
-
-/* Receipts */
 #receiptsPanel{display:none;padding:0 16px 28px;}
 .r-list{display:flex;flex-direction:column;gap:8px;}
 .rr-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
@@ -411,10 +237,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .rr-btn{font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;cursor:pointer;border:none;font-family:inherit;}
 .rr-print{background:rgba(79,70,229,.15);color:var(--indigo2);}
 .rr-del{background:rgba(239,68,68,.1);color:var(--red);}
-
-/* ============================================================
-   CONFIRM MODAL (shared)
-============================================================ */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .modal-ov.open{display:flex;}
 .modal-box{background:#1a1f2e;border:1px solid rgba(255,255,255,.12);border-radius:19px;padding:26px 22px;width:90%;max-width:330px;text-align:center;}
@@ -424,16 +246,8 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .modal-btn{flex:1;padding:11px;border-radius:11px;border:none;cursor:pointer;font-family:'Nunito';font-size:13px;font-weight:800;}
 .modal-cancel{background:rgba(255,255,255,.07);color:var(--muted);}
 .modal-confirm{background:rgba(239,68,68,.2);color:var(--red);border:1px solid rgba(239,68,68,.4);}
-
-/* ============================================================
-   EMPTY STATE
-============================================================ */
 .empty-state{text-align:center;padding:44px 20px;color:var(--muted);}
 .empty-icon{font-size:50px;display:block;margin-bottom:10px;}
-
-/* ============================================================
-   RESPONSIVE
-============================================================ */
 @media(max-width:360px){
   .menu-grid{grid-template-columns:1fr;}
   .table-grid{grid-template-columns:repeat(4,1fr);}
@@ -443,9 +257,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 </head>
 <body>
 
-<!-- ============================================================
-     HOME SCREEN
-============================================================ -->
 <div id="homeScreen" class="screen active">
   <div class="home-inner">
     <div class="home-logo">
@@ -479,13 +290,9 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
       </div>
     </div>
     <div class="home-footer">© 2024 Good Vibes Farm Stay · @goodvibesfarmstay</div>
-    <div style="margin-top:12px;font-size:12px;" id="firebaseIndicator" style="color:orange;">🔄 Connecting...</div>
   </div>
 </div>
 
-<!-- ============================================================
-     WAITER SCREEN
-============================================================ -->
 <div id="waiterScreen" class="screen">
   <div class="topbar topbar-w">
     <div class="topbar-left">
@@ -500,22 +307,19 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
     </div>
   </div>
   <div class="w-scroll">
-    <!-- TABLE SELECT -->
     <div id="tableSelectView" style="padding:20px;">
       <div class="table-prompt">Select a <span>Table Number</span></div>
       <div class="table-grid" id="tableGrid"></div>
     </div>
-    <!-- MENU VIEW -->
     <div id="menuView" style="display:none;">
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input class="search-input" id="searchInput" placeholder="Search menu..." oninput="renderMenu()">
+        <input class="search-input" id="searchInput" placeholder="Search menu..." oninput="wRenderMenu()">
       </div>
       <div class="cat-pills" id="catPills"></div>
       <div class="menu-grid" id="menuGrid"></div>
     </div>
   </div>
-  <!-- Cart bottom bar -->
   <div class="cart-bar" id="cartBar">
     <button class="cart-bar-btn" onclick="openCart()">
       <span>🛒 View Cart (<span id="cartBarCount">0</span>)</span>
@@ -524,7 +328,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   </div>
 </div>
 
-<!-- Cart Drawer -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeCart()"></div>
 <div class="drawer" id="cartDrawer">
   <div class="drawer-handle"></div>
@@ -543,9 +346,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 </div>
 <div class="toast" id="toast">✅ Order sent to kitchen!</div>
 
-<!-- ============================================================
-     KITCHEN SCREEN
-============================================================ -->
 <div id="kitchenScreen" class="screen">
   <div class="topbar topbar-k">
     <div class="topbar-left">
@@ -572,9 +372,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   </div>
 </div>
 
-<!-- ============================================================
-     CASHIER SCREEN
-============================================================ -->
 <div id="cashierScreen" class="screen">
   <div class="topbar topbar-c">
     <div class="topbar-left">
@@ -587,7 +384,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
     </div>
   </div>
   <div class="c-scroll">
-    <!-- ORDERS TAB -->
     <div id="cOrdersTab">
       <div class="c-stats" id="cStats"></div>
       <div class="c-ofilt-row">
@@ -601,7 +397,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
       </div>
       <div class="c-orders" id="cOrders"></div>
     </div>
-    <!-- BILL PANEL -->
     <div id="billPanel">
       <div class="bill-back" style="padding:14px 16px 10px;">
         <button class="bill-back-btn" onclick="cCloseBill()">←</button>
@@ -632,7 +427,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
         </div>
       </div>
     </div>
-    <!-- RECEIPTS TAB -->
     <div id="receiptsPanel" style="display:none;padding:0 16px 28px;">
       <div class="c-sec-hdr" style="padding:14px 0 10px;">
         <span class="c-sec-lbl" id="cRcptCount"></span>
@@ -643,9 +437,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   </div>
 </div>
 
-<!-- ============================================================
-     CONFIRM MODAL
-============================================================ -->
 <div class="modal-ov" id="modalOv">
   <div class="modal-box">
     <div class="modal-title" id="modalTitle">Are you sure?</div>
@@ -658,64 +449,74 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 </div>
 
 <!-- ============================================================
-     FIREBASE REAL-TIME DATA STORE
+     FIREBASE SDK — loaded from jsdelivr (works on GitHub Pages)
 ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-app-compat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-firestore-compat.min.js"></script>
+<script>
+// ── In-memory cache ───────────────────────────────────────
+let _orders    = [];
+let _rcpts     = [];
+let _updateCbs = [];
+let _ordersCol, _rcptCol, _db;
 
-<!-- ⬇️  STEP 1: Paste your Firebase config here after creating project -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getFirestore, collection, doc,
-  onSnapshot, addDoc, updateDoc, deleteDoc,
-  query, orderBy, getDocs, setDoc, writeBatch
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+function _refreshScreens() {
+  _updateCbs.forEach(cb => cb());
+  if (typeof kRender        === 'function' && document.getElementById('kitchenScreen').classList.contains('active')) kRender();
+  if (typeof cRenderOrders  === 'function' && document.getElementById('cashierScreen').classList.contains('active') && cActiveTab === 'orders') cRenderOrders();
+  if (typeof wBuildTableGrid=== 'function' && document.getElementById('waiterScreen').classList.contains('active')) wBuildTableGrid();
+}
 
-// ============================================================
-// 🔥 PASTE YOUR FIREBASE CONFIG HERE
-//    (replace ALL values below with yours from Firebase console)
-// ============================================================
-const firebaseConfig = {
-   apiKey: "AIzaSyCvW3n4Iun5_RCeb0ib9l2AwcJl6ex3UUo",
-  authDomain: "goodvibes-restaurant.firebaseapp.com",
-  projectId: "goodvibes-restaurant",
-  storageBucket: "goodvibes-restaurant.firebasestorage.app",
-  messagingSenderId: "128700043589",
-  appId: "1:128700043589:web:f82d31347397fd66336e2c",
-};
-// ============================================================
+// ── Firebase init (safe — won't crash the page if it fails) ─
+function _initFirebase() {
+  try {
+    if (typeof firebase === 'undefined') {
+      console.warn('Firebase SDK not loaded yet — retrying in 500ms');
+      setTimeout(_initFirebase, 500);
+      return;
+    }
 
-const app  = initializeApp(firebaseConfig);
-const db   = getFirestore(app);
-const ordersCol   = collection(db, 'gv_orders');
-const receiptsCol = collection(db, 'gv_receipts');
+    const _app = firebase.initializeApp({
+      apiKey:            "AIzaSyCvW3n4Iun5_RCeb0ib9l2AwcJl6ex3UUo",
+      authDomain:        "goodvibes-restaurant.firebaseapp.com",
+      projectId:         "goodvibes-restaurant",
+      storageBucket:     "goodvibes-restaurant.firebasestorage.app",
+      messagingSenderId: "128700043589",
+      appId:             "1:128700043589:web:f82d31347397fd66336e2c"
+    });
 
-// ---- Live listeners (cross-device real-time) ----
-let _ordersCache   = [];
-let _receiptsCache = [];
-let _updateCbs     = [];
+    _db        = firebase.firestore();
+    _ordersCol = _db.collection('gv_orders');
+    _rcptCol   = _db.collection('gv_receipts');
 
-// Listen to orders in real time
-onSnapshot(query(ordersCol, orderBy('time','desc')), snap => {
-  _ordersCache = snap.docs.map(d => ({ ...d.data(), _docId: d.id }));
-  _updateCbs.forEach(cb => cb(_ordersCache));
-  // also refresh whichever screen is active
-  if (typeof kRender   === 'function' && document.getElementById('kitchenScreen')?.classList.contains('active')) kRender();
-  if (typeof cRenderOrders === 'function' && document.getElementById('cashierScreen')?.classList.contains('active')) cRenderOrders();
-  if (typeof wBuildTableGrid === 'function' && document.getElementById('waiterScreen')?.classList.contains('active')) wBuildTableGrid();
-});
+    // Real-time listener — orders
+    _ordersCol.orderBy('time','desc').onSnapshot(snap => {
+      _orders = snap.docs.map(d => ({...d.data(), _docId: d.id}));
+      _refreshScreens();
+    }, err => console.error('Orders listener error:', err));
 
-// Listen to receipts in real time
-onSnapshot(query(receiptsCol, orderBy('savedAt','desc')), snap => {
-  _receiptsCache = snap.docs.map(d => ({ ...d.data(), _docId: d.id }));
-  if (typeof cRenderReceipts === 'function' && document.getElementById('receiptsPanel')?.style.display !== 'none') cRenderReceipts();
-});
+    // Real-time listener — receipts
+    _rcptCol.orderBy('savedAt','desc').onSnapshot(snap => {
+      _rcpts = snap.docs.map(d => ({...d.data(), _docId: d.id}));
+      if (typeof cRenderReceipts === 'function' && document.getElementById('receiptsPanel').style.display !== 'none') cRenderReceipts();
+    }, err => console.error('Receipts listener error:', err));
 
-// ============================================================
-// GV — public API (same interface as before, now Firebase-backed)
-// ============================================================
-window.GV = {
+    console.log('✅ Firebase connected — Good Vibes Farm Stay');
 
-  // ---------- MENU (unchanged) ----------
+  } catch(e) {
+    console.error('Firebase init error:', e);
+  }
+}
+
+// Start Firebase after DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _initFirebase);
+} else {
+  _initFirebase();
+}
+
+// ── GV — same public API as before, now Firebase-backed ────
+const GV = {
   menu:[
     {id:'v1',name:'Chatpate',cat:'Veg Starters',price:160,emoji:'🥗'},
     {id:'v2',name:'French Fry',cat:'Veg Starters',price:200,emoji:'🍟'},
@@ -815,83 +616,69 @@ window.GV = {
     {id:'hd12',name:'OD Black Chimney (Half)',cat:'Hard Drinks',price:2400,emoji:'🥃'},
   ],
 
-  // ---------- ORDERS (Firebase-backed) ----------
-  getOrders() { return _ordersCache; },
+  // ── Read (synchronous from cache) ──────────────────────
+  getOrders()  { return _orders; },
+  getReceipts(){ return _rcpts;  },
 
-  async addOrder(o) {
-    o.id    = 'ORD-' + Date.now();
-    o.time  = new Date().toISOString();
+  // ── Write (async to Firestore) ──────────────────────────
+  addOrder(o){
+    if (!_ordersCol) return Promise.reject('Firebase not ready');
+    o.id     = 'ORD-' + Date.now();
+    o.time   = new Date().toISOString();
     o.status = 'pending';
-    await addDoc(ordersCol, o);
-    return o;
+    return _ordersCol.add(o);
   },
-
-  async updateStatus(id, status) {
-    const order = _ordersCache.find(o => o.id === id);
-    if (!order) return;
-    await updateDoc(doc(db, 'gv_orders', order._docId), { status, updatedAt: new Date().toISOString() });
+  updateStatus(id, status){
+    if (!_ordersCol) return Promise.resolve();
+    const o = _orders.find(x => x.id === id);
+    if (!o) return Promise.resolve();
+    return _ordersCol.doc(o._docId).update({ status, updatedAt: new Date().toISOString() });
   },
-
-  async deleteOrder(id) {
-    const order = _ordersCache.find(o => o.id === id);
-    if (!order) return;
-    await deleteDoc(doc(db, 'gv_orders', order._docId));
+  deleteOrder(id){
+    if (!_ordersCol) return Promise.resolve();
+    const o = _orders.find(x => x.id === id);
+    if (!o) return Promise.resolve();
+    return _ordersCol.doc(o._docId).delete();
   },
-
-  async deleteAllPaid() {
-    const paid = _ordersCache.filter(o => o.status === 'paid');
-    const batch = writeBatch(db);
-    paid.forEach(o => batch.delete(doc(db, 'gv_orders', o._docId)));
-    await batch.commit();
+  deleteAllPaid(){
+    if (!_db) return Promise.resolve();
+    const batch = _db.batch();
+    _orders.filter(o => o.status === 'paid').forEach(o => batch.delete(_ordersCol.doc(o._docId)));
+    return batch.commit();
   },
-
-  async clearAllOrders() {
-    const batch = writeBatch(db);
-    _ordersCache.forEach(o => batch.delete(doc(db, 'gv_orders', o._docId)));
-    await batch.commit();
+  clearAllOrders(){
+    if (!_db) return Promise.resolve();
+    const batch = _db.batch();
+    _orders.forEach(o => batch.delete(_ordersCol.doc(o._docId)));
+    return batch.commit();
   },
-
-  // ---------- RECEIPTS (Firebase-backed) ----------
-  getReceipts() { return _receiptsCache; },
-
-  async saveReceipt(r) {
-    const count = _receiptsCache.length;
+  saveReceipt(r){
+    if (!_rcptCol) return Promise.reject('Firebase not ready');
     r.savedAt   = new Date().toISOString();
-    r.receiptNo = 'GV-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + String(count + 1).padStart(4,'0');
-    await addDoc(receiptsCol, r);
-    return r;
+    r.receiptNo = 'GV-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + String(_rcpts.length + 1).padStart(4,'0');
+    return _rcptCol.add(r).then(() => r);
+  },
+  deleteReceipt(no){
+    if (!_rcptCol) return Promise.resolve();
+    const r = _rcpts.find(x => x.receiptNo === no);
+    if (!r) return Promise.resolve();
+    return _rcptCol.doc(r._docId).delete();
+  },
+  clearAllReceipts(){
+    if (!_db) return Promise.resolve();
+    const batch = _db.batch();
+    _rcpts.forEach(r => batch.delete(_rcptCol.doc(r._docId)));
+    return batch.commit();
   },
 
-  async deleteReceipt(no) {
-    const r = _receiptsCache.find(r => r.receiptNo === no);
-    if (!r) return;
-    await deleteDoc(doc(db, 'gv_receipts', r._docId));
-  },
-
-  async clearAllReceipts() {
-    const batch = writeBatch(db);
-    _receiptsCache.forEach(r => batch.delete(doc(db, 'gv_receipts', r._docId)));
-    await batch.commit();
-  },
-
-  onUpdate(cb) { _updateCbs.push(cb); },
-  cats() { return [...new Set(this.menu.map(i => i.cat))]; }
+  // ── Compat (kept for old callers) ──────────────────────
+  onUpdate(cb){ _updateCbs.push(cb); },
+  cats(){ return [...new Set(this.menu.map(i => i.cat))]; }
 };
-
-// Show connected indicator
-setTimeout(() => {
-  const ind = document.getElementById('firebaseIndicator');
-  if (ind) { ind.textContent = '🔥 Live'; ind.style.color = '#22c55e'; }
-}, 1500);
-
 </script>
 
 <!-- ============================================================
-     SCREEN NAVIGATION
-</script>
-
-<!-- ============================================================
-     SCREEN NAVIGATION
+     SCREEN NAVIGATION  (unchanged)
 ============================================================ -->
 <script>
 function showScreen(id){
@@ -905,7 +692,7 @@ function goCashier(){showScreen('cashierScreen');cRenderOrders();}
 </script>
 
 <!-- ============================================================
-     CONFIRM MODAL
+     CONFIRM MODAL  (unchanged)
 ============================================================ -->
 <script>
 function showModal(title,sub,onConfirm){
@@ -918,7 +705,7 @@ function closeModal(){document.getElementById('modalOv').classList.remove('open'
 </script>
 
 <!-- ============================================================
-     WAITER LOGIC
+     WAITER LOGIC  (unchanged except sendOrder is async)
 ============================================================ -->
 <script>
 let wTable=null,wCart={},wActiveCat='All';
@@ -1020,12 +807,10 @@ function wCartTotal(){return wCartItems().reduce((s,i)=>s+i.price*i.qty,0);}
 function wUpdateCartUI(){
   const count=Object.values(wCart).reduce((s,v)=>s+v,0);
   const total=wCartTotal();
-  // cart bar
   const bar=document.getElementById('cartBar');
   if(count>0){bar.classList.add('visible');}else{bar.classList.remove('visible');}
   document.getElementById('cartBarCount').textContent=count;
   document.getElementById('cartBarTotal').textContent='Rs. '+total.toLocaleString();
-  // topbar count badge
   const cnt=document.getElementById('wCartCount');
   if(count>0){cnt.style.display='flex';cnt.textContent=count;}else{cnt.style.display='none';}
 }
@@ -1047,7 +832,7 @@ function wRenderDrawer(){
 function openCart(){wRenderDrawer();document.getElementById('drawerOverlay').classList.add('open');document.getElementById('cartDrawer').classList.add('open');}
 function closeCart(){document.getElementById('drawerOverlay').classList.remove('open');document.getElementById('cartDrawer').classList.remove('open');}
 
-function sendOrder(){
+async function sendOrder(){
   const items=wCartItems();if(!items.length)return;
   const total=wCartTotal();
   await GV.addOrder({table:wTable,items,total});
@@ -1058,7 +843,7 @@ function sendOrder(){
 </script>
 
 <!-- ============================================================
-     KITCHEN LOGIC
+     KITCHEN LOGIC  (unchanged except async status/delete calls)
 ============================================================ -->
 <script>
 let kFilter='active',kSoundOn=true,kKnownIds=new Set(),kTimer=null;
@@ -1095,7 +880,6 @@ function kElapsed(iso){return Math.floor((Date.now()-new Date(iso))/60000);}
 
 function kRender(){
   const all=GV.getOrders();
-  // Stats
   document.getElementById('kStats').innerHTML=`
     <div class="stat-chip"><div class="s-dot" style="background:#f4a261"></div>${all.filter(o=>o.status==='pending').length} Pending</div>
     <div class="stat-chip"><div class="s-dot" style="background:var(--cooking)"></div>${all.filter(o=>o.status==='cooking').length} Cooking</div>
@@ -1136,21 +920,20 @@ function kRender(){
         ${o.status==='cooking'?`<button class="k-act k-ready" onclick="kStatus('${o.id}','ready')">✅ Mark Ready</button>`:''}
         ${o.status==='ready'?`<button class="k-act k-served" onclick="kStatus('${o.id}','served')">🍽️ Served</button>`:''}
         ${canDel?`<button class="k-act k-del" onclick="kConfirmDelete('${o.id}','${o.table}')">🗑️ Delete</button>`:''}
-        ${!canDel&&o.status!=='pending'&&o.status!=='cooking'&&o.status!=='ready'?'':''}
       </div>
     </div>`;
   }).join('');
 }
 
-async function kStatus(id,status){await GV.updateStatus(id,status);}
+function kStatus(id,status){ GV.updateStatus(id,status); }
 
 function kConfirmDelete(id,table){
-  showModal(`Delete Order — Table ${table}?`,'This order will be permanently removed. Cannot be undone.',async()=>{await GV.deleteOrder(id);});
+  showModal(`Delete Order — Table ${table}?`,'This order will be permanently removed. Cannot be undone.',()=>{ GV.deleteOrder(id); });
 }
 function kConfirmClearPaid(){
   const n=GV.getOrders().filter(o=>o.status==='paid').length;
   if(!n){alert('No paid orders to clear.');return;}
-  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,async()=>{await GV.deleteAllPaid();});
+  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,()=>{ GV.deleteAllPaid(); });
 }
 
 function kPrint(id){
@@ -1174,12 +957,11 @@ function kPrint(id){
 function kStartPolling(){
   if(kTimer)clearInterval(kTimer);
   kTimer=setInterval(kRender,5000);
-  GV.onUpdate(()=>kRender());
 }
 </script>
 
 <!-- ============================================================
-     CASHIER LOGIC
+     CASHIER LOGIC  (unchanged except async save/delete calls)
 ============================================================ -->
 <script>
 let cActiveTab='orders',cOrderFilter='unpaid',cSelectedOrder=null;
@@ -1378,110 +1160,24 @@ function cReceiptHTML(order,taxPct,tax,grand,rcNo,now){
 }
 
 function cConfirmDelOrder(id,table){
-  showModal(`Delete Order — Table ${table}?`,'Permanently remove this order. Cannot be undone.',async()=>{await GV.deleteOrder(id);});
+  showModal(`Delete Order — Table ${table}?`,'Permanently remove this order. Cannot be undone.',()=>{ GV.deleteOrder(id); });
 }
 function cConfirmClearPaid(){
   const n=GV.getOrders().filter(o=>o.status==='paid').length;if(!n)return;
-  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,async()=>{await GV.deleteAllPaid();});
+  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,()=>{ GV.deleteAllPaid(); });
 }
 function cConfirmDelReceipt(no){
-  showModal(`Delete Receipt ${no}?`,'This receipt will be permanently deleted.',async()=>{await GV.deleteReceipt(no);});
+  showModal(`Delete Receipt ${no}?`,'This receipt will be permanently deleted.',()=>{ GV.deleteReceipt(no); });
 }
 function cConfirmClearReceipts(){
   const n=GV.getReceipts().length;if(!n)return;
-  showModal('Clear All Receipts?',`Delete all ${n} receipt(s). Cannot be undone.`,async()=>{await GV.clearAllReceipts();});
+  showModal('Clear All Receipts?',`Delete all ${n} receipt(s). Cannot be undone.`,()=>{ GV.clearAllReceipts(); });
 }
 
-// Auto-refresh cashier orders
-setInterval(()=>{if(cActiveTab==='orders'&&document.getElementById('cashierScreen').classList.contains('active'))cRenderOrders();},5000);
-GV.onUpdate(()=>{
-  if(document.getElementById('cashierScreen').classList.contains('active')&&cActiveTab==='orders')cRenderOrders();
-  if(document.getElementById('kitchenScreen').classList.contains('active'))kRender();
-  if(document.getElementById('waiterScreen').classList.contains('active'))wBuildTableGrid();
-});
-</script>
-
-
-<!-- Firebase Setup Guide Banner -->
-<div class="fb-banner" id="fbBanner">
-  <div class="fb-banner-text">
-    <b>⚡ Action needed:</b> To sync across devices, paste your Firebase config into the HTML file.
-  </div>
-  <button class="fb-banner-btn" onclick="document.getElementById('fbSetupModal').classList.remove('hidden')">
-    How to Setup →
-  </button>
-  <button onclick="document.getElementById('fbBanner').classList.add('hidden')" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:20px;cursor:pointer;">×</button>
-</div>
-
-<!-- Firebase Setup Modal -->
-<div class="fb-setup-modal hidden" id="fbSetupModal">
-  <div class="fb-setup-box">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <div style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;">🔥 Firebase Setup</div>
-      <button onclick="document.getElementById('fbSetupModal').classList.add('hidden')" style="background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.5);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;">×</button>
-    </div>
-    <p style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px;line-height:1.6;">Follow these 5 steps once. After setup, all changes sync instantly across every device in real time.</p>
-
-    <div class="fb-step">
-      <div class="fb-step-title"><span class="fb-step-num">1</span>Create Firebase Project</div>
-      <div class="fb-step-body">
-        Go to <b>console.firebase.google.com</b> → click <b>Add project</b> → name it <b>goodvibes-restaurant</b> → click through → Create project
-      </div>
-    </div>
-
-    <div class="fb-step">
-      <div class="fb-step-title"><span class="fb-step-num">2</span>Add a Web App</div>
-      <div class="fb-step-body">
-        In your project → click the <b>&lt;/&gt; Web</b> icon → name it <b>goodvibes-app</b> → click <b>Register app</b> → you will see your config object. Copy it — it looks like:
-        <div class="fb-code">const firebaseConfig = {<br>
-&nbsp;&nbsp;apiKey: "AIzaSy...",<br>
-&nbsp;&nbsp;authDomain: "goodvibes-xxx.firebaseapp.com",<br>
-&nbsp;&nbsp;projectId: "goodvibes-xxx",<br>
-&nbsp;&nbsp;storageBucket: "goodvibes-xxx.appspot.com",<br>
-&nbsp;&nbsp;messagingSenderId: "123456789",<br>
-&nbsp;&nbsp;appId: "1:123:web:abc"<br>
-};</div>
-      </div>
-    </div>
-
-    <div class="fb-step">
-      <div class="fb-step-title"><span class="fb-step-num">3</span>Enable Firestore Database</div>
-      <div class="fb-step-body">
-        In Firebase console → left sidebar → <b>Firestore Database</b> → <b>Create database</b> → choose <b>Start in test mode</b> → pick any region → <b>Enable</b>
-      </div>
-    </div>
-
-    <div class="fb-step">
-      <div class="fb-step-title"><span class="fb-step-num">4</span>Paste config into this file</div>
-      <div class="fb-step-body">
-        Open <b>goodvibes-all-in-one.html</b> in Notepad or VS Code → find this section (near line 620):
-        <div class="fb-code">apiKey: "PASTE_YOUR_apiKey_HERE",</div>
-        Replace all 6 <b>PASTE_YOUR_..._HERE</b> values with your actual config values → Save the file
-      </div>
-    </div>
-
-    <div class="fb-step">
-      <div class="fb-step-title"><span class="fb-step-num">5</span>Push to GitHub & done!</div>
-      <div class="fb-step-body">
-        Upload the updated HTML file to your GitHub Pages repo. Now open the site on <b>any device</b> — waiter places order on phone → kitchen sees it instantly on tablet → cashier generates bill on laptop. All in real time! 🎉
-      </div>
-    </div>
-
-    <button class="fb-dismiss" onclick="document.getElementById('fbSetupModal').classList.add('hidden');document.getElementById('fbBanner').classList.add('hidden');">
-      Got it, I'll set it up ✓
-    </button>
-  </div>
-</div>
-
-<script>
-// Hide banner if Firebase is already configured (apiKey is not a placeholder)
-window.addEventListener('load', () => {
-  // Check if the config still has placeholder values by looking at the page source
-  const src = document.documentElement.innerHTML;
-  if (!src.includes('PASTE_YOUR_apiKey_HERE')) {
-    document.getElementById('fbBanner').classList.add('hidden');
-  }
-});
+// Auto-refresh cashier (belt-and-suspenders alongside live listener)
+setInterval(()=>{
+  if(cActiveTab==='orders'&&document.getElementById('cashierScreen').classList.contains('active'))cRenderOrders();
+},8000);
 </script>
 
 </body>
