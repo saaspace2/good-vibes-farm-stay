@@ -14,22 +14,25 @@
   --text:#e8f0e8;--muted:rgba(255,255,255,0.4);
   --indigo:#4f46e5;--indigo2:#818cf8;
   --cooking:#3b82f6;--ready:#22c55e;
+  --admin:#7c3aed;--admin2:#a78bfa;
 }
 html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);color:var(--text);}
 .screen{display:none;min-height:100vh;flex-direction:column;}
 .screen.active{display:flex;}
+
+/* ── Home ── */
 #homeScreen{align-items:center;justify-content:center;padding:24px;background:var(--dark);position:relative;overflow:hidden;}
 #homeScreen::before,#homeScreen::after{content:'';position:fixed;border-radius:50%;filter:blur(80px);opacity:.2;z-index:0;animation:blob 8s ease-in-out infinite alternate;}
 #homeScreen::before{width:500px;height:500px;background:var(--green);top:-100px;left:-100px;}
 #homeScreen::after{width:400px;height:400px;background:var(--yellow);bottom:-80px;right:-80px;animation-delay:-4s;}
 @keyframes blob{from{transform:scale(1);}to{transform:scale(1.2) translate(30px,20px);}}
-.home-inner{position:relative;z-index:1;width:100%;max-width:520px;text-align:center;}
+.home-inner{position:relative;z-index:1;width:100%;max-width:560px;text-align:center;}
 .home-logo{margin-bottom:8px;animation:fadeDown .6s ease both;}
 .home-logo svg{filter:drop-shadow(0 8px 24px rgba(0,0,0,.5));}
 .home-brand{font-family:'Bebas Neue';font-size:clamp(40px,10vw,64px);letter-spacing:4px;color:#fff;line-height:1;animation:fadeDown .7s ease both .1s;}
 .home-brand span{color:var(--yellow);}
 .home-tagline{font-size:13px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:5px;margin-bottom:36px;animation:fadeDown .7s ease both .2s;}
-.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;animation:fadeUp .7s ease both .3s;}
+.role-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;animation:fadeUp .7s ease both .3s;max-width:420px;margin:0 auto;}
 .role-card{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:20px;padding:26px 14px 22px;cursor:pointer;transition:transform .2s,border-color .2s,background .2s;display:flex;flex-direction:column;align-items:center;gap:9px;}
 .role-card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.11);}
 .role-icon{font-size:40px;line-height:1;}
@@ -39,13 +42,17 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .pill-w{background:var(--green2);color:#fff;}
 .pill-k{background:var(--red);color:#fff;}
 .pill-c{background:var(--yellow);color:#1a1a2e;}
+.pill-a{background:var(--admin);color:#fff;}
 .home-footer{margin-top:36px;font-size:12px;color:rgba(255,255,255,.18);animation:fadeUp .7s ease both .5s;}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── Topbars ── */
 .topbar{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-shrink:0;}
 .topbar-w{background:linear-gradient(135deg,#1B4332,#2D6A4F);box-shadow:0 2px 18px rgba(0,0,0,.4);}
 .topbar-k{background:#111820;border-bottom:1px solid var(--border);}
 .topbar-c{background:linear-gradient(135deg,#1e1b4b,#312e81);box-shadow:0 2px 18px rgba(0,0,0,.4);}
+.topbar-a{background:linear-gradient(135deg,#3b0764,#4c1d95);box-shadow:0 2px 18px rgba(0,0,0,.4);}
 .topbar-left{display:flex;align-items:center;gap:10px;}
 .back-btn{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.7);width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .back-btn:hover{background:rgba(255,255,255,.18);color:#fff;}
@@ -58,6 +65,8 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .live-badge{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#22c55e;}
 .live-badge::before{content:'';width:7px;height:7px;background:#22c55e;border-radius:50%;animation:livepulse 1.5s ease-in-out infinite;}
 @keyframes livepulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+
+/* ── Waiter ── */
 #waiterScreen{background:var(--dark);}
 .w-scroll{flex:1;overflow-y:auto;}
 #tableSelectView{padding:20px;}
@@ -80,9 +89,11 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .cat-pill.active,.cat-pill:hover{background:var(--green);border-color:var(--green2);color:#fff;}
 .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 16px 130px;}
 .cat-hdr{grid-column:1/-1;font-family:'Bebas Neue';font-size:18px;letter-spacing:2px;color:var(--green2);padding-top:6px;border-bottom:1px solid var(--border);padding-bottom:5px;}
-.menu-item{background:var(--card);border:1.5px solid var(--border);border-radius:15px;padding:13px 11px;cursor:pointer;transition:all .15s;}
+.menu-item{background:var(--card);border:1.5px solid var(--border);border-radius:15px;padding:13px 11px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
 .menu-item:hover{border-color:rgba(82,183,136,.4);transform:translateY(-2px);}
 .menu-item.in-cart{border-color:var(--green2);background:#1a2e25;}
+.item-photo{width:100%;height:90px;object-fit:cover;border-radius:9px;margin-bottom:7px;display:block;}
+.item-photo-placeholder{width:100%;height:90px;border-radius:9px;margin-bottom:7px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-size:36px;}
 .item-emoji{font-size:30px;display:block;margin-bottom:5px;line-height:1;}
 .item-name{font-size:12px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:3px;}
 .item-price{font-size:13px;font-weight:900;color:var(--yellow);}
@@ -94,7 +105,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .qty-num{font-weight:900;font-size:14px;color:#fff;min-width:18px;text-align:center;}
 .cart-bar{position:fixed;bottom:0;left:0;right:0;padding:12px 16px;background:rgba(15,17,23,.95);border-top:1px solid var(--border);backdrop-filter:blur(10px);z-index:90;transform:translateY(100%);transition:transform .3s ease;}
 .cart-bar.visible{transform:translateY(0);}
-.cart-bar-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;border-radius:15px;color:#fff;font-family:'Nunito';font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;}
+.cart-bar-btn{width:100%;padding:14px 20px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;border-radius:15px;color:#fff;font-family:'Nunito';font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:space-between;}
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;backdrop-filter:blur(4px);}
 .drawer-overlay.open{display:block;}
 .drawer{position:fixed;bottom:0;left:0;right:0;max-height:82vh;background:#131e2b;border-radius:22px 22px 0 0;z-index:201;transform:translateY(100%);transition:transform .3s ease;display:flex;flex-direction:column;}
@@ -113,9 +124,16 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;}
 .total-lbl{font-size:15px;font-weight:800;}
 .total-amt{font-size:22px;font-weight:900;color:var(--yellow);}
-.send-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;border-radius:15px;color:#fff;font-family:'Nunito';font-size:15px;font-weight:900;cursor:pointer;}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:13px 26px;border-radius:15px;font-weight:800;font-size:14px;z-index:999;transition:transform .3s ease;box-shadow:0 8px 30px rgba(0,0,0,.4);}
+.send-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;border-radius:15px;color:#fff;font-family:'Nunito';font-size:15px;font-weight:900;cursor:pointer;transition:opacity .2s;}
+.send-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);padding:13px 26px;border-radius:15px;font-weight:800;font-size:14px;z-index:9999;transition:transform .3s ease;box-shadow:0 8px 30px rgba(0,0,0,.4);white-space:nowrap;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--green);color:#fff;}
+.toast.error{background:var(--red);color:#fff;}
+
+/* ── Kitchen ── */
 #kitchenScreen{background:var(--dark);}
 .k-scroll{flex:1;overflow-y:auto;}
 .k-stats{display:flex;gap:10px;padding:14px 16px 8px;overflow-x:auto;scrollbar-width:none;}
@@ -164,6 +182,8 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .k-del{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.3);}
 .k-empty{grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--muted);}
 .k-empty-icon{font-size:58px;display:block;margin-bottom:10px;}
+
+/* ── Cashier ── */
 #cashierScreen{background:var(--dark);}
 .c-scroll{flex:1;overflow-y:auto;}
 .c-tabs{display:flex;gap:6px;padding:14px 16px 10px;}
@@ -237,6 +257,77 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .rr-btn{font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;cursor:pointer;border:none;font-family:inherit;}
 .rr-print{background:rgba(79,70,229,.15);color:var(--indigo2);}
 .rr-del{background:rgba(239,68,68,.1);color:var(--red);}
+
+/* ── Admin / Menu Manager ── */
+#adminScreen{background:var(--dark);}
+.a-scroll{flex:1;overflow-y:auto;padding-bottom:100px;}
+.a-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 10px;}
+.a-sec-title{font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--admin2);}
+.add-item-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;background:linear-gradient(135deg,var(--admin),#6d28d9);border:none;border-radius:11px;color:#fff;font-family:'Nunito';font-size:13px;font-weight:800;cursor:pointer;transition:opacity .2s;}
+.add-item-btn:hover{opacity:.88;}
+.a-search-wrap{padding:0 16px 10px;position:relative;}
+.a-search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
+.a-search-input{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:11px;padding:8px 14px 8px 36px;color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:border-color .2s;}
+.a-search-input:focus{border-color:var(--admin2);}
+.a-cat-filter{display:flex;gap:7px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none;}
+.a-cat-filter::-webkit-scrollbar{display:none;}
+.a-cf-pill{flex-shrink:0;padding:4px 12px;border-radius:18px;background:var(--card);border:1.5px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.a-cf-pill.active{background:var(--admin);border-color:var(--admin2);color:#fff;}
+.a-menu-list{display:flex;flex-direction:column;gap:8px;padding:0 16px;}
+.a-item-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;display:flex;align-items:center;gap:12px;padding:10px 12px;transition:border-color .15s;}
+.a-item-card.custom-item{border-color:rgba(167,139,250,.3);}
+.a-item-card:hover{border-color:var(--admin2);}
+.a-item-thumb{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.a-item-thumb img{width:52px;height:52px;border-radius:10px;object-fit:cover;}
+.a-item-info{flex:1;min-width:0;}
+.a-item-name{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.a-item-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.a-item-price{font-size:14px;font-weight:900;color:var(--yellow);}
+.a-item-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(167,139,250,.15);color:var(--admin2);border:1px solid rgba(167,139,250,.3);display:inline-block;margin-top:3px;}
+.a-item-acts{display:flex;gap:5px;flex-shrink:0;}
+.a-act-btn{width:32px;height:32px;border-radius:8px;border:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:opacity .15s;}
+.a-act-btn:hover{opacity:.8;}
+.a-edit-btn{background:rgba(79,70,229,.2);color:var(--indigo2);}
+.a-del-btn{background:rgba(239,68,68,.1);color:var(--red);}
+.a-built-in-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--border);display:inline-block;margin-top:3px;}
+.a-empty{text-align:center;padding:44px 20px;color:var(--muted);}
+.a-empty-icon{font-size:50px;display:block;margin-bottom:10px;}
+
+/* ── Item Form Drawer ── */
+.form-drawer{position:fixed;bottom:0;left:0;right:0;max-height:92vh;background:#131e2b;border-radius:22px 22px 0 0;z-index:300;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+.form-drawer.open{transform:translateY(0);}
+.form-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:299;display:none;backdrop-filter:blur(5px);}
+.form-drawer-overlay.open{display:block;}
+.fd-handle{width:38px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:11px auto 0;}
+.fd-hdr{padding:14px 18px 11px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+.fd-title{font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;color:var(--admin2);}
+.fd-close{background:var(--card);border:none;color:var(--muted);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:17px;}
+.fd-body{overflow-y:auto;flex:1;padding:16px 18px;}
+.fd-field{margin-bottom:16px;}
+.fd-label{display:block;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.fd-input{width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:11px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;}
+.fd-input:focus{border-color:var(--admin2);}
+.fd-select{width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:11px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+.fd-select:focus{border-color:var(--admin2);}
+.photo-upload-area{width:100%;border:2px dashed rgba(167,139,250,.3);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.photo-upload-area:hover{border-color:var(--admin2);background:rgba(124,58,237,.05);}
+.photo-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.photo-preview{width:100%;height:140px;object-fit:cover;border-radius:10px;display:none;}
+.photo-upload-icon{font-size:36px;display:block;margin-bottom:8px;}
+.photo-upload-text{font-size:13px;color:var(--muted);font-weight:700;}
+.photo-upload-sub{font-size:11px;color:rgba(255,255,255,.2);margin-top:3px;}
+.remove-photo-btn{margin-top:8px;font-size:11px;font-weight:700;color:var(--red);background:none;border:none;cursor:pointer;display:none;}
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;}
+.emoji-opt{font-size:22px;width:100%;aspect-ratio:1;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,.04);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .1s;}
+.emoji-opt:hover{background:rgba(255,255,255,.1);}
+.emoji-opt.selected{border-color:var(--admin2);background:rgba(124,58,237,.2);}
+.fd-foot{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:9px;}
+.fd-save-btn{flex:1;padding:13px;background:linear-gradient(135deg,var(--admin),#6d28d9);border:none;border-radius:13px;color:#fff;font-family:'Nunito';font-size:14px;font-weight:900;cursor:pointer;transition:opacity .2s;}
+.fd-save-btn:hover{opacity:.88;}
+.fd-save-btn:disabled{opacity:.45;cursor:not-allowed;}
+.fd-cancel-btn{padding:13px 20px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:13px;color:var(--muted);font-family:'Nunito';font-size:14px;font-weight:700;cursor:pointer;}
+
+/* ── Shared Modal ── */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .modal-ov.open{display:flex;}
 .modal-box{background:#1a1f2e;border:1px solid rgba(255,255,255,.12);border-radius:19px;padding:26px 22px;width:90%;max-width:330px;text-align:center;}
@@ -248,15 +339,22 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .modal-confirm{background:rgba(239,68,68,.2);color:var(--red);border:1px solid rgba(239,68,68,.4);}
 .empty-state{text-align:center;padding:44px 20px;color:var(--muted);}
 .empty-icon{font-size:50px;display:block;margin-bottom:10px;}
+
 @media(max-width:360px){
   .menu-grid{grid-template-columns:1fr;}
   .table-grid{grid-template-columns:repeat(4,1fr);}
   .role-grid{grid-template-columns:1fr;max-width:240px;margin:0 auto;}
+  .emoji-grid{grid-template-columns:repeat(6,1fr);}
 }
 </style>
 </head>
 <body>
 
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════
+     HOME
+══════════════════════════════════════════ -->
 <div id="homeScreen" class="screen active">
   <div class="home-inner">
     <div class="home-logo">
@@ -288,11 +386,20 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
         <div class="role-desc">Generate bills & receipts</div>
         <button class="role-pill pill-c">Enter</button>
       </div>
+      <div class="role-card" onclick="goAdmin()">
+        <div class="role-icon">🍽️</div>
+        <div class="role-name">Menu Manager</div>
+        <div class="role-desc">Add, edit & delete menu items</div>
+        <button class="role-pill pill-a">Enter</button>
+      </div>
     </div>
-    <div class="home-footer">© 2024 Good Vibes Farm Stay · @goodvibesfarmstay</div>
+    <div class="home-footer">© 2025 Good Vibes Farm Stay · @goodvibesfarmstay</div>
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════
+     WAITER
+══════════════════════════════════════════ -->
 <div id="waiterScreen" class="screen">
   <div class="topbar topbar-w">
     <div class="topbar-left">
@@ -302,7 +409,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
     <div style="display:flex;align-items:center;gap:8px;">
       <div id="wTableBadge" style="display:none;background:rgba(82,183,136,.15);border:1px solid var(--green2);color:var(--green2);padding:4px 11px;border-radius:18px;font-size:12px;font-weight:700;"></div>
       <button id="wCartBtn" class="icon-btn" onclick="openCart()" style="display:none;background:var(--yellow);color:#1a1a2e;border-color:var(--yellow);position:relative;">
-        🛒 Cart <span id="wCartCount" style="display:none;position:absolute;top:-8px;right:-8px;width:19px;height:19px;background:var(--red);color:#fff;border-radius:50%;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;"></span>
+        🛒 Cart <span id="wCartCount" style="display:none;position:absolute;top:-8px;right:-8px;width:19px;height:19px;background:var(--red);color:#fff;border-radius:50%;font-size:10px;font-weight:900;align-items:center;justify-content:center;"></span>
       </button>
     </div>
   </div>
@@ -341,11 +448,13 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
       <span class="total-lbl">Total</span>
       <span class="total-amt" id="drawerTotal">Rs. 0</span>
     </div>
-    <button class="send-btn" onclick="sendOrder()">🍳 Send to Kitchen</button>
+    <button class="send-btn" id="sendBtn" onclick="sendOrder()">🍳 Send to Kitchen</button>
   </div>
 </div>
-<div class="toast" id="toast">✅ Order sent to kitchen!</div>
 
+<!-- ══════════════════════════════════════════
+     KITCHEN
+══════════════════════════════════════════ -->
 <div id="kitchenScreen" class="screen">
   <div class="topbar topbar-k">
     <div class="topbar-left">
@@ -372,6 +481,9 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════
+     CASHIER
+══════════════════════════════════════════ -->
 <div id="cashierScreen" class="screen">
   <div class="topbar topbar-c">
     <div class="topbar-left">
@@ -437,6 +549,89 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════
+     ADMIN / MENU MANAGER
+══════════════════════════════════════════ -->
+<div id="adminScreen" class="screen">
+  <div class="topbar topbar-a">
+    <div class="topbar-left">
+      <button class="back-btn" onclick="backHome()">←</button>
+      <div><div class="tb-title">🍽️ Menu Manager</div><div class="tb-sub">Add · Edit · Delete Items</div></div>
+    </div>
+    <div id="aItemCount" style="font-size:12px;color:rgba(255,255,255,.4);font-weight:700;"></div>
+  </div>
+  <div class="a-scroll">
+    <div class="a-section-hdr">
+      <span class="a-sec-title">All Menu Items</span>
+      <button class="add-item-btn" onclick="aOpenForm()">＋ Add Item</button>
+    </div>
+    <div class="a-search-wrap">
+      <span class="a-search-icon">🔍</span>
+      <input class="a-search-input" id="aSearchInput" placeholder="Search items..." oninput="aRender()">
+    </div>
+    <div class="a-cat-filter" id="aCatFilter"></div>
+    <div class="a-menu-list" id="aMenuList"></div>
+  </div>
+</div>
+
+<!-- ── Item Form Drawer ── -->
+<div class="form-drawer-overlay" id="formOverlay" onclick="aCloseForm()"></div>
+<div class="form-drawer" id="itemFormDrawer">
+  <div class="fd-handle"></div>
+  <div class="fd-hdr">
+    <div class="fd-title" id="fdTitle">Add New Item</div>
+    <button class="fd-close" onclick="aCloseForm()">×</button>
+  </div>
+  <div class="fd-body">
+    <input type="hidden" id="fdItemId">
+
+    <!-- Photo upload -->
+    <div class="fd-field">
+      <label class="fd-label">Photo (optional)</label>
+      <div class="photo-upload-area" id="photoUploadArea">
+        <input type="file" id="photoFileInput" accept="image/*" onchange="aHandlePhoto(event)">
+        <img class="photo-preview" id="photoPreview" alt="Preview">
+        <span class="photo-upload-icon" id="photoUploadIcon">📷</span>
+        <div class="photo-upload-text" id="photoUploadText">Tap to upload photo</div>
+        <div class="photo-upload-sub" id="photoUploadSub">JPG, PNG, WEBP · Max 2MB</div>
+        <button type="button" class="remove-photo-btn" id="removePhotoBtn" onclick="aRemovePhoto(event)">✕ Remove photo</button>
+      </div>
+    </div>
+
+    <!-- Emoji picker (shown if no photo) -->
+    <div class="fd-field" id="emojiFieldWrap">
+      <label class="fd-label">Emoji Icon</label>
+      <div class="emoji-grid" id="emojiGrid"></div>
+    </div>
+
+    <!-- Name -->
+    <div class="fd-field">
+      <label class="fd-label">Item Name *</label>
+      <input class="fd-input" id="fdName" placeholder="e.g. Chicken Wings" maxlength="60">
+    </div>
+
+    <!-- Price -->
+    <div class="fd-field">
+      <label class="fd-label">Price (Rs.) *</label>
+      <input class="fd-input" id="fdPrice" type="number" placeholder="e.g. 350" min="1" max="99999">
+    </div>
+
+    <!-- Category -->
+    <div class="fd-field">
+      <label class="fd-label">Category *</label>
+      <select class="fd-select" id="fdCat">
+        <option value="">Select or type below...</option>
+      </select>
+      <input class="fd-input" id="fdCatCustom" placeholder="Or type a new category..." style="margin-top:7px;">
+    </div>
+  </div>
+  <div class="fd-foot">
+    <button class="fd-cancel-btn" onclick="aCloseForm()">Cancel</button>
+    <button class="fd-save-btn" id="fdSaveBtn" onclick="aSaveItem()">💾 Save Item</button>
+  </div>
+</div>
+
+<!-- Shared Modal -->
 <div class="modal-ov" id="modalOv">
   <div class="modal-box">
     <div class="modal-title" id="modalTitle">Are you sure?</div>
@@ -448,77 +643,70 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   </div>
 </div>
 
-<!-- ============================================================
-     FIREBASE SDK — loaded from jsdelivr (works on GitHub Pages)
-============================================================ -->
+<!-- Firebase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-app-compat.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-firestore-compat.min.js"></script>
+
 <script>
-// ── In-memory cache ───────────────────────────────────────
-let _orders    = [];
-let _rcpts     = [];
-let _updateCbs = [];
-let _ordersCol, _rcptCol, _db;
+/* ═══════════════════════════════════════════════════════════
+   FIREBASE + DATA LAYER
+═══════════════════════════════════════════════════════════ */
+let _orders=[], _rcpts=[], _customItems=[], _updateCbs=[];
+let _ordersCol, _rcptCol, _menuCol, _db;
 
-function _refreshScreens() {
-  _updateCbs.forEach(cb => cb());
-  if (typeof kRender        === 'function' && document.getElementById('kitchenScreen').classList.contains('active')) kRender();
-  if (typeof cRenderOrders  === 'function' && document.getElementById('cashierScreen').classList.contains('active') && cActiveTab === 'orders') cRenderOrders();
-  if (typeof wBuildTableGrid=== 'function' && document.getElementById('waiterScreen').classList.contains('active')) wBuildTableGrid();
+function _refreshScreens(){
+  _updateCbs.forEach(cb=>cb());
+  if(typeof kRender==='function'&&document.getElementById('kitchenScreen').classList.contains('active'))kRender();
+  if(typeof cRenderOrders==='function'&&document.getElementById('cashierScreen').classList.contains('active')&&cActiveTab==='orders')cRenderOrders();
+  if(typeof wBuildTableGrid==='function'&&document.getElementById('waiterScreen').classList.contains('active'))wBuildTableGrid();
 }
 
-// ── Firebase init (safe — won't crash the page if it fails) ─
-function _initFirebase() {
-  try {
-    if (typeof firebase === 'undefined') {
-      console.warn('Firebase SDK not loaded yet — retrying in 500ms');
-      setTimeout(_initFirebase, 500);
-      return;
+function _initFirebase(){
+  try{
+    if(typeof firebase==='undefined'){setTimeout(_initFirebase,400);return;}
+    try{firebase.app();}catch(e){
+      firebase.initializeApp({
+        apiKey:"AIzaSyCvW3n4Iun5_RCeb0ib9l2AwcJl6ex3UUo",
+        authDomain:"goodvibes-restaurant.firebaseapp.com",
+        projectId:"goodvibes-restaurant",
+        storageBucket:"goodvibes-restaurant.firebasestorage.app",
+        messagingSenderId:"128700043589",
+        appId:"1:128700043589:web:f82d31347397fd66336e2c"
+      });
     }
+    _db=firebase.firestore();
+    _ordersCol=_db.collection('gv_orders');
+    _rcptCol=_db.collection('gv_receipts');
+    _menuCol=_db.collection('gv_menu_items'); // custom menu items collection
 
-    const _app = firebase.initializeApp({
-        apiKey: "AIzaSyCvW3n4Iun5_RCeb0ib9l2AwcJl6ex3UUo",
-  authDomain: "goodvibes-restaurant.firebaseapp.com",
-  projectId: "goodvibes-restaurant",
-  storageBucket: "goodvibes-restaurant.firebasestorage.app",
-  messagingSenderId: "128700043589",
-  appId: "1:128700043589:web:f82d31347397fd66336e2c",
-  measurementId: "G-71QNEQK0PJ"
-    });
+    _db.enablePersistence({synchronizeTabs:true}).catch(err=>console.warn('Persistence:',err.code));
 
-    _db        = firebase.firestore();
-    _ordersCol = _db.collection('gv_orders');
-    _rcptCol   = _db.collection('gv_receipts');
-
-    // Real-time listener — orders
-    _ordersCol.orderBy('time','desc').onSnapshot(snap => {
-      _orders = snap.docs.map(d => ({...d.data(), _docId: d.id}));
+    _ordersCol.orderBy('time','desc').onSnapshot(snap=>{
+      _orders=snap.docs.map(d=>({...d.data(),_docId:d.id}));
       _refreshScreens();
-    }, err => console.error('Orders listener error:', err));
+    },err=>console.error('Orders:',err));
 
-    // Real-time listener — receipts
-    _rcptCol.orderBy('savedAt','desc').onSnapshot(snap => {
-      _rcpts = snap.docs.map(d => ({...d.data(), _docId: d.id}));
-      if (typeof cRenderReceipts === 'function' && document.getElementById('receiptsPanel').style.display !== 'none') cRenderReceipts();
-    }, err => console.error('Receipts listener error:', err));
+    _rcptCol.orderBy('savedAt','desc').onSnapshot(snap=>{
+      _rcpts=snap.docs.map(d=>({...d.data(),_docId:d.id}));
+      if(typeof cRenderReceipts==='function'&&document.getElementById('receiptsPanel').style.display!=='none')cRenderReceipts();
+    },err=>console.error('Receipts:',err));
 
-    console.log('✅ Firebase connected — Good Vibes Farm Stay');
+    // Custom menu items listener - syncs across all devices
+    _menuCol.orderBy('createdAt','desc').onSnapshot(snap=>{
+      _customItems=snap.docs.map(d=>({...d.data(),_docId:d.id,_custom:true}));
+      if(typeof aRender==='function'&&document.getElementById('adminScreen').classList.contains('active'))aRender();
+      if(typeof wRenderMenu==='function'&&document.getElementById('menuView').style.display!=='none')wRenderMenu();
+    },err=>console.error('Menu items:',err));
 
-  } catch(e) {
-    console.error('Firebase init error:', e);
-  }
+  }catch(e){console.error('Firebase init:',e);}
 }
 
-// Start Firebase after DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', _initFirebase);
-} else {
-  _initFirebase();
-}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_initFirebase);}else{_initFirebase();}
 
-// ── GV — same public API as before, now Firebase-backed ────
-const GV = {
-  menu:[
+/* ══ GV Public API ══════════════════════════════════════════ */
+const GV={
+  /* ── Built-in menu ──────────────────────────────────────── */
+  _builtIn:[
     {id:'v1',name:'Chatpate',cat:'Veg Starters',price:160,emoji:'🥗'},
     {id:'v2',name:'French Fry',cat:'Veg Starters',price:200,emoji:'🍟'},
     {id:'v3',name:'Green Salad',cat:'Veg Starters',price:180,emoji:'🥗'},
@@ -617,85 +805,83 @@ const GV = {
     {id:'hd12',name:'OD Black Chimney (Half)',cat:'Hard Drinks',price:2400,emoji:'🥃'},
   ],
 
-  // ── Read (synchronous from cache) ──────────────────────
-  getOrders()  { return _orders; },
-  getReceipts(){ return _rcpts;  },
+  // ── Combined live menu (built-in + custom) ──────────────
+  get menu(){return [...this._builtIn,..._customItems];},
 
-  // ── Write (async to Firestore) ──────────────────────────
+  getOrders(){return _orders;},
+  getReceipts(){return _rcpts;},
+  getCustomItems(){return _customItems;},
+
   addOrder(o){
-    if (!_ordersCol) return Promise.reject('Firebase not ready');
-    o.id     = 'ORD-' + Date.now();
-    o.time   = new Date().toISOString();
-    o.status = 'pending';
+    if(!_ordersCol)return Promise.reject(new Error('Database not ready'));
+    o.id='ORD-'+Date.now();o.time=new Date().toISOString();o.status='pending';
     return _ordersCol.add(o);
   },
-  updateStatus(id, status){
-    if (!_ordersCol) return Promise.resolve();
-    const o = _orders.find(x => x.id === id);
-    if (!o) return Promise.resolve();
-    return _ordersCol.doc(o._docId).update({ status, updatedAt: new Date().toISOString() });
+  updateStatus(id,status){
+    if(!_ordersCol)return Promise.resolve();
+    const o=_orders.find(x=>x.id===id);if(!o)return Promise.resolve();
+    return _ordersCol.doc(o._docId).update({status,updatedAt:new Date().toISOString()});
   },
   deleteOrder(id){
-    if (!_ordersCol) return Promise.resolve();
-    const o = _orders.find(x => x.id === id);
-    if (!o) return Promise.resolve();
+    if(!_ordersCol)return Promise.resolve();
+    const o=_orders.find(x=>x.id===id);if(!o)return Promise.resolve();
     return _ordersCol.doc(o._docId).delete();
   },
   deleteAllPaid(){
-    if (!_db) return Promise.resolve();
-    const batch = _db.batch();
-    _orders.filter(o => o.status === 'paid').forEach(o => batch.delete(_ordersCol.doc(o._docId)));
-    return batch.commit();
-  },
-  clearAllOrders(){
-    if (!_db) return Promise.resolve();
-    const batch = _db.batch();
-    _orders.forEach(o => batch.delete(_ordersCol.doc(o._docId)));
+    if(!_db)return Promise.resolve();
+    const batch=_db.batch();
+    _orders.filter(o=>o.status==='paid').forEach(o=>batch.delete(_ordersCol.doc(o._docId)));
     return batch.commit();
   },
   saveReceipt(r){
-    if (!_rcptCol) return Promise.reject('Firebase not ready');
-    r.savedAt   = new Date().toISOString();
-    r.receiptNo = 'GV-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + String(_rcpts.length + 1).padStart(4,'0');
-    return _rcptCol.add(r).then(() => r);
+    if(!_rcptCol)return Promise.reject(new Error('Firebase not ready'));
+    r.savedAt=new Date().toISOString();
+    r.receiptNo='GV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(_rcpts.length+1).padStart(4,'0');
+    return _rcptCol.add(r).then(()=>r);
   },
   deleteReceipt(no){
-    if (!_rcptCol) return Promise.resolve();
-    const r = _rcpts.find(x => x.receiptNo === no);
-    if (!r) return Promise.resolve();
+    if(!_rcptCol)return Promise.resolve();
+    const r=_rcpts.find(x=>x.receiptNo===no);if(!r)return Promise.resolve();
     return _rcptCol.doc(r._docId).delete();
   },
   clearAllReceipts(){
-    if (!_db) return Promise.resolve();
-    const batch = _db.batch();
-    _rcpts.forEach(r => batch.delete(_rcptCol.doc(r._docId)));
-    return batch.commit();
+    if(!_db)return Promise.resolve();
+    const batch=_db.batch();_rcpts.forEach(r=>batch.delete(_rcptCol.doc(r._docId)));return batch.commit();
   },
 
-  // ── Compat (kept for old callers) ──────────────────────
-  onUpdate(cb){ _updateCbs.push(cb); },
-  cats(){ return [...new Set(this.menu.map(i => i.cat))]; }
+  // ── Custom Menu CRUD ─────────────────────────────────────
+  addMenuItem(item){
+    if(!_menuCol)return Promise.reject(new Error('Database not ready'));
+    item.createdAt=new Date().toISOString();
+    return _menuCol.add(item);
+  },
+  updateMenuItem(docId,data){
+    if(!_menuCol)return Promise.resolve();
+    data.updatedAt=new Date().toISOString();
+    return _menuCol.doc(docId).update(data);
+  },
+  deleteMenuItem(docId){
+    if(!_menuCol)return Promise.resolve();
+    return _menuCol.doc(docId).delete();
+  },
+
+  onUpdate(cb){_updateCbs.push(cb);},
+  cats(){return [...new Set(this.menu.map(i=>i.cat))];},
+  builtInCats(){return [...new Set(this._builtIn.map(i=>i.cat))];}
 };
 </script>
 
-<!-- ============================================================
-     SCREEN NAVIGATION  (unchanged)
-============================================================ -->
 <script>
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+/* ═══════════════════════════════════════════════════════════
+   NAVIGATION + MODAL + TOAST
+═══════════════════════════════════════════════════════════ */
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function backHome(){showScreen('homeScreen');}
 function goWaiter(){showScreen('waiterScreen');wInit();}
 function goKitchen(){showScreen('kitchenScreen');kRender();kStartPolling();}
 function goCashier(){showScreen('cashierScreen');cRenderOrders();}
-</script>
+function goAdmin(){showScreen('adminScreen');aInit();}
 
-<!-- ============================================================
-     CONFIRM MODAL  (unchanged)
-============================================================ -->
-<script>
 function showModal(title,sub,onConfirm){
   document.getElementById('modalTitle').textContent=title;
   document.getElementById('modalSub').textContent=sub;
@@ -703,12 +889,21 @@ function showModal(title,sub,onConfirm){
   document.getElementById('modalOv').classList.add('open');
 }
 function closeModal(){document.getElementById('modalOv').classList.remove('open');}
+
+let _toastTimer=null;
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  if(_toastTimer)clearTimeout(_toastTimer);
+  t.textContent=msg;t.className='toast '+type;
+  void t.offsetWidth;t.classList.add('show');
+  _toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
 </script>
 
-<!-- ============================================================
-     WAITER LOGIC  (unchanged except sendOrder is async)
-============================================================ -->
 <script>
+/* ═══════════════════════════════════════════════════════════
+   WAITER
+═══════════════════════════════════════════════════════════ */
 let wTable=null,wCart={},wActiveCat='All';
 
 function wInit(){
@@ -730,8 +925,7 @@ function wBuildTableGrid(){
     const b=document.createElement('button');
     b.className='table-btn'+(occupied.has(String(i))?' occupied':'');
     b.innerHTML=`<span>${i}</span><span class="table-lbl">${occupied.has(String(i))?'Active':'Free'}</span>`;
-    b.onclick=()=>wSelectTable(i);
-    grid.appendChild(b);
+    b.onclick=()=>wSelectTable(i);grid.appendChild(b);
   }
 }
 
@@ -752,7 +946,6 @@ function wBuildCatPills(){
     `<div class="cat-pill ${c===wActiveCat?'active':''}" onclick="wSetCat('${c}')">${c}</div>`
   ).join('');
 }
-
 function wSetCat(c){wActiveCat=c;wBuildCatPills();wRenderMenu();}
 
 function wRenderMenu(){
@@ -774,7 +967,14 @@ function wMakeCard(item){
   const qty=wCart[item.id]||0;
   const d=document.createElement('div');
   d.className='menu-item'+(qty>0?' in-cart':'');
-  d.innerHTML=`<span class="item-emoji">${item.emoji}</span>
+  // Show photo if available, else emoji
+  let visual='';
+  if(item.photo){
+    visual=`<img class="item-photo" src="${item.photo}" alt="${item.name}" loading="lazy">`;
+  }else{
+    visual=`<div class="item-photo-placeholder"><span>${item.emoji||'🍽️'}</span></div>`;
+  }
+  d.innerHTML=`${visual}
     <div class="item-name">${item.name}</div>
     <div class="item-price">Rs. ${item.price}</div>
     <div class="item-ctrl">
@@ -795,391 +995,376 @@ function wChg(id,delta,e){
   wUpdateCartUI();wRenderMenu();
   if(Object.keys(wCart).length>0)wRenderDrawer();
 }
-
 function wCartItems(){
   return Object.entries(wCart).map(([id,qty])=>{
-    const item=GV.menu.find(m=>m.id===id);
-    return{...item,qty};
+    const item=GV.menu.find(m=>m.id===id);return{...item,qty};
   });
 }
-
 function wCartTotal(){return wCartItems().reduce((s,i)=>s+i.price*i.qty,0);}
-
 function wUpdateCartUI(){
   const count=Object.values(wCart).reduce((s,v)=>s+v,0);
-  const total=wCartTotal();
-  const bar=document.getElementById('cartBar');
-  if(count>0){bar.classList.add('visible');}else{bar.classList.remove('visible');}
+  document.getElementById('cartBar').classList.toggle('visible',count>0);
   document.getElementById('cartBarCount').textContent=count;
-  document.getElementById('cartBarTotal').textContent='Rs. '+total.toLocaleString();
+  document.getElementById('cartBarTotal').textContent='Rs. '+wCartTotal().toLocaleString();
   const cnt=document.getElementById('wCartCount');
-  if(count>0){cnt.style.display='flex';cnt.textContent=count;}else{cnt.style.display='none';}
+  cnt.style.display=count>0?'flex':'none';cnt.textContent=count;
 }
-
 function wRenderDrawer(){
   const items=wCartItems();
-  const total=wCartTotal();
   document.getElementById('drawerTitle').textContent='Order — Table '+wTable;
-  document.getElementById('drawerTotal').textContent='Rs. '+total.toLocaleString();
+  document.getElementById('drawerTotal').textContent='Rs. '+wCartTotal().toLocaleString();
   const body=document.getElementById('drawerBody');
   if(!items.length){body.innerHTML='<p style="text-align:center;color:var(--muted);padding:22px;">Cart is empty</p>';return;}
   body.innerHTML=items.map(i=>`
     <div class="cart-row">
-      <div><div class="ci-name">${i.emoji} ${i.name}</div><div class="ci-meta">×${i.qty} · Rs.${i.price} each</div></div>
+      <div><div class="ci-name">${i.emoji||'🍽️'} ${i.name}</div><div class="ci-meta">×${i.qty} · Rs.${i.price} each</div></div>
       <div class="ci-price">Rs. ${(i.price*i.qty).toLocaleString()}</div>
     </div>`).join('');
 }
-
 function openCart(){wRenderDrawer();document.getElementById('drawerOverlay').classList.add('open');document.getElementById('cartDrawer').classList.add('open');}
 function closeCart(){document.getElementById('drawerOverlay').classList.remove('open');document.getElementById('cartDrawer').classList.remove('open');}
 
 async function sendOrder(){
   const items=wCartItems();if(!items.length)return;
-  const total=wCartTotal();
-  await GV.addOrder({table:wTable,items,total});
-  wCart={};wUpdateCartUI();closeCart();wRenderMenu();
-  const t=document.getElementById('toast');t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
+  const btn=document.getElementById('sendBtn');
+  btn.disabled=true;btn.textContent='⏳ Sending...';
+  try{
+    await GV.addOrder({table:wTable,items,total:wCartTotal()});
+    wCart={};wUpdateCartUI();closeCart();wRenderMenu();
+    showToast('✅ Order sent to kitchen!','success');
+  }catch(err){
+    showToast('❌ '+(err.message||'Failed to send'),'error');
+  }finally{btn.disabled=false;btn.textContent='🍳 Send to Kitchen';}
 }
 </script>
 
-<!-- ============================================================
-     KITCHEN LOGIC  (unchanged except async status/delete calls)
-============================================================ -->
 <script>
+/* ═══════════════════════════════════════════════════════════
+   KITCHEN
+═══════════════════════════════════════════════════════════ */
 let kFilter='active',kSoundOn=true,kKnownIds=new Set(),kTimer=null;
-
 function toggleSound(){
   kSoundOn=!kSoundOn;
   const b=document.getElementById('soundBtn');
-  b.className='icon-btn'+(kSoundOn?' sound-on':'');
-  b.textContent=kSoundOn?'🔔 Sound':'🔕 Sound';
+  b.className='icon-btn'+(kSoundOn?' sound-on':'');b.textContent=kSoundOn?'🔔 Sound':'🔕 Sound';
 }
-
 function kPlayAlert(){
   if(!kSoundOn)return;
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const osc=ctx.createOscillator();const gain=ctx.createGain();
-    osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';
-    osc.frequency.setValueAtTime(880,ctx.currentTime);
-    osc.frequency.setValueAtTime(660,ctx.currentTime+.15);
-    osc.frequency.setValueAtTime(880,ctx.currentTime+.3);
-    gain.gain.setValueAtTime(.3,ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.6);
-    osc.start();osc.stop(ctx.currentTime+.6);
-  }catch(e){}
+  try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const osc=ctx.createOscillator();const gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';osc.frequency.setValueAtTime(880,ctx.currentTime);osc.frequency.setValueAtTime(660,ctx.currentTime+.15);osc.frequency.setValueAtTime(880,ctx.currentTime+.3);gain.gain.setValueAtTime(.3,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.6);osc.start();osc.stop(ctx.currentTime+.6);}catch(e){}
 }
-
-function kSetFilter(f,btn){
-  kFilter=f;
-  document.querySelectorAll('.k-filt').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');kRender();
-}
-
+function kSetFilter(f,btn){kFilter=f;document.querySelectorAll('.k-filt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');kRender();}
 function kElapsed(iso){return Math.floor((Date.now()-new Date(iso))/60000);}
-
 function kRender(){
   const all=GV.getOrders();
   document.getElementById('kStats').innerHTML=`
     <div class="stat-chip"><div class="s-dot" style="background:#f4a261"></div>${all.filter(o=>o.status==='pending').length} Pending</div>
     <div class="stat-chip"><div class="s-dot" style="background:var(--cooking)"></div>${all.filter(o=>o.status==='cooking').length} Cooking</div>
     <div class="stat-chip"><div class="s-dot" style="background:var(--ready)"></div>${all.filter(o=>o.status==='ready').length} Ready</div>
-    <div class="stat-chip"><div class="s-dot" style="background:#6b7280"></div>${all.filter(o=>o.status==='paid').length} Paid</div>
-  `;
+    <div class="stat-chip"><div class="s-dot" style="background:#6b7280"></div>${all.filter(o=>o.status==='paid').length} Paid</div>`;
   let orders=all;
   if(kFilter==='active')orders=all.filter(o=>['pending','cooking','ready','served'].includes(o.status));
   else if(kFilter!=='all')orders=all.filter(o=>o.status===kFilter);
   orders.forEach(o=>{if(!kKnownIds.has(o.id)){if(kKnownIds.size>0)kPlayAlert();kKnownIds.add(o.id);}});
   const grid=document.getElementById('kGrid');
-  if(!orders.length){
-    grid.innerHTML='<div class="k-empty"><span class="k-empty-icon">🍳</span><div style="font-size:17px;font-weight:800;">No orders here</div></div>';
-    return;
-  }
+  if(!orders.length){grid.innerHTML='<div class="k-empty"><span class="k-empty-icon">🍳</span><div style="font-size:17px;font-weight:800;">No orders here</div></div>';return;}
   const slabel={pending:'New Order',cooking:'Cooking',ready:'Ready!',served:'Served',paid:'Paid'};
   grid.innerHTML=orders.map(o=>{
-    const el=kElapsed(o.time);
-    const late=el>15&&!['ready','paid','served'].includes(o.status);
-    const canDel=['served','paid'].includes(o.status);
+    const el=kElapsed(o.time);const late=el>15&&!['ready','paid','served'].includes(o.status);const canDel=['served','paid'].includes(o.status);
     return`<div class="k-card ${o.status} ${late?'late':''}">
-      <div class="k-card-hdr">
-        <div>
-          <div class="k-tnum"><span>Table </span>${o.table}</div>
-          <div class="k-time">🕐 ${el}m ago ${late?'<span class="late-warn">⚠️ LATE</span>':''}</div>
-        </div>
-        <span class="k-badge ${o.status}">${slabel[o.status]||o.status}</span>
-      </div>
-      <div class="k-items">
-        ${o.items.map(i=>`<div class="k-item-row"><span class="ki-name">${i.emoji} ${i.name}</span><span class="ki-qty">×${i.qty}</span></div>`).join('')}
-        <div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:11px;color:var(--muted);">
-          <span>#${o.id.slice(-6)}</span><span style="font-weight:700;color:var(--text)">Rs. ${o.total.toLocaleString()}</span>
-        </div>
-      </div>
+      <div class="k-card-hdr"><div><div class="k-tnum"><span>Table </span>${o.table}</div><div class="k-time">🕐 ${el}m ago ${late?'<span class="late-warn">⚠️ LATE</span>':''}</div></div><span class="k-badge ${o.status}">${slabel[o.status]||o.status}</span></div>
+      <div class="k-items">${o.items.map(i=>`<div class="k-item-row"><span class="ki-name">${i.emoji||'🍽️'} ${i.name}</span><span class="ki-qty">×${i.qty}</span></div>`).join('')}
+        <div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>#${o.id.slice(-6)}</span><span style="font-weight:700;color:var(--text)">Rs. ${o.total.toLocaleString()}</span></div></div>
       <div class="k-card-foot">
         <button class="k-act k-print" onclick="kPrint('${o.id}')">🖨️</button>
         ${o.status==='pending'?`<button class="k-act k-cook" onclick="kStatus('${o.id}','cooking')">🔥 Start Cooking</button>`:''}
         ${o.status==='cooking'?`<button class="k-act k-ready" onclick="kStatus('${o.id}','ready')">✅ Mark Ready</button>`:''}
         ${o.status==='ready'?`<button class="k-act k-served" onclick="kStatus('${o.id}','served')">🍽️ Served</button>`:''}
         ${canDel?`<button class="k-act k-del" onclick="kConfirmDelete('${o.id}','${o.table}')">🗑️ Delete</button>`:''}
+      </div></div>`;
+  }).join('');
+}
+function kStatus(id,status){GV.updateStatus(id,status);}
+function kConfirmDelete(id,table){showModal(`Delete Order — Table ${table}?`,'This order will be permanently removed.',()=>GV.deleteOrder(id));}
+function kConfirmClearPaid(){const n=GV.getOrders().filter(o=>o.status==='paid').length;if(!n){alert('No paid orders.');return;}showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s).`,()=>GV.deleteAllPaid());}
+function kPrint(id){
+  const o=GV.getOrders().find(o=>o.id===id);if(!o)return;
+  const w=window.open('','_blank','width=380,height=480');
+  w.document.write(`<!DOCTYPE html><html><head><title>Slip</title><style>body{font-family:'Courier New',monospace;padding:18px;font-size:12px;}.c{text-align:center;}.d{border-top:1px dashed #000;margin:7px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}</style></head><body><h3 class="c">KITCHEN SLIP</h3><p class="c">Good Vibes Farm Stay</p><div class="d"></div><div class="r"><b>Table ${o.table}</b><span>#${o.id.slice(-6)}</span></div><div class="r"><span>Time:</span><span>${new Date(o.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${o.items.map(i=>`<div class="r"><span>${i.name}</span><span>×${i.qty}</span></div>`).join('')}<div class="d"></div><script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+function kStartPolling(){if(kTimer)clearInterval(kTimer);kTimer=setInterval(kRender,4000);}
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CASHIER
+═══════════════════════════════════════════════════════════ */
+let cActiveTab='orders',cOrderFilter='unpaid',cSelectedOrder=null;
+function cShowTab(tab,btn){cActiveTab=tab;document.querySelectorAll('.c-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('cOrdersTab').style.display=tab==='orders'?'block':'none';document.getElementById('billPanel').style.display='none';document.getElementById('receiptsPanel').style.display=tab==='receipts'?'block':'none';if(tab==='receipts')cRenderReceipts();if(tab==='orders')cRenderOrders();}
+function cSetOfilt(f,btn){cOrderFilter=f;document.querySelectorAll('.c-ofilt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');cRenderOrders();}
+function cRenderOrders(){
+  const all=GV.getOrders();const unpaid=all.filter(o=>o.status!=='paid');const paid=all.filter(o=>o.status==='paid');const rev=paid.reduce((s,o)=>s+(o.total||0),0);
+  document.getElementById('cStats').innerHTML=`<div class="c-stat"><div class="c-stat-val" style="color:#f4a261">${unpaid.length}</div><div class="c-stat-lbl">Unpaid</div></div><div class="c-stat"><div class="c-stat-val" style="color:#22c55e">${paid.length}</div><div class="c-stat-lbl">Paid</div></div><div class="c-stat"><div class="c-stat-val" style="color:#818cf8;font-size:13px;">Rs.${rev.toLocaleString()}</div><div class="c-stat-lbl">Revenue</div></div>`;
+  let display=all;if(cOrderFilter==='unpaid')display=unpaid;if(cOrderFilter==='paid')display=paid;
+  document.getElementById('cOrderCount').textContent=`${display.length} order${display.length!==1?'s':''}`;
+  const showClear=(cOrderFilter==='paid'||cOrderFilter==='all')&&paid.length>0;document.getElementById('cClearPaidBtn').style.display=showClear?'block':'none';
+  const list=document.getElementById('cOrders');
+  if(!display.length){list.innerHTML=`<div class="empty-state"><span class="empty-icon">${cOrderFilter==='paid'?'🎉':'📋'}</span><div style="font-size:14px;font-weight:800;">${cOrderFilter==='paid'?'No paid orders yet':'No orders here'}</div></div>`;return;}
+  list.innerHTML=display.map(o=>`<div class="c-order ${o.status}"><div class="c-order-hdr" onclick="${o.status!=='paid'?`cSelectOrder('${o.id}')`:''}" ><div><div class="co-table"><span>Table </span>${o.table}</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">${new Date(o.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})} · ${o.items.length} item(s)</div></div><div class="co-right"><div class="co-total">Rs. ${o.total.toLocaleString()}</div><span class="co-badge ${o.status}">${o.status}</span></div></div><div class="c-order-items">${o.items.slice(0,3).map(i=>`${i.emoji||'🍽️'} ${i.name} ×${i.qty}`).join(' · ')}${o.items.length>3?` +${o.items.length-3} more`:''}</div><div class="c-order-acts">${o.status!=='paid'?`<button class="coa-btn coa-bill" onclick="cSelectOrder('${o.id}')">🧾 Open Bill</button>`:`<button class="coa-btn coa-reprint" onclick="cReprintByOrderId('${o.id}')">🖨️ Reprint</button>`}<button class="coa-btn coa-del" onclick="cConfirmDelOrder('${o.id}','${o.table}')">🗑️ Delete</button></div></div>`).join('');
+}
+function cSelectOrder(id){cSelectedOrder=GV.getOrders().find(o=>o.id===id);if(!cSelectedOrder)return;document.getElementById('cOrdersTab').style.display='none';document.getElementById('billPanel').style.display='block';document.getElementById('billTitle').textContent='Bill — Table '+cSelectedOrder.table;const pb=document.getElementById('payBtn');pb.disabled=false;pb.textContent='💳 Mark Paid & Save Receipt';cUpdateBill();}
+function cCloseBill(){cSelectedOrder=null;document.getElementById('billPanel').style.display='none';document.getElementById('cOrdersTab').style.display='block';cRenderOrders();}
+function cGetTotals(){const tp=Number(document.getElementById('taxSel').value);const tax=Math.round(cSelectedOrder.total*tp/100);return{taxPct:tp,tax,grand:cSelectedOrder.total+tax};}
+function cUpdateBill(){
+  if(!cSelectedOrder)return;const{taxPct,tax,grand}=cGetTotals();const now=new Date();
+  document.getElementById('billReceipt').innerHTML=`<div class="r-center"><div class="r-name">GOOD VIBES</div><div class="r-name" style="font-size:13px;letter-spacing:2px;">FARM STAY</div><div class="r-sub">Dharan-5, Sunsari, Nepal</div><div class="r-sub">@goodvibesfarmstay</div></div><div class="r-dash"></div><div class="r-row"><span class="r-lbl">Table</span><span style="font-weight:800">${cSelectedOrder.table}</span></div><div class="r-row"><span class="r-lbl">Date</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r-row"><span class="r-lbl">Time</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="r-dash"></div><div class="r-row" style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1px;"><span>ITEM</span><span>AMOUNT</span></div><div class="r-dash"></div>${cSelectedOrder.items.map(i=>`<div class="r-row"><span>${i.name} ×${i.qty}</span><span>Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}<div class="r-dash"></div><div class="r-row"><span>Subtotal</span><span>Rs.${cSelectedOrder.total.toLocaleString()}</span></div>${taxPct>0?`<div class="r-row"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}<div class="r-dash"></div><div class="r-row rtotal"><span>TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div><div class="r-dash"></div><div style="text-align:center;padding-top:6px;font-size:12px;color:var(--muted);">Thank you! Please visit again 🌿</div>`;
+}
+async function cMarkPaid(){
+  if(!cSelectedOrder)return;const{taxPct,tax,grand}=cGetTotals();const pm=document.getElementById('paySel').value;
+  try{const rcpt=await GV.saveReceipt({orderId:cSelectedOrder.id,table:cSelectedOrder.table,items:cSelectedOrder.items,subtotal:cSelectedOrder.total,taxPct,tax,grand,payMethod:pm,orderTime:cSelectedOrder.time});await GV.updateStatus(cSelectedOrder.id,'paid');cDoPrint(rcpt);const pb=document.getElementById('payBtn');pb.disabled=true;pb.textContent='✅ Paid & Saved!';setTimeout(()=>cCloseBill(),1600);}
+  catch(err){showToast('❌ Payment failed: '+err.message,'error');}
+}
+function cPrintBill(){if(!cSelectedOrder)return;const{taxPct,tax,grand}=cGetTotals();const w=window.open('','_blank','width=420,height=640');w.document.write(cReceiptHTML(cSelectedOrder,taxPct,tax,grand,'PREVIEW',new Date()));w.document.close();}
+function cRenderReceipts(){
+  const list=GV.getReceipts();document.getElementById('cRcptCount').textContent=`${list.length} receipt${list.length!==1?'s':''}`;
+  const el=document.getElementById('rList');if(!list.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">🧾</span><div style="font-size:14px;font-weight:800;">No receipts yet</div></div>';return;}
+  const pi={cash:'💵',card:'💳',qr:'📱'};
+  el.innerHTML=list.map(r=>`<div class="rr-card"><div style="flex:1;min-width:0;"><div class="rr-no">${r.receiptNo}</div><div class="rr-meta">Table ${r.table} · ${pi[r.payMethod]||'💵'} ${r.payMethod} · ${new Date(r.savedAt).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div></div><div><div class="rr-amt">Rs.${r.grand.toLocaleString()}</div><div class="rr-btns"><button class="rr-btn rr-print" onclick="cReprintReceipt('${r.receiptNo}')">🖨️ Print</button><button class="rr-btn rr-del" onclick="cConfirmDelReceipt('${r.receiptNo}')">🗑️ Del</button></div></div></div>`).join('');
+}
+function cReprintReceipt(no){const r=GV.getReceipts().find(r=>r.receiptNo===no);if(r)cDoPrint(r);}
+function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>r.orderId===oid);if(r)cDoPrint(r);else alert('No saved receipt for this order.');}
+function cDoPrint(r){const now=new Date(r.savedAt);const o={table:r.table,items:r.items,total:r.subtotal};const w=window.open('','_blank','width=420,height=640');w.document.write(cReceiptHTML(o,r.taxPct,r.tax,r.grand,r.receiptNo,now));w.document.close();}
+function cReceiptHTML(order,taxPct,tax,grand,rcNo,now){return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:18px;max-width:290px;margin:0 auto;font-size:12px;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:14px;}.xl{font-size:18px;letter-spacing:3px;}.d{border-top:1px dashed #555;margin:8px 0;}.s{border-top:2px solid #000;margin:8px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}.sub{font-size:10px;color:#777;}@media print{button{display:none!important;}}</style></head><body><div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b" style="letter-spacing:2px;">FARM STAY</div><div class="sub" style="margin-top:3px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div><div class="d"></div><div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div><div class="r"><span>Table:</span><span class="b">${order.table}</span></div><div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div><div class="r b sub"><span style="flex:1">ITEM</span><span style="width:22px;text-align:center">QTY</span><span style="width:60px;text-align:right">AMOUNT</span></div><div class="d"></div>${order.items.map(i=>`<div class="r"><span style="flex:1;padding-right:4px;">${i.name}</span><span style="width:22px;text-align:center;">${i.qty}</span><span style="width:60px;text-align:right;">Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}<div class="d"></div><div class="r"><span>Subtotal</span><span>Rs.${order.total.toLocaleString()}</span></div>${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}<div class="s"></div><div class="r b lg"><span>TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div><div class="s"></div><div class="c" style="margin-top:12px;"><div class="b" style="font-size:13px;">✨ Thank You! ✨</div><div class="sub" style="margin-top:4px;">Please visit again · Good Vibes Farm Stay 🌿</div></div><script>window.onload=()=>window.print()<\/script></body></html>`;}
+function cConfirmDelOrder(id,table){showModal(`Delete Order — Table ${table}?`,'Permanently remove this order.',()=>GV.deleteOrder(id));}
+function cConfirmClearPaid(){const n=GV.getOrders().filter(o=>o.status==='paid').length;if(!n)return;showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s).`,()=>GV.deleteAllPaid());}
+function cConfirmDelReceipt(no){showModal(`Delete Receipt ${no}?`,'This receipt will be permanently deleted.',()=>GV.deleteReceipt(no));}
+function cConfirmClearReceipts(){const n=GV.getReceipts().length;if(!n)return;showModal('Clear All Receipts?',`Delete all ${n} receipt(s).`,()=>GV.clearAllReceipts());}
+setInterval(()=>{if(cActiveTab==='orders'&&document.getElementById('cashierScreen').classList.contains('active'))cRenderOrders();},8000);
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   ADMIN — MENU MANAGER
+═══════════════════════════════════════════════════════════ */
+const EMOJIS = ['🍗','🍖','🥩','🌮','🍕','🍔','🌯','🥗','🍜','🍝','🍛','🍱','🥟','🍣','🐟','🦐','🥘','🥐','🧆','🧇','🥞','🧀','🥚','🍳','🥙','🌭','🍟','🍰','🍩','🍪','🎂','🧁','🍮','🍦','🍧','🥧','🫐','🍓','🥝','🍑','🍋','🍊','🍇','🍉','🥭','🍍','🥥','🍺','🍻','🍷','🥃','🍸','🍹','🧃','🥤','☕','🍵','🫖','🧋','🍫','🍬','🍭','🍿','🥜','🫘','🥔','🌶️','🧄','🧅','🥕','🫑','🥦','🌽','🍄','🥑','🍅','🧁','⭐','🔥','❄️'];
+
+let aActiveCat='All', aEditingDocId=null, aCurrentPhoto=null, aSelectedEmoji='🍽️';
+
+function aInit(){
+  aActiveCat='All';
+  aRender();
+  aPopulateCatFilter();
+}
+
+function aPopulateCatFilter(){
+  const cats=['All',...GV.cats()];
+  document.getElementById('aCatFilter').innerHTML=cats.map(c=>
+    `<div class="a-cf-pill ${c===aActiveCat?'active':''}" onclick="aSetCat('${c.replace(/'/g,'\\\'')}')">${c}</div>`
+  ).join('');
+}
+
+function aSetCat(c){aActiveCat=c;aPopulateCatFilter();aRender();}
+
+function aRender(){
+  const q=document.getElementById('aSearchInput').value.toLowerCase().trim();
+  const allItems=GV.menu;
+  let items=allItems;
+  if(aActiveCat!=='All')items=items.filter(i=>i.cat===aActiveCat);
+  if(q)items=items.filter(i=>i.name.toLowerCase().includes(q));
+
+  const total=allItems.length;
+  const custom=GV.getCustomItems().length;
+  document.getElementById('aItemCount').textContent=`${total} items · ${custom} custom`;
+
+  const list=document.getElementById('aMenuList');
+  if(!items.length){
+    list.innerHTML='<div class="a-empty"><span class="a-empty-icon">🔍</span><div style="font-size:14px;font-weight:800;">No items found</div></div>';
+    return;
+  }
+
+  list.innerHTML=items.map(item=>{
+    const isCustom=!!item._custom;
+    const thumbHtml=item.photo
+      ?`<div class="a-item-thumb"><img src="${item.photo}" alt="${item.name}"></div>`
+      :`<div class="a-item-thumb">${item.emoji||'🍽️'}</div>`;
+    const badge=isCustom
+      ?`<span class="a-item-tag">✦ Custom</span>`
+      :`<span class="a-built-in-badge">Built-in</span>`;
+    const actBtns=isCustom
+      ?`<button class="a-act-btn a-edit-btn" onclick="aOpenForm('${item._docId}')" title="Edit">✏️</button>
+        <button class="a-act-btn a-del-btn" onclick="aConfirmDelete('${item._docId}','${item.name.replace(/'/g,"\\'")}'')" title="Delete">🗑️</button>`
+      :`<button class="a-act-btn a-edit-btn" title="Built-in items can't be edited" onclick="showToast('Built-in items cannot be edited. Add a custom item instead.','error')" style="opacity:.4;cursor:default;">✏️</button>`;
+    return`<div class="a-item-card ${isCustom?'custom-item':''}">
+      ${thumbHtml}
+      <div class="a-item-info">
+        <div class="a-item-name">${item.name}</div>
+        <div class="a-item-meta">${item.cat}</div>
+        ${badge}
       </div>
+      <div class="a-item-price">Rs.${item.price}</div>
+      <div class="a-item-acts">${actBtns}</div>
     </div>`;
   }).join('');
 }
 
-function kStatus(id,status){ GV.updateStatus(id,status); }
+/* ── Form ──────────────────────────────────────────────── */
+function aOpenForm(docId=null){
+  aEditingDocId=docId;
+  aCurrentPhoto=null;
+  aSelectedEmoji='🍽️';
 
-function kConfirmDelete(id,table){
-  showModal(`Delete Order — Table ${table}?`,'This order will be permanently removed. Cannot be undone.',()=>{ GV.deleteOrder(id); });
-}
-function kConfirmClearPaid(){
-  const n=GV.getOrders().filter(o=>o.status==='paid').length;
-  if(!n){alert('No paid orders to clear.');return;}
-  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,()=>{ GV.deleteAllPaid(); });
+  document.getElementById('fdTitle').textContent=docId?'Edit Item':'Add New Item';
+  document.getElementById('fdItemId').value=docId||'';
+  document.getElementById('fdName').value='';
+  document.getElementById('fdPrice').value='';
+  document.getElementById('fdCat').value='';
+  document.getElementById('fdCatCustom').value='';
+
+  // Reset photo UI
+  aResetPhotoUI();
+
+  // Build emoji grid
+  const grid=document.getElementById('emojiGrid');
+  grid.innerHTML=EMOJIS.map(e=>
+    `<button type="button" class="emoji-opt ${e===aSelectedEmoji?'selected':''}" onclick="aSelectEmoji('${e}')">${e}</button>`
+  ).join('');
+
+  // Populate category dropdown
+  const sel=document.getElementById('fdCat');
+  sel.innerHTML='<option value="">-- Select category --</option>'+GV.cats().map(c=>`<option value="${c}">${c}</option>`).join('');
+
+  // If editing, prefill
+  if(docId){
+    const item=GV.getCustomItems().find(i=>i._docId===docId);
+    if(item){
+      document.getElementById('fdName').value=item.name||'';
+      document.getElementById('fdPrice').value=item.price||'';
+      // Set category
+      const opts=[...sel.options].map(o=>o.value);
+      if(opts.includes(item.cat)){sel.value=item.cat;}
+      else{document.getElementById('fdCatCustom').value=item.cat||'';}
+      // Photo
+      if(item.photo){
+        aCurrentPhoto=item.photo;
+        aShowPhotoPreview(item.photo);
+      }
+      // Emoji
+      if(item.emoji){
+        aSelectedEmoji=item.emoji;
+        document.querySelectorAll('.emoji-opt').forEach(b=>{
+          b.classList.toggle('selected',b.textContent===item.emoji);
+        });
+      }
+    }
+  }
+
+  document.getElementById('formOverlay').classList.add('open');
+  document.getElementById('itemFormDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
 }
 
-function kPrint(id){
-  const o=GV.getOrders().find(o=>o.id===id);if(!o)return;
-  const w=window.open('','_blank','width=380,height=480');
-  w.document.write(`<!DOCTYPE html><html><head><title>Slip</title>
-  <style>body{font-family:'Courier New',monospace;padding:18px;font-size:12px;}
-  .c{text-align:center;}.d{border-top:1px dashed #000;margin:7px 0;}
-  .r{display:flex;justify-content:space-between;padding:2px 0;}</style></head><body>
-  <h3 class="c">KITCHEN SLIP</h3><p class="c">Good Vibes Farm Stay</p>
-  <div class="d"></div>
-  <div class="r"><b>Table ${o.table}</b><span>#${o.id.slice(-6)}</span></div>
-  <div class="r"><span>Time:</span><span>${new Date(o.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div>
-  <div class="d"></div>
-  ${o.items.map(i=>`<div class="r"><span>${i.name}</span><span>×${i.qty}</span></div>`).join('')}
-  <div class="d"></div>
-  <script>window.onload=()=>window.print()<\/script></body></html>`);
-  w.document.close();
+function aCloseForm(){
+  document.getElementById('formOverlay').classList.remove('open');
+  document.getElementById('itemFormDrawer').classList.remove('open');
+  document.body.style.overflow='';
 }
 
-function kStartPolling(){
-  if(kTimer)clearInterval(kTimer);
-  kTimer=setInterval(kRender,5000);
+function aSelectEmoji(e){
+  aSelectedEmoji=e;
+  document.querySelectorAll('.emoji-opt').forEach(b=>{
+    b.classList.toggle('selected',b.textContent===e);
+  });
+}
+
+function aHandlePhoto(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  if(file.size>2*1024*1024){showToast('❌ Image must be under 2MB','error');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    aCurrentPhoto=e.target.result;
+    aShowPhotoPreview(aCurrentPhoto);
+  };
+  reader.readAsDataURL(file);
+}
+
+function aShowPhotoPreview(src){
+  const preview=document.getElementById('photoPreview');
+  const icon=document.getElementById('photoUploadIcon');
+  const text=document.getElementById('photoUploadText');
+  const sub=document.getElementById('photoUploadSub');
+  const removeBtn=document.getElementById('removePhotoBtn');
+  const emojiWrap=document.getElementById('emojiFieldWrap');
+  preview.src=src;preview.style.display='block';
+  icon.style.display='none';text.style.display='none';sub.style.display='none';
+  removeBtn.style.display='block';
+  emojiWrap.style.display='none'; // hide emoji picker when photo is set
+}
+
+function aResetPhotoUI(){
+  document.getElementById('photoPreview').style.display='none';
+  document.getElementById('photoUploadIcon').style.display='block';
+  document.getElementById('photoUploadText').style.display='block';
+  document.getElementById('photoUploadSub').style.display='block';
+  document.getElementById('removePhotoBtn').style.display='none';
+  document.getElementById('photoFileInput').value='';
+  document.getElementById('emojiFieldWrap').style.display='block';
+  aCurrentPhoto=null;
+}
+
+function aRemovePhoto(e){
+  e.stopPropagation();
+  aResetPhotoUI();
+}
+
+async function aSaveItem(){
+  const name=document.getElementById('fdName').value.trim();
+  const price=parseInt(document.getElementById('fdPrice').value,10);
+  const catSel=document.getElementById('fdCat').value.trim();
+  const catCustom=document.getElementById('fdCatCustom').value.trim();
+  const cat=catCustom||catSel;
+
+  if(!name){showToast('❌ Item name is required','error');return;}
+  if(!price||price<1){showToast('❌ Valid price is required','error');return;}
+  if(!cat){showToast('❌ Category is required','error');return;}
+
+  const btn=document.getElementById('fdSaveBtn');
+  btn.disabled=true;btn.textContent='⏳ Saving...';
+
+  const data={
+    name,price,cat,
+    emoji:aCurrentPhoto?'🍽️':aSelectedEmoji,
+    photo:aCurrentPhoto||null,
+  };
+
+  try{
+    if(aEditingDocId){
+      await GV.updateMenuItem(aEditingDocId,data);
+      showToast('✅ Item updated!','success');
+    }else{
+      // Generate a unique id for custom items
+      data.id='CUSTOM-'+Date.now();
+      await GV.addMenuItem(data);
+      showToast('✅ Item added to menu!','success');
+    }
+    aCloseForm();
+    aRender();
+    aPopulateCatFilter();
+  }catch(err){
+    showToast('❌ '+(err.message||'Save failed'),'error');
+  }finally{
+    btn.disabled=false;btn.textContent='💾 Save Item';
+  }
+}
+
+function aConfirmDelete(docId,name){
+  showModal(`Delete "${name}"?`,'This item will be removed from the menu permanently.',()=>{
+    GV.deleteMenuItem(docId).then(()=>{
+      showToast('🗑️ Item deleted','success');
+      aRender();aPopulateCatFilter();
+    }).catch(err=>showToast('❌ '+err.message,'error'));
+  });
 }
 </script>
-
-<!-- ============================================================
-     CASHIER LOGIC  (unchanged except async save/delete calls)
-============================================================ -->
-<script>
-let cActiveTab='orders',cOrderFilter='unpaid',cSelectedOrder=null;
-
-function cShowTab(tab,btn){
-  cActiveTab=tab;
-  document.querySelectorAll('.c-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('cOrdersTab').style.display    = tab==='orders'?'block':'none';
-  document.getElementById('billPanel').style.display     = 'none';
-  document.getElementById('receiptsPanel').style.display = tab==='receipts'?'block':'none';
-  if(tab==='receipts')cRenderReceipts();
-  if(tab==='orders')cRenderOrders();
-}
-
-function cSetOfilt(f,btn){
-  cOrderFilter=f;
-  document.querySelectorAll('.c-ofilt').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');cRenderOrders();
-}
-
-function cRenderOrders(){
-  const all=GV.getOrders();
-  const unpaid=all.filter(o=>o.status!=='paid');
-  const paid=all.filter(o=>o.status==='paid');
-  const rev=paid.reduce((s,o)=>s+(o.total||0),0);
-  document.getElementById('cStats').innerHTML=`
-    <div class="c-stat"><div class="c-stat-val" style="color:#f4a261">${unpaid.length}</div><div class="c-stat-lbl">Unpaid</div></div>
-    <div class="c-stat"><div class="c-stat-val" style="color:#22c55e">${paid.length}</div><div class="c-stat-lbl">Paid</div></div>
-    <div class="c-stat"><div class="c-stat-val" style="color:#818cf8;font-size:13px;">Rs.${rev.toLocaleString()}</div><div class="c-stat-lbl">Revenue</div></div>
-  `;
-  let display=all;
-  if(cOrderFilter==='unpaid')display=unpaid;
-  if(cOrderFilter==='paid')display=paid;
-  document.getElementById('cOrderCount').textContent=`${display.length} order${display.length!==1?'s':''}`;
-  const showClear=(cOrderFilter==='paid'||cOrderFilter==='all')&&paid.length>0;
-  document.getElementById('cClearPaidBtn').style.display=showClear?'block':'none';
-  const list=document.getElementById('cOrders');
-  if(!display.length){
-    list.innerHTML=`<div class="empty-state"><span class="empty-icon">${cOrderFilter==='paid'?'🎉':'📋'}</span><div style="font-size:14px;font-weight:800;">${cOrderFilter==='paid'?'No paid orders yet':'No orders here'}</div></div>`;
-    return;
-  }
-  list.innerHTML=display.map(o=>`
-    <div class="c-order ${o.status}">
-      <div class="c-order-hdr" onclick="${o.status!=='paid'?`cSelectOrder('${o.id}')`:''}" >
-        <div>
-          <div class="co-table"><span>Table </span>${o.table}</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px;">${new Date(o.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})} · ${o.items.length} item(s)</div>
-        </div>
-        <div class="co-right">
-          <div class="co-total">Rs. ${o.total.toLocaleString()}</div>
-          <span class="co-badge ${o.status}">${o.status}</span>
-        </div>
-      </div>
-      <div class="c-order-items">${o.items.slice(0,3).map(i=>`${i.emoji} ${i.name} ×${i.qty}`).join(' · ')}${o.items.length>3?` +${o.items.length-3} more`:''}</div>
-      <div class="c-order-acts">
-        ${o.status!=='paid'
-          ?`<button class="coa-btn coa-bill" onclick="cSelectOrder('${o.id}')">🧾 Open Bill</button>`
-          :`<button class="coa-btn coa-reprint" onclick="cReprintByOrderId('${o.id}')">🖨️ Reprint</button>`
-        }
-        <button class="coa-btn coa-del" onclick="cConfirmDelOrder('${o.id}','${o.table}')">🗑️ Delete</button>
-      </div>
-    </div>`).join('');
-}
-
-function cSelectOrder(id){
-  cSelectedOrder=GV.getOrders().find(o=>o.id===id);if(!cSelectedOrder)return;
-  document.getElementById('cOrdersTab').style.display='none';
-  document.getElementById('billPanel').style.display='block';
-  document.getElementById('billTitle').textContent='Bill — Table '+cSelectedOrder.table;
-  const pb=document.getElementById('payBtn');pb.disabled=false;pb.textContent='💳 Mark Paid & Save Receipt';
-  cUpdateBill();
-}
-
-function cCloseBill(){
-  cSelectedOrder=null;
-  document.getElementById('billPanel').style.display='none';
-  document.getElementById('cOrdersTab').style.display='block';
-  cRenderOrders();
-}
-
-function cGetTotals(){
-  const tp=Number(document.getElementById('taxSel').value);
-  const tax=Math.round(cSelectedOrder.total*tp/100);
-  return{taxPct:tp,tax,grand:cSelectedOrder.total+tax};
-}
-
-function cUpdateBill(){
-  if(!cSelectedOrder)return;
-  const{taxPct,tax,grand}=cGetTotals();const now=new Date();
-  document.getElementById('billReceipt').innerHTML=`
-    <div class="r-center">
-      <div class="r-name">GOOD VIBES</div>
-      <div class="r-name" style="font-size:13px;letter-spacing:2px;">FARM STAY</div>
-      <div class="r-sub">Dharan-5, Sunsari, Nepal</div>
-      <div class="r-sub">@goodvibesfarmstay</div>
-    </div>
-    <div class="r-dash"></div>
-    <div class="r-row"><span class="r-lbl">Table</span><span style="font-weight:800">${cSelectedOrder.table}</span></div>
-    <div class="r-row"><span class="r-lbl">Date</span><span>${now.toLocaleDateString('en-GB')}</span></div>
-    <div class="r-row"><span class="r-lbl">Time</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div>
-    <div class="r-dash"></div>
-    <div class="r-row" style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1px;"><span>ITEM</span><span>AMOUNT</span></div>
-    <div class="r-dash"></div>
-    ${cSelectedOrder.items.map(i=>`<div class="r-row"><span>${i.name} ×${i.qty}</span><span>Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
-    <div class="r-dash"></div>
-    <div class="r-row"><span>Subtotal</span><span>Rs.${cSelectedOrder.total.toLocaleString()}</span></div>
-    ${taxPct>0?`<div class="r-row"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}
-    <div class="r-dash"></div>
-    <div class="r-row rtotal"><span>TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>
-    <div class="r-dash"></div>
-    <div style="text-align:center;padding-top:6px;font-size:12px;color:var(--muted);">Thank you! Please visit again 🌿</div>`;
-}
-
-async function cMarkPaid(){
-  if(!cSelectedOrder)return;
-  const{taxPct,tax,grand}=cGetTotals();
-  const pm=document.getElementById('paySel').value;
-  const rcpt=await GV.saveReceipt({orderId:cSelectedOrder.id,table:cSelectedOrder.table,items:cSelectedOrder.items,subtotal:cSelectedOrder.total,taxPct,tax,grand,payMethod:pm,orderTime:cSelectedOrder.time});
-  await GV.updateStatus(cSelectedOrder.id,'paid');
-  cDoPrint(rcpt);
-  const pb=document.getElementById('payBtn');pb.disabled=true;pb.textContent='✅ Paid & Saved!';
-  setTimeout(()=>cCloseBill(),1600);
-}
-
-function cPrintBill(){
-  if(!cSelectedOrder)return;
-  const{taxPct,tax,grand}=cGetTotals();
-  const w=window.open('','_blank','width=420,height=640');
-  w.document.write(cReceiptHTML(cSelectedOrder,taxPct,tax,grand,'PREVIEW',new Date()));
-  w.document.close();
-}
-
-function cRenderReceipts(){
-  const list=GV.getReceipts();
-  document.getElementById('cRcptCount').textContent=`${list.length} receipt${list.length!==1?'s':''}`;
-  const el=document.getElementById('rList');
-  if(!list.length){
-    el.innerHTML='<div class="empty-state"><span class="empty-icon">🧾</span><div style="font-size:14px;font-weight:800;">No receipts yet</div></div>';
-    return;
-  }
-  const pi={cash:'💵',card:'💳',qr:'📱'};
-  el.innerHTML=list.map(r=>`
-    <div class="rr-card">
-      <div style="flex:1;min-width:0;">
-        <div class="rr-no">${r.receiptNo}</div>
-        <div class="rr-meta">Table ${r.table} · ${pi[r.payMethod]||'💵'} ${r.payMethod} · ${new Date(r.savedAt).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-      </div>
-      <div>
-        <div class="rr-amt">Rs.${r.grand.toLocaleString()}</div>
-        <div class="rr-btns">
-          <button class="rr-btn rr-print" onclick="cReprintReceipt('${r.receiptNo}')">🖨️ Print</button>
-          <button class="rr-btn rr-del" onclick="cConfirmDelReceipt('${r.receiptNo}')">🗑️ Del</button>
-        </div>
-      </div>
-    </div>`).join('');
-}
-
-function cReprintReceipt(no){const r=GV.getReceipts().find(r=>r.receiptNo===no);if(r)cDoPrint(r);}
-function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>r.orderId===oid);if(r)cDoPrint(r);else alert('No saved receipt for this order.');}
-function cDoPrint(r){
-  const now=new Date(r.savedAt);
-  const o={table:r.table,items:r.items,total:r.subtotal};
-  const w=window.open('','_blank','width=420,height=640');
-  w.document.write(cReceiptHTML(o,r.taxPct,r.tax,r.grand,r.receiptNo,now));
-  w.document.close();
-}
-
-function cReceiptHTML(order,taxPct,tax,grand,rcNo,now){
-  return`<!DOCTYPE html><html><head><title>${rcNo}</title>
-  <style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:18px;max-width:290px;margin:0 auto;font-size:12px;}
-  .c{text-align:center;}.b{font-weight:bold;}.lg{font-size:14px;}.xl{font-size:18px;letter-spacing:3px;}
-  .d{border-top:1px dashed #555;margin:8px 0;}.s{border-top:2px solid #000;margin:8px 0;}
-  .r{display:flex;justify-content:space-between;padding:2px 0;}.sub{font-size:10px;color:#777;}
-  @media print{button{display:none!important;}}</style></head><body>
-  <div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b" style="letter-spacing:2px;">FARM STAY</div>
-  <div class="sub" style="margin-top:3px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div>
-  <div class="d"></div>
-  <div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div>
-  <div class="r"><span>Table:</span><span class="b">${order.table}</span></div>
-  <div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div>
-  <div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div>
-  <div class="d"></div>
-  <div class="r b sub"><span style="flex:1">ITEM</span><span style="width:22px;text-align:center">QTY</span><span style="width:60px;text-align:right">AMOUNT</span></div>
-  <div class="d"></div>
-  ${order.items.map(i=>`<div class="r"><span style="flex:1;padding-right:4px;">${i.name}</span><span style="width:22px;text-align:center;">${i.qty}</span><span style="width:60px;text-align:right;">Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
-  <div class="d"></div>
-  <div class="r"><span>Subtotal</span><span>Rs.${order.total.toLocaleString()}</span></div>
-  ${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}
-  <div class="s"></div>
-  <div class="r b lg"><span>TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>
-  <div class="s"></div>
-  <div class="c" style="margin-top:12px;"><div class="b" style="font-size:13px;">✨ Thank You! ✨</div>
-  <div class="sub" style="margin-top:4px;">Please visit again · Good Vibes Farm Stay 🌿</div></div>
-  <script>window.onload=()=>window.print()<\/script></body></html>`;
-}
-
-function cConfirmDelOrder(id,table){
-  showModal(`Delete Order — Table ${table}?`,'Permanently remove this order. Cannot be undone.',()=>{ GV.deleteOrder(id); });
-}
-function cConfirmClearPaid(){
-  const n=GV.getOrders().filter(o=>o.status==='paid').length;if(!n)return;
-  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,()=>{ GV.deleteAllPaid(); });
-}
-function cConfirmDelReceipt(no){
-  showModal(`Delete Receipt ${no}?`,'This receipt will be permanently deleted.',()=>{ GV.deleteReceipt(no); });
-}
-function cConfirmClearReceipts(){
-  const n=GV.getReceipts().length;if(!n)return;
-  showModal('Clear All Receipts?',`Delete all ${n} receipt(s). Cannot be undone.`,()=>{ GV.clearAllReceipts(); });
-}
-
-// Auto-refresh cashier (belt-and-suspenders alongside live listener)
-setInterval(()=>{
-  if(cActiveTab==='orders'&&document.getElementById('cashierScreen').classList.contains('active'))cRenderOrders();
-},8000);
-</script>
-
 </body>
 </html>
