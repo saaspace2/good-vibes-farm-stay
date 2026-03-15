@@ -18,6 +18,56 @@
   --indigo:#4f46e5;--indigo2:#818cf8;
   --cooking:#3b82f6;--ready:#22c55e;
 }
+
+/* Firebase setup banner */
+.fb-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:#1a1a2e;border-top:2px solid #f4a261;
+  padding:14px 20px;font-size:13px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  animation:slideUpBanner .4s ease;
+}
+@keyframes slideUpBanner{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.fb-banner.hidden{display:none;}
+.fb-banner-text{color:rgba(255,255,255,.85);line-height:1.5;flex:1;}
+.fb-banner-text b{color:#f4a261;}
+.fb-banner-btn{
+  background:#f4a261;color:#1a1a2e;border:none;
+  padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;
+  cursor:pointer;white-space:nowrap;
+}
+.fb-setup-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.fb-setup-modal.hidden{display:none;}
+.fb-setup-box{
+  background:#131e2b;border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:28px 24px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
+}
+.fb-step{
+  background:rgba(255,255,255,.04);border-radius:12px;
+  padding:14px 16px;margin-bottom:10px;
+}
+.fb-step-num{
+  display:inline-flex;width:24px;height:24px;background:#f4a261;color:#1a1a2e;
+  border-radius:50%;align-items:center;justify-content:center;font-size:12px;font-weight:900;
+  margin-right:8px;flex-shrink:0;
+}
+.fb-step-title{font-weight:800;font-size:14px;color:#fff;display:flex;align-items:center;}
+.fb-step-body{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;margin-top:6px;padding-left:32px;}
+.fb-step-body b{color:rgba(255,255,255,.8);}
+.fb-code{
+  background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:8px 12px;font-family:monospace;font-size:11px;
+  color:#52b788;margin-top:6px;line-height:1.8;word-break:break-all;
+}
+.fb-dismiss{
+  width:100%;padding:12px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);border-radius:12px;color:rgba(255,255,255,.5);
+  font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-top:12px;
+}
+
 html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);color:var(--text);}
 
 /* ============================================================
@@ -429,6 +479,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
       </div>
     </div>
     <div class="home-footer">© 2024 Good Vibes Farm Stay · @goodvibesfarmstay</div>
+    <div style="margin-top:12px;font-size:12px;" id="firebaseIndicator" style="color:orange;">🔄 Connecting...</div>
   </div>
 </div>
 
@@ -607,10 +658,64 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 </div>
 
 <!-- ============================================================
-     SHARED DATA STORE
+     FIREBASE REAL-TIME DATA STORE
 ============================================================ -->
-<script>
-const GV = {
+
+<!-- ⬇️  STEP 1: Paste your Firebase config here after creating project -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, collection, doc,
+  onSnapshot, addDoc, updateDoc, deleteDoc,
+  query, orderBy, getDocs, setDoc, writeBatch
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ============================================================
+// 🔥 PASTE YOUR FIREBASE CONFIG HERE
+//    (replace ALL values below with yours from Firebase console)
+// ============================================================
+const firebaseConfig = {
+   apiKey: "AIzaSyCvW3n4Iun5_RCeb0ib9l2AwcJl6ex3UUo",
+  authDomain: "goodvibes-restaurant.firebaseapp.com",
+  projectId: "goodvibes-restaurant",
+  storageBucket: "goodvibes-restaurant.firebasestorage.app",
+  messagingSenderId: "128700043589",
+  appId: "1:128700043589:web:f82d31347397fd66336e2c",
+};
+// ============================================================
+
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const ordersCol   = collection(db, 'gv_orders');
+const receiptsCol = collection(db, 'gv_receipts');
+
+// ---- Live listeners (cross-device real-time) ----
+let _ordersCache   = [];
+let _receiptsCache = [];
+let _updateCbs     = [];
+
+// Listen to orders in real time
+onSnapshot(query(ordersCol, orderBy('time','desc')), snap => {
+  _ordersCache = snap.docs.map(d => ({ ...d.data(), _docId: d.id }));
+  _updateCbs.forEach(cb => cb(_ordersCache));
+  // also refresh whichever screen is active
+  if (typeof kRender   === 'function' && document.getElementById('kitchenScreen')?.classList.contains('active')) kRender();
+  if (typeof cRenderOrders === 'function' && document.getElementById('cashierScreen')?.classList.contains('active')) cRenderOrders();
+  if (typeof wBuildTableGrid === 'function' && document.getElementById('waiterScreen')?.classList.contains('active')) wBuildTableGrid();
+});
+
+// Listen to receipts in real time
+onSnapshot(query(receiptsCol, orderBy('savedAt','desc')), snap => {
+  _receiptsCache = snap.docs.map(d => ({ ...d.data(), _docId: d.id }));
+  if (typeof cRenderReceipts === 'function' && document.getElementById('receiptsPanel')?.style.display !== 'none') cRenderReceipts();
+});
+
+// ============================================================
+// GV — public API (same interface as before, now Firebase-backed)
+// ============================================================
+window.GV = {
+
+  // ---------- MENU (unchanged) ----------
   menu:[
     {id:'v1',name:'Chatpate',cat:'Veg Starters',price:160,emoji:'🥗'},
     {id:'v2',name:'French Fry',cat:'Veg Starters',price:200,emoji:'🍟'},
@@ -709,38 +814,80 @@ const GV = {
     {id:'hd11',name:'OD Black Chimney (Full)',cat:'Hard Drinks',price:4800,emoji:'🥃'},
     {id:'hd12',name:'OD Black Chimney (Half)',cat:'Hard Drinks',price:2400,emoji:'🥃'},
   ],
-  getOrders(){try{return JSON.parse(localStorage.getItem('gv_orders')||'[]');}catch(e){return[];}},
-  saveOrders(o){
-    localStorage.setItem('gv_orders',JSON.stringify(o));
-    try{const bc=new BroadcastChannel('gv_orders');bc.postMessage({type:'update',orders:o});bc.close();}catch(e){}
+
+  // ---------- ORDERS (Firebase-backed) ----------
+  getOrders() { return _ordersCache; },
+
+  async addOrder(o) {
+    o.id    = 'ORD-' + Date.now();
+    o.time  = new Date().toISOString();
+    o.status = 'pending';
+    await addDoc(ordersCol, o);
+    return o;
   },
-  addOrder(o){
-    const orders=this.getOrders();
-    o.id='ORD-'+Date.now();o.time=new Date().toISOString();o.status='pending';
-    orders.unshift(o);this.saveOrders(orders);return o;
+
+  async updateStatus(id, status) {
+    const order = _ordersCache.find(o => o.id === id);
+    if (!order) return;
+    await updateDoc(doc(db, 'gv_orders', order._docId), { status, updatedAt: new Date().toISOString() });
   },
-  updateStatus(id,status){
-    const orders=this.getOrders();const i=orders.findIndex(o=>o.id===id);
-    if(i!==-1){orders[i].status=status;orders[i].updatedAt=new Date().toISOString();this.saveOrders(orders);}
+
+  async deleteOrder(id) {
+    const order = _ordersCache.find(o => o.id === id);
+    if (!order) return;
+    await deleteDoc(doc(db, 'gv_orders', order._docId));
   },
-  deleteOrder(id){this.saveOrders(this.getOrders().filter(o=>o.id!==id));},
-  deleteAllPaid(){this.saveOrders(this.getOrders().filter(o=>o.status!=='paid'));},
-  clearAllOrders(){this.saveOrders([]);},
-  getReceipts(){try{return JSON.parse(localStorage.getItem('gv_receipts')||'[]');}catch(e){return[];}},
-  saveReceipt(r){
-    const list=this.getReceipts();
-    r.savedAt=new Date().toISOString();
-    r.receiptNo='GV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(list.length+1).padStart(4,'0');
-    list.unshift(r);localStorage.setItem('gv_receipts',JSON.stringify(list));return r;
+
+  async deleteAllPaid() {
+    const paid = _ordersCache.filter(o => o.status === 'paid');
+    const batch = writeBatch(db);
+    paid.forEach(o => batch.delete(doc(db, 'gv_orders', o._docId)));
+    await batch.commit();
   },
-  deleteReceipt(no){localStorage.setItem('gv_receipts',JSON.stringify(this.getReceipts().filter(r=>r.receiptNo!==no)));},
-  clearAllReceipts(){localStorage.setItem('gv_receipts',JSON.stringify([]));},
-  onUpdate(cb){
-    try{const bc=new BroadcastChannel('gv_orders');bc.onmessage=e=>{if(e.data.type==='update')cb(e.data.orders);};}catch(e){}
-    window.addEventListener('storage',e=>{if(e.key==='gv_orders')try{cb(JSON.parse(e.newValue||'[]'));}catch(err){}});
+
+  async clearAllOrders() {
+    const batch = writeBatch(db);
+    _ordersCache.forEach(o => batch.delete(doc(db, 'gv_orders', o._docId)));
+    await batch.commit();
   },
-  cats(){return[...new Set(this.menu.map(i=>i.cat))];}
+
+  // ---------- RECEIPTS (Firebase-backed) ----------
+  getReceipts() { return _receiptsCache; },
+
+  async saveReceipt(r) {
+    const count = _receiptsCache.length;
+    r.savedAt   = new Date().toISOString();
+    r.receiptNo = 'GV-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + String(count + 1).padStart(4,'0');
+    await addDoc(receiptsCol, r);
+    return r;
+  },
+
+  async deleteReceipt(no) {
+    const r = _receiptsCache.find(r => r.receiptNo === no);
+    if (!r) return;
+    await deleteDoc(doc(db, 'gv_receipts', r._docId));
+  },
+
+  async clearAllReceipts() {
+    const batch = writeBatch(db);
+    _receiptsCache.forEach(r => batch.delete(doc(db, 'gv_receipts', r._docId)));
+    await batch.commit();
+  },
+
+  onUpdate(cb) { _updateCbs.push(cb); },
+  cats() { return [...new Set(this.menu.map(i => i.cat))]; }
 };
+
+// Show connected indicator
+setTimeout(() => {
+  const ind = document.getElementById('firebaseIndicator');
+  if (ind) { ind.textContent = '🔥 Live'; ind.style.color = '#22c55e'; }
+}, 1500);
+
+</script>
+
+<!-- ============================================================
+     SCREEN NAVIGATION
 </script>
 
 <!-- ============================================================
@@ -903,7 +1050,7 @@ function closeCart(){document.getElementById('drawerOverlay').classList.remove('
 function sendOrder(){
   const items=wCartItems();if(!items.length)return;
   const total=wCartTotal();
-  GV.addOrder({table:wTable,items,total});
+  await GV.addOrder({table:wTable,items,total});
   wCart={};wUpdateCartUI();closeCart();wRenderMenu();
   const t=document.getElementById('toast');t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2800);
@@ -995,15 +1142,15 @@ function kRender(){
   }).join('');
 }
 
-function kStatus(id,status){GV.updateStatus(id,status);kRender();}
+async function kStatus(id,status){await GV.updateStatus(id,status);}
 
 function kConfirmDelete(id,table){
-  showModal(`Delete Order — Table ${table}?`,'This order will be permanently removed. Cannot be undone.',()=>{GV.deleteOrder(id);kRender();});
+  showModal(`Delete Order — Table ${table}?`,'This order will be permanently removed. Cannot be undone.',async()=>{await GV.deleteOrder(id);});
 }
 function kConfirmClearPaid(){
   const n=GV.getOrders().filter(o=>o.status==='paid').length;
   if(!n){alert('No paid orders to clear.');return;}
-  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,()=>{GV.deleteAllPaid();kRender();});
+  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,async()=>{await GV.deleteAllPaid();});
 }
 
 function kPrint(id){
@@ -1147,12 +1294,12 @@ function cUpdateBill(){
     <div style="text-align:center;padding-top:6px;font-size:12px;color:var(--muted);">Thank you! Please visit again 🌿</div>`;
 }
 
-function cMarkPaid(){
+async function cMarkPaid(){
   if(!cSelectedOrder)return;
   const{taxPct,tax,grand}=cGetTotals();
   const pm=document.getElementById('paySel').value;
-  const rcpt=GV.saveReceipt({orderId:cSelectedOrder.id,table:cSelectedOrder.table,items:cSelectedOrder.items,subtotal:cSelectedOrder.total,taxPct,tax,grand,payMethod:pm,orderTime:cSelectedOrder.time});
-  GV.updateStatus(cSelectedOrder.id,'paid');
+  const rcpt=await GV.saveReceipt({orderId:cSelectedOrder.id,table:cSelectedOrder.table,items:cSelectedOrder.items,subtotal:cSelectedOrder.total,taxPct,tax,grand,payMethod:pm,orderTime:cSelectedOrder.time});
+  await GV.updateStatus(cSelectedOrder.id,'paid');
   cDoPrint(rcpt);
   const pb=document.getElementById('payBtn');pb.disabled=true;pb.textContent='✅ Paid & Saved!';
   setTimeout(()=>cCloseBill(),1600);
@@ -1231,18 +1378,18 @@ function cReceiptHTML(order,taxPct,tax,grand,rcNo,now){
 }
 
 function cConfirmDelOrder(id,table){
-  showModal(`Delete Order — Table ${table}?`,'Permanently remove this order. Cannot be undone.',()=>{GV.deleteOrder(id);cRenderOrders();});
+  showModal(`Delete Order — Table ${table}?`,'Permanently remove this order. Cannot be undone.',async()=>{await GV.deleteOrder(id);});
 }
 function cConfirmClearPaid(){
   const n=GV.getOrders().filter(o=>o.status==='paid').length;if(!n)return;
-  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,()=>{GV.deleteAllPaid();cRenderOrders();});
+  showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s). Cannot be undone.`,async()=>{await GV.deleteAllPaid();});
 }
 function cConfirmDelReceipt(no){
-  showModal(`Delete Receipt ${no}?`,'This receipt will be permanently deleted.',()=>{GV.deleteReceipt(no);cRenderReceipts();});
+  showModal(`Delete Receipt ${no}?`,'This receipt will be permanently deleted.',async()=>{await GV.deleteReceipt(no);});
 }
 function cConfirmClearReceipts(){
   const n=GV.getReceipts().length;if(!n)return;
-  showModal('Clear All Receipts?',`Delete all ${n} receipt(s). Cannot be undone.`,()=>{GV.clearAllReceipts();cRenderReceipts();});
+  showModal('Clear All Receipts?',`Delete all ${n} receipt(s). Cannot be undone.`,async()=>{await GV.clearAllReceipts();});
 }
 
 // Auto-refresh cashier orders
@@ -1251,6 +1398,89 @@ GV.onUpdate(()=>{
   if(document.getElementById('cashierScreen').classList.contains('active')&&cActiveTab==='orders')cRenderOrders();
   if(document.getElementById('kitchenScreen').classList.contains('active'))kRender();
   if(document.getElementById('waiterScreen').classList.contains('active'))wBuildTableGrid();
+});
+</script>
+
+
+<!-- Firebase Setup Guide Banner -->
+<div class="fb-banner" id="fbBanner">
+  <div class="fb-banner-text">
+    <b>⚡ Action needed:</b> To sync across devices, paste your Firebase config into the HTML file.
+  </div>
+  <button class="fb-banner-btn" onclick="document.getElementById('fbSetupModal').classList.remove('hidden')">
+    How to Setup →
+  </button>
+  <button onclick="document.getElementById('fbBanner').classList.add('hidden')" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:20px;cursor:pointer;">×</button>
+</div>
+
+<!-- Firebase Setup Modal -->
+<div class="fb-setup-modal hidden" id="fbSetupModal">
+  <div class="fb-setup-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;">🔥 Firebase Setup</div>
+      <button onclick="document.getElementById('fbSetupModal').classList.add('hidden')" style="background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.5);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;">×</button>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px;line-height:1.6;">Follow these 5 steps once. After setup, all changes sync instantly across every device in real time.</p>
+
+    <div class="fb-step">
+      <div class="fb-step-title"><span class="fb-step-num">1</span>Create Firebase Project</div>
+      <div class="fb-step-body">
+        Go to <b>console.firebase.google.com</b> → click <b>Add project</b> → name it <b>goodvibes-restaurant</b> → click through → Create project
+      </div>
+    </div>
+
+    <div class="fb-step">
+      <div class="fb-step-title"><span class="fb-step-num">2</span>Add a Web App</div>
+      <div class="fb-step-body">
+        In your project → click the <b>&lt;/&gt; Web</b> icon → name it <b>goodvibes-app</b> → click <b>Register app</b> → you will see your config object. Copy it — it looks like:
+        <div class="fb-code">const firebaseConfig = {<br>
+&nbsp;&nbsp;apiKey: "AIzaSy...",<br>
+&nbsp;&nbsp;authDomain: "goodvibes-xxx.firebaseapp.com",<br>
+&nbsp;&nbsp;projectId: "goodvibes-xxx",<br>
+&nbsp;&nbsp;storageBucket: "goodvibes-xxx.appspot.com",<br>
+&nbsp;&nbsp;messagingSenderId: "123456789",<br>
+&nbsp;&nbsp;appId: "1:123:web:abc"<br>
+};</div>
+      </div>
+    </div>
+
+    <div class="fb-step">
+      <div class="fb-step-title"><span class="fb-step-num">3</span>Enable Firestore Database</div>
+      <div class="fb-step-body">
+        In Firebase console → left sidebar → <b>Firestore Database</b> → <b>Create database</b> → choose <b>Start in test mode</b> → pick any region → <b>Enable</b>
+      </div>
+    </div>
+
+    <div class="fb-step">
+      <div class="fb-step-title"><span class="fb-step-num">4</span>Paste config into this file</div>
+      <div class="fb-step-body">
+        Open <b>goodvibes-all-in-one.html</b> in Notepad or VS Code → find this section (near line 620):
+        <div class="fb-code">apiKey: "PASTE_YOUR_apiKey_HERE",</div>
+        Replace all 6 <b>PASTE_YOUR_..._HERE</b> values with your actual config values → Save the file
+      </div>
+    </div>
+
+    <div class="fb-step">
+      <div class="fb-step-title"><span class="fb-step-num">5</span>Push to GitHub & done!</div>
+      <div class="fb-step-body">
+        Upload the updated HTML file to your GitHub Pages repo. Now open the site on <b>any device</b> — waiter places order on phone → kitchen sees it instantly on tablet → cashier generates bill on laptop. All in real time! 🎉
+      </div>
+    </div>
+
+    <button class="fb-dismiss" onclick="document.getElementById('fbSetupModal').classList.add('hidden');document.getElementById('fbBanner').classList.add('hidden');">
+      Got it, I'll set it up ✓
+    </button>
+  </div>
+</div>
+
+<script>
+// Hide banner if Firebase is already configured (apiKey is not a placeholder)
+window.addEventListener('load', () => {
+  // Check if the config still has placeholder values by looking at the page source
+  const src = document.documentElement.innerHTML;
+  if (!src.includes('PASTE_YOUR_apiKey_HERE')) {
+    document.getElementById('fbBanner').classList.add('hidden');
+  }
 });
 </script>
 
