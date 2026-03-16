@@ -72,7 +72,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .table-lbl{font-size:9px;font-weight:600;color:var(--muted);}
 .table-btn.occupied .table-lbl{color:var(--yellow);}
 #menuView{display:none;}
-.search-wrap{padding:11px 16px;position:sticky;top:0;z-index:51;background:var(--dark);}
+.search-wrap{padding:11px 16px;position:sticky;top:0;z-index:52;background:var(--dark);}
 .search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
 .search-input{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:11px;padding:9px 14px 9px 38px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;}
 .search-input:focus{border-color:var(--green2);}
@@ -371,7 +371,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
       <div><div class="tb-title">Good Vibes</div><div class="tb-sub" id="wTopSub">Waiter Portal</div></div>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
-      <div id="wTableBadge" style="display:none;background:rgba(82,183,136,.15);border:1px solid var(--green2);color:var(--green2);padding:4px 11px;border-radius:18px;font-size:12px;font-weight:700;"></div>
+      <div id="wTableBadge" style="display:none;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);color:#fff;padding:5px 13px;border-radius:18px;font-size:14px;font-weight:900;letter-spacing:.5px;"></div>
       <button id="wCartBtn" class="icon-btn" onclick="openCart()" style="display:none;background:var(--yellow);color:#1a1a2e;border-color:var(--yellow);position:relative;">
         🛒 Cart <span id="wCartCount" style="display:none;position:absolute;top:-8px;right:-8px;width:19px;height:19px;background:var(--red);color:#fff;border-radius:50%;font-size:10px;font-weight:900;align-items:center;justify-content:center;"></span>
       </button>
@@ -705,7 +705,12 @@ function wBuildTableGrid(){
     b.onclick=()=>wSelectTable(i);grid.appendChild(b);
   }
 }
-function wSelectTable(n){wTable=String(n);document.getElementById('tableSelectView').style.display='none';document.getElementById('menuView').style.display='block';document.getElementById('wTopSub').textContent='Table '+n;const badge=document.getElementById('wTableBadge');badge.textContent='T'+n;badge.style.display='block';document.getElementById('wCartBtn').style.display='flex';wBuildCatPills();wRenderMenu();}
+function wSelectTable(n){wTable=String(n);document.getElementById('tableSelectView').style.display='none';document.getElementById('menuView').style.display='block';document.getElementById('wTopSub').textContent='Table '+n;const badge=document.getElementById('wTableBadge');badge.textContent='T'+n;badge.style.display='block';document.getElementById('wCartBtn').style.display='flex';wBuildCatPills();wRenderMenu();
+  // Stack cat-pills below search-wrap dynamically
+  const sw=document.querySelector('.search-wrap');
+  const cp=document.getElementById('catPills');
+  if(sw&&cp){cp.style.top=sw.offsetHeight+'px';}
+}
 function wBuildCatPills(){
   const cats=['All',...GV.cats()];
   document.getElementById('catPills').innerHTML=cats.map((c,i)=>
@@ -726,23 +731,31 @@ function wSetCat(c){
   wActiveCat=c;
   wBuildCatPills();
   wRenderMenu();
+  // Keep pills stacked below search bar
+  const _sw=document.querySelector('.search-wrap');
+  const _cp=document.getElementById('catPills');
+  if(_sw&&_cp){_cp.style.top=_sw.offsetHeight+'px';}
   if(c==='All'){
     document.querySelector('.w-scroll').scrollTop=0;
     return;
   }
-  // Use double rAF so DOM is fully laid out before measuring
+  // Double rAF ensures the DOM is fully rendered before we measure
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     const hdr=document.querySelector(`.cat-hdr[data-cat="${c}"]`);
     if(!hdr)return;
     const scroller=document.querySelector('.w-scroll');
-    // getBoundingClientRect gives position relative to viewport
-    // scroller.getBoundingClientRect().top = where scroller starts in viewport
-    // hdr.getBoundingClientRect().top = where hdr is in viewport
-    // So offset = hdr.top - scroller.top + scroller.scrollTop
-    const scrollerRect=scroller.getBoundingClientRect();
-    const hdrRect=hdr.getBoundingClientRect();
-    const target=hdrRect.top - scrollerRect.top + scroller.scrollTop - 8;
-    scroller.scrollTo({top:Math.max(0,target),behavior:'smooth'});
+    const searchEl=document.querySelector('.search-wrap');
+    const pillsEl=document.querySelector('.cat-pills');
+    // Total height of sticky bars sitting at top of .w-scroll
+    const stickyH=(searchEl?searchEl.offsetHeight:0)+(pillsEl?pillsEl.offsetHeight:0);
+    // Walk up from hdr to .w-scroll accumulating offsetTop at each level
+    let top=0;
+    let el=hdr;
+    while(el&&el!==scroller){
+      top+=el.offsetTop;
+      el=el.offsetParent;
+    }
+    scroller.scrollTo({top:Math.max(0,top-stickyH-4),behavior:'smooth'});
   }));
 }
 function wRenderMenu(){
