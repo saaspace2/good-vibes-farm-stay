@@ -701,7 +701,7 @@ function wBuildTableGrid(){
   for(let i=1;i<=20;i++){
     const b=document.createElement('button');
     b.className='table-btn'+(occupied.has(String(i))?' occupied':'');
-    b.innerHTML=`<span>${i}</span><span class="table-lbl">${occupied.has(String(i))?'Active':'Free'}</span>`;
+    b.innerHTML=`<span>${i}</span><span class="table-lbl">${occupied.has(String(i))?'Booked':'Free'}</span>`;
     b.onclick=()=>wSelectTable(i);grid.appendChild(b);
   }
 }
