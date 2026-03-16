@@ -72,17 +72,17 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .table-lbl{font-size:9px;font-weight:600;color:var(--muted);}
 .table-btn.occupied .table-lbl{color:var(--yellow);}
 #menuView{display:none;}
-.search-wrap{padding:11px 16px;position:relative;}
+.search-wrap{padding:11px 16px;position:sticky;top:0;z-index:51;background:var(--dark);}
 .search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
 .search-input{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:11px;padding:9px 14px 9px 38px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;}
 .search-input:focus{border-color:var(--green2);}
-.cat-pills{display:flex;gap:7px;overflow-x:auto;padding:0 16px 11px;scrollbar-width:none;}
+.cat-pills{display:flex;gap:7px;overflow-x:auto;padding:0 16px 11px;scrollbar-width:none;position:sticky;top:0;z-index:50;background:var(--dark);}
 .cat-pills::-webkit-scrollbar{display:none;}
 .cat-pill{flex-shrink:0;padding:5px 13px;border-radius:20px;background:var(--card);border:1.5px solid var(--border);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .cat-pill.active,.cat-pill:hover{background:var(--green);border-color:var(--green2);color:#fff;}
 .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 16px 130px;}
 .cat-hdr{grid-column:1/-1;font-family:'Bebas Neue';font-size:18px;letter-spacing:2px;color:var(--green2);padding-top:6px;border-bottom:1px solid var(--border);padding-bottom:5px;}
-.menu-item{background:var(--card);border:1.5px solid var(--border);border-radius:15px;padding:13px 11px;cursor:pointer;transition:all .15s;}
+.menu-item{background:var(--card);border:1.5px solid var(--border);border-radius:15px;padding:14px 12px;cursor:pointer;transition:all .15s;}
 .menu-item:hover{border-color:rgba(82,183,136,.4);transform:translateY(-2px);}
 .menu-item.in-cart{border-color:var(--green2);background:#1a2e25;}
 .item-photo{width:100%;height:90px;object-fit:cover;border-radius:9px;margin-bottom:7px;display:block;}
@@ -506,21 +506,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   <div class="fd-hdr"><div class="fd-title" id="fdTitle">Add New Item</div><button class="fd-close" onclick="aCloseForm()">×</button></div>
   <div class="fd-body">
     <input type="hidden" id="fdItemId">
-    <div class="fd-field">
-      <label class="fd-label">Photo (optional)</label>
-      <div class="photo-upload-area" id="photoUploadArea">
-        <input type="file" id="photoFileInput" accept="image/*" onchange="aHandlePhoto(event)">
-        <img class="photo-preview" id="photoPreview" alt="Preview">
-        <span class="photo-upload-icon" id="photoUploadIcon">📷</span>
-        <div class="photo-upload-text" id="photoUploadText">Tap to upload photo</div>
-        <div class="photo-upload-sub" id="photoUploadSub">JPG, PNG, WEBP · Max 2MB</div>
-        <button type="button" class="remove-photo-btn" id="removePhotoBtn" onclick="aRemovePhoto(event)">✕ Remove photo</button>
-      </div>
-    </div>
-    <div class="fd-field" id="emojiFieldWrap">
-      <label class="fd-label">Emoji Icon</label>
-      <div class="emoji-grid" id="emojiGrid"></div>
-    </div>
     <div class="fd-field"><label class="fd-label">Item Name *</label><input class="fd-input" id="fdName" placeholder="e.g. Chicken Wings" maxlength="60"></div>
     <div class="fd-field"><label class="fd-label">Price (Rs.) *</label><input class="fd-input" id="fdPrice" type="number" placeholder="e.g. 350" min="1" max="99999"></div>
     <div class="fd-field">
@@ -721,22 +706,89 @@ function wBuildTableGrid(){
   }
 }
 function wSelectTable(n){wTable=String(n);document.getElementById('tableSelectView').style.display='none';document.getElementById('menuView').style.display='block';document.getElementById('wTopSub').textContent='Table '+n;const badge=document.getElementById('wTableBadge');badge.textContent='T'+n;badge.style.display='block';document.getElementById('wCartBtn').style.display='flex';wBuildCatPills();wRenderMenu();}
-function wBuildCatPills(){const cats=['All',...GV.cats()];document.getElementById('catPills').innerHTML=cats.map(c=>`<div class="cat-pill ${c===wActiveCat?'active':''}" onclick="wSetCat('${c.replace(/'/g,"\\'")}'')">${c}</div>`).join('');}
-function wSetCat(c){wActiveCat=c;wBuildCatPills();wRenderMenu();}
+function wBuildCatPills(){
+  const cats=['All',...GV.cats()];
+  document.getElementById('catPills').innerHTML=cats.map((c,i)=>
+    `<div class="cat-pill ${c===wActiveCat?'active':''}" data-cat="${i}" onclick="wSetCat(GV.cats()[${i-1}]||'All')">${c}</div>`
+  ).join('');
+  // rebuild with proper data
+  const el=document.getElementById('catPills');
+  el.innerHTML='';
+  cats.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='cat-pill'+(c===wActiveCat?' active':'');
+    d.textContent=c;
+    d.onclick=()=>wSetCat(c);
+    el.appendChild(d);
+  });
+}
+function wSetCat(c){
+  wActiveCat=c;
+  wBuildCatPills();
+  wRenderMenu();
+  if(c==='All'){
+    document.querySelector('.w-scroll').scrollTop=0;
+    return;
+  }
+  // Use double rAF so DOM is fully laid out before measuring
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const hdr=document.querySelector(`.cat-hdr[data-cat="${c}"]`);
+    if(!hdr)return;
+    const scroller=document.querySelector('.w-scroll');
+    // getBoundingClientRect gives position relative to viewport
+    // scroller.getBoundingClientRect().top = where scroller starts in viewport
+    // hdr.getBoundingClientRect().top = where hdr is in viewport
+    // So offset = hdr.top - scroller.top + scroller.scrollTop
+    const scrollerRect=scroller.getBoundingClientRect();
+    const hdrRect=hdr.getBoundingClientRect();
+    const target=hdrRect.top - scrollerRect.top + scroller.scrollTop - 8;
+    scroller.scrollTo({top:Math.max(0,target),behavior:'smooth'});
+  }));
+}
 function wRenderMenu(){
   const q=document.getElementById('searchInput').value.toLowerCase().trim();
-  let items=GV.menu;
-  if(wActiveCat!=='All')items=items.filter(i=>i.cat===wActiveCat);
-  if(q)items=items.filter(i=>i.name.toLowerCase().includes(q));
-  const grid=document.getElementById('menuGrid');grid.innerHTML='';
-  if(wActiveCat==='All'&&!q){
-    GV.cats().forEach(cat=>{const ci=items.filter(i=>i.cat===cat);if(!ci.length)return;const h=document.createElement('div');h.className='cat-hdr';h.textContent=cat;grid.appendChild(h);ci.forEach(item=>grid.appendChild(wMakeCard(item)));});
-  }else{items.forEach(item=>grid.appendChild(wMakeCard(item)));}
+  const grid=document.getElementById('menuGrid');
+  grid.innerHTML='';
+
+  if(q){
+    // Search mode: show matching items flat (no category headers)
+    const matches=GV.menu.filter(i=>i.name.toLowerCase().includes(q));
+    if(!matches.length){
+      const empty=document.createElement('div');
+      empty.style.cssText='grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted);font-weight:700;';
+      empty.textContent='No items found for "'+q+'"';
+      grid.appendChild(empty);
+    }else{matches.forEach(item=>grid.appendChild(wMakeCard(item)));}
+    return;
+  }
+
+  // Normal mode: always show ALL categories so pills can scroll to them
+  GV.cats().forEach(cat=>{
+    const ci=GV.menu.filter(i=>i.cat===cat);
+    if(!ci.length)return;
+    const h=document.createElement('div');
+    h.className='cat-hdr';
+    h.dataset.cat=cat;   // <-- anchor for scroll
+    h.textContent=cat;
+    grid.appendChild(h);
+    ci.forEach(item=>grid.appendChild(wMakeCard(item)));
+  });
 }
 function wMakeCard(item){
-  const qty=wCart[item.id]||0;const d=document.createElement('div');d.className='menu-item'+(qty>0?' in-cart':'');
-  let visual=item.photo?`<img class="item-photo" src="${item.photo}" alt="${item.name}" loading="lazy">`:`<div class="item-photo-placeholder"><span>${item.emoji||'🍽️'}</span></div>`;
-  d.innerHTML=`${visual}<div class="item-name">${item.name}</div><div class="item-price">Rs. ${item.price}</div><div class="item-ctrl">${qty>0?`<button class="qty-btn qty-minus" onclick="wChg('${item.id}',-1,event)">−</button><span class="qty-num">${qty}</span><button class="qty-btn qty-plus" onclick="wChg('${item.id}',1,event)">+</button>`:`<button class="qty-add" onclick="wChg('${item.id}',1,event)">+ Add</button>`}</div>`;
+  const qty=wCart[item.id]||0;
+  const d=document.createElement('div');
+  d.className='menu-item'+(qty>0?' in-cart':'');
+  d.innerHTML=`
+    <div class="item-name">${item.name}</div>
+    <div class="item-price">Rs. ${item.price}</div>
+    <div class="item-ctrl">
+      ${qty>0
+        ?`<button class="qty-btn qty-minus" onclick="wChg('${item.id}',-1,event)">−</button>
+           <span class="qty-num">${qty}</span>
+           <button class="qty-btn qty-plus" onclick="wChg('${item.id}',1,event)">+</button>`
+        :`<button class="qty-add" onclick="wChg('${item.id}',1,event)">+ Add</button>`
+      }
+    </div>`;
   return d;
 }
 function wChg(id,delta,e){e.stopPropagation();const n=(wCart[id]||0)+delta;if(n<=0)delete wCart[id];else wCart[id]=n;wUpdateCartUI();wRenderMenu();if(Object.keys(wCart).length>0)wRenderDrawer();}
@@ -1133,7 +1185,7 @@ function aRender(){
   if(!items.length){list.innerHTML='<div class="a-empty"><span class="a-empty-icon">🔍</span><div>No items found</div></div>';return;}
   list.innerHTML=items.map(item=>{
     const isCustom=!!item._custom;
-    const thumbHtml=item.photo?`<div class="a-item-thumb"><img src="${item.photo}" alt="${item.name}"></div>`:`<div class="a-item-thumb">${item.emoji||'🍽️'}</div>`;
+    const thumbHtml=item.photo?`<div class="a-item-thumb"><img src="${item.photo}" alt="${item.name}"></div>`:`<div class="a-item-thumb" style="font-size:11px;font-weight:900;color:var(--muted);letter-spacing:.5px;">${item.name.slice(0,3).toUpperCase()}</div>`;
     const badge=isCustom?`<span class="a-item-tag">✦ Custom</span>`:`<span class="a-built-in-badge">Built-in</span>`;
     const actBtns=isCustom
       ?`<button class="a-act-btn a-edit-btn" onclick="aOpenForm('${item._docId}')">✏️</button><button class="a-act-btn a-del-btn" onclick="aConfirmDelete('${item._docId}','${item.name.replace(/'/g,"\\'")}')">🗑️</button>`
@@ -1142,14 +1194,29 @@ function aRender(){
   }).join('');
 }
 function aOpenForm(docId=null){
-  aEditingDocId=docId;aCurrentPhoto=null;aSelectedEmoji='🍽️';
+  aEditingDocId=docId;
   document.getElementById('fdTitle').textContent=docId?'Edit Item':'Add New Item';
-  document.getElementById('fdName').value='';document.getElementById('fdPrice').value='';document.getElementById('fdCat').value='';document.getElementById('fdCatCustom').value='';
-  aResetPhotoUI();
-  const grid=document.getElementById('emojiGrid');grid.innerHTML=EMOJIS.map(e=>`<button type="button" class="emoji-opt ${e===aSelectedEmoji?'selected':''}" onclick="aSelectEmoji('${e}')">${e}</button>`).join('');
-  const sel=document.getElementById('fdCat');sel.innerHTML='<option value="">-- Select category --</option>'+GV.cats().map(c=>`<option value="${c}">${c}</option>`).join('');
-  if(docId){const item=GV.getCustomItems().find(i=>i._docId===docId);if(item){document.getElementById('fdName').value=item.name||'';document.getElementById('fdPrice').value=item.price||'';const opts=[...sel.options].map(o=>o.value);if(opts.includes(item.cat)){sel.value=item.cat;}else{document.getElementById('fdCatCustom').value=item.cat||'';}if(item.photo){aCurrentPhoto=item.photo;aShowPhotoPreview(item.photo);}if(item.emoji){aSelectedEmoji=item.emoji;document.querySelectorAll('.emoji-opt').forEach(b=>{b.classList.toggle('selected',b.textContent===item.emoji);});}}}
-  document.getElementById('formOverlay').classList.add('open');document.getElementById('itemFormDrawer').classList.add('open');document.body.style.overflow='hidden';
+  document.getElementById('fdName').value='';
+  document.getElementById('fdPrice').value='';
+  document.getElementById('fdCat').value='';
+  document.getElementById('fdCatCustom').value='';
+  // Populate category dropdown
+  const sel=document.getElementById('fdCat');
+  sel.innerHTML='<option value="">-- Select category --</option>'+GV.cats().map(c=>`<option value="${c}">${c}</option>`).join('');
+  // If editing, prefill name, price, category only
+  if(docId){
+    const item=GV.getCustomItems().find(i=>i._docId===docId);
+    if(item){
+      document.getElementById('fdName').value=item.name||'';
+      document.getElementById('fdPrice').value=item.price||'';
+      const opts=[...sel.options].map(o=>o.value);
+      if(opts.includes(item.cat)){sel.value=item.cat;}
+      else{document.getElementById('fdCatCustom').value=item.cat||'';}
+    }
+  }
+  document.getElementById('formOverlay').classList.add('open');
+  document.getElementById('itemFormDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
 }
 function aCloseForm(){document.getElementById('formOverlay').classList.remove('open');document.getElementById('itemFormDrawer').classList.remove('open');document.body.style.overflow='';}
 function aSelectEmoji(e){aSelectedEmoji=e;document.querySelectorAll('.emoji-opt').forEach(b=>{b.classList.toggle('selected',b.textContent===e);});}
@@ -1161,7 +1228,7 @@ async function aSaveItem(){
   const name=document.getElementById('fdName').value.trim();const price=parseInt(document.getElementById('fdPrice').value,10);const catSel=document.getElementById('fdCat').value.trim();const catCustom=document.getElementById('fdCatCustom').value.trim();const cat=catCustom||catSel;
   if(!name){showToast('❌ Item name is required','error');return;}if(!price||price<1){showToast('❌ Valid price is required','error');return;}if(!cat){showToast('❌ Category is required','error');return;}
   const btn=document.getElementById('fdSaveBtn');btn.disabled=true;btn.textContent='⏳ Saving...';
-  const data={name,price,cat,emoji:aCurrentPhoto?'🍽️':aSelectedEmoji,photo:aCurrentPhoto||null};
+  const data={name,price,cat,emoji:'',photo:null};
   try{
     if(aEditingDocId){await GV.updateMenuItem(aEditingDocId,data);showToast('✅ Item updated!','success');}
     else{data.id='CUSTOM-'+Date.now();await GV.addMenuItem(data);showToast('✅ Item added!','success');}
