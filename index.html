@@ -600,7 +600,17 @@ const GV={
     {id:'w1',name:'Divine Wine',cat:'Wine',price:1100,emoji:'🍷'},{id:'w2',name:'Big Master',cat:'Wine',price:1200,emoji:'🍷'},{id:'w3',name:'Manang',cat:'Wine',price:1300,emoji:'🍷'},
     {id:'hd1',name:'Black Oak (Full)',cat:'Hard Drinks',price:2000,emoji:'🥃'},{id:'hd2',name:'Black Oak (Half)',cat:'Hard Drinks',price:1100,emoji:'🥃'},{id:'hd3',name:'Black Oak (Quarter)',cat:'Hard Drinks',price:600,emoji:'🥃'},{id:'hd4',name:'Black Oak (90ml)',cat:'Hard Drinks',price:320,emoji:'🥃'},{id:'hd5',name:'8848 Vodka (Full)',cat:'Hard Drinks',price:3300,emoji:'🥃'},{id:'hd6',name:'8848 Vodka (Half)',cat:'Hard Drinks',price:1700,emoji:'🥃'},{id:'hd7',name:'Khukuri Rum (Full)',cat:'Hard Drinks',price:2900,emoji:'🥃'},{id:'hd8',name:'Khukuri Rum (Half)',cat:'Hard Drinks',price:1500,emoji:'🥃'},{id:'hd9',name:'OD Regular (Full)',cat:'Hard Drinks',price:4000,emoji:'🥃'},{id:'hd10',name:'OD Regular (Half)',cat:'Hard Drinks',price:2100,emoji:'🥃'},{id:'hd11',name:'OD Black Chimney (Full)',cat:'Hard Drinks',price:4800,emoji:'🥃'},{id:'hd12',name:'OD Black Chimney (Half)',cat:'Hard Drinks',price:2400,emoji:'🥃'},
   ],
-  get menu(){return[...this._builtIn,..._customItems];},
+  get menu(){
+    // Build override map from custom items
+    const overrideMap={};
+    _customItems.forEach(ci=>{if(ci._overridesBuiltin&&ci.id){overrideMap[ci.id]=ci;}});
+    // Filter built-ins: skip if overridden (replaced or deleted)
+    const filteredBuiltIn=this._builtIn.filter(bi=>!overrideMap[bi.id]);
+    // Active custom items: overrides that aren't deleted + truly new custom items
+    const activeCustom=_customItems.filter(ci=>!ci._deleted);
+    // Merge: active overrides replace built-ins, new custom items appended
+    return[...filteredBuiltIn,...activeCustom];
+  },
   getOrders(){return _orders;},
   getReceipts(){return _rcpts;},
   getCustomItems(){return _customItems;},
@@ -1199,10 +1209,13 @@ function aRender(){
   list.innerHTML=items.map(item=>{
     const isCustom=!!item._custom;
     const thumbHtml=item.photo?`<div class="a-item-thumb"><img src="${item.photo}" alt="${item.name}"></div>`:`<div class="a-item-thumb" style="font-size:11px;font-weight:900;color:var(--muted);letter-spacing:.5px;">${item.name.slice(0,3).toUpperCase()}</div>`;
-    const badge=isCustom?`<span class="a-item-tag">✦ Custom</span>`:`<span class="a-built-in-badge">Built-in</span>`;
-    const actBtns=isCustom
-      ?`<button class="a-act-btn a-edit-btn" onclick="aOpenForm('${item._docId}')">✏️</button><button class="a-act-btn a-del-btn" onclick="aConfirmDelete('${item._docId}','${item.name.replace(/'/g,"\\'")}')">🗑️</button>`
-      :`<button class="a-act-btn a-edit-btn" style="opacity:.4;cursor:default;" onclick="showToast('Built-in items cannot be edited. Add a custom item instead.','error')">✏️</button>`;
+    const isOverride=isCustom&&item._overridesBuiltin;const badge=isOverride?`<span class="a-item-tag" style="background:rgba(244,162,97,.15);color:#f4a261;border-color:rgba(244,162,97,.3);">✦ Modified</span>`:isCustom?`<span class="a-item-tag">✦ Custom</span>`:`<span class="a-built-in-badge">Built-in</span>`;
+    const isOverride2=isCustom&&item._overridesBuiltin;
+    const actBtns=isOverride2
+      ?`<button class="a-act-btn a-edit-btn" title="Edit" onclick="aOpenForm('${item._docId}')">✏️</button>
+        <button class="a-act-btn a-del-btn" title="Delete / Restore default" onclick="aRestoreBuiltin('${item._docId}','${item.name.replace(/'/g,"\\'")}')">↩️</button>`
+      :`<button class="a-act-btn a-edit-btn" title="Edit" onclick="aOpenForm('${isCustom?item._docId:'__builtin__'+item.id}')">✏️</button>
+        <button class="a-act-btn a-del-btn" title="Delete" onclick="aConfirmDelete('${isCustom?item._docId:'__builtin__'+item.id}','${item.name.replace(/'/g,"\\'")}')">🗑️</button>`;
     return`<div class="a-item-card ${isCustom?'custom-item':''}">${thumbHtml}<div class="a-item-info"><div class="a-item-name">${item.name}</div><div class="a-item-meta">${item.cat}</div>${badge}</div><div class="a-item-price">Rs.${item.price}</div><div class="a-item-acts">${actBtns}</div></div>`;
   }).join('');
 }
@@ -1216,15 +1229,27 @@ function aOpenForm(docId=null){
   // Populate category dropdown
   const sel=document.getElementById('fdCat');
   sel.innerHTML='<option value="">-- Select category --</option>'+GV.cats().map(c=>`<option value="${c}">${c}</option>`).join('');
-  // If editing, prefill name, price, category only
   if(docId){
-    const item=GV.getCustomItems().find(i=>i._docId===docId);
-    if(item){
-      document.getElementById('fdName').value=item.name||'';
-      document.getElementById('fdPrice').value=item.price||'';
-      const opts=[...sel.options].map(o=>o.value);
-      if(opts.includes(item.cat)){sel.value=item.cat;}
-      else{document.getElementById('fdCatCustom').value=item.cat||'';}
+    // Check if it's a built-in item (prefixed with __builtin__)
+    if(docId.startsWith('__builtin__')){
+      const builtinId=docId.replace('__builtin__','');
+      const item=GV._builtIn.find(i=>i.id===builtinId);
+      if(item){
+        document.getElementById('fdName').value=item.name||'';
+        document.getElementById('fdPrice').value=item.price||'';
+        const opts=[...sel.options].map(o=>o.value);
+        if(opts.includes(item.cat)){sel.value=item.cat;}
+        else{document.getElementById('fdCatCustom').value=item.cat||'';}
+      }
+    } else {
+      const item=GV.getCustomItems().find(i=>i._docId===docId);
+      if(item){
+        document.getElementById('fdName').value=item.name||'';
+        document.getElementById('fdPrice').value=item.price||'';
+        const opts=[...sel.options].map(o=>o.value);
+        if(opts.includes(item.cat)){sel.value=item.cat;}
+        else{document.getElementById('fdCatCustom').value=item.cat||'';}
+      }
     }
   }
   document.getElementById('formOverlay').classList.add('open');
@@ -1243,13 +1268,47 @@ async function aSaveItem(){
   const btn=document.getElementById('fdSaveBtn');btn.disabled=true;btn.textContent='⏳ Saving...';
   const data={name,price,cat,emoji:'',photo:null};
   try{
-    if(aEditingDocId){await GV.updateMenuItem(aEditingDocId,data);showToast('✅ Item updated!','success');}
+    if(aEditingDocId){
+      if(aEditingDocId.startsWith('__builtin__')){
+        // Save built-in override — update existing override doc if present, else add new
+        const builtinId=aEditingDocId.replace('__builtin__','');
+        data.id=builtinId;
+        data._overridesBuiltin=true;
+        const existing=GV.getCustomItems().find(i=>i.id===builtinId&&i._overridesBuiltin);
+        if(existing){await GV.updateMenuItem(existing._docId,data);}
+        else{await GV.addMenuItem(data);}
+        showToast('✅ Built-in item updated!','success');
+      } else {
+        await GV.updateMenuItem(aEditingDocId,data);showToast('✅ Item updated!','success');
+      }
+    }
     else{data.id='CUSTOM-'+Date.now();await GV.addMenuItem(data);showToast('✅ Item added!','success');}
     aCloseForm();aRender();aPopulateCatFilter();
   }catch(err){showToast('❌ '+(err.message||'Save failed'),'error');}
   finally{btn.disabled=false;btn.textContent='💾 Save Item';}
 }
-function aConfirmDelete(docId,name){showModal(`Delete "${name}"?`,'This item will be removed from the menu.',()=>{GV.deleteMenuItem(docId).then(()=>{showToast('🗑️ Item deleted','success');aRender();aPopulateCatFilter();}).catch(err=>showToast('❌ '+err.message,'error'));});}
+function aRestoreBuiltin(docId,name){
+  showModal(`Restore "${name}" to default?`,'This will remove your changes and restore the original built-in item.',()=>{
+    GV.deleteMenuItem(docId).then(()=>{showToast('↩️ Restored to default','success');aRender();aPopulateCatFilter();}).catch(err=>showToast('❌ '+err.message,'error'));
+  });
+}
+function aConfirmDelete(docId,name){
+  const isBuiltin=docId.startsWith('__builtin__');
+  const msg=isBuiltin?'This built-in item will be hidden from the menu.':'This item will be permanently removed from the menu.';
+  showModal(`Delete "${name}"?`,msg,()=>{
+    if(isBuiltin){
+      // Mark built-in as deleted by saving a tombstone custom record
+      const builtinId=docId.replace('__builtin__','');
+      const item=GV._builtIn.find(i=>i.id===builtinId);
+      if(!item)return;
+      GV.addMenuItem({id:builtinId,name:item.name,price:item.price,cat:item.cat,emoji:'',photo:null,_deleted:true,_overridesBuiltin:true})
+        .then(()=>{showToast('🗑️ Item hidden from menu','success');aRender();aPopulateCatFilter();})
+        .catch(err=>showToast('❌ '+err.message,'error'));
+    } else {
+      GV.deleteMenuItem(docId).then(()=>{showToast('🗑️ Item deleted','success');aRender();aPopulateCatFilter();}).catch(err=>showToast('❌ '+err.message,'error'));
+    }
+  });
+}
 </script>
 </body>
 </html>
