@@ -433,9 +433,12 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 <div id="cashierScreen" class="screen">
   <div class="topbar topbar-c">
     <div class="topbar-left"><button class="back-btn" onclick="backHome()">←</button><div class="tb-title">💰 Cashier</div></div>
-    <div class="c-tabs">
-      <button class="c-tab active" onclick="cShowTab('orders',this)">Orders</button>
-      <button class="c-tab" onclick="cShowTab('receipts',this)">Receipts</button>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <div class="c-tabs">
+        <button class="c-tab active" onclick="cShowTab('orders',this)">Orders</button>
+        <button class="c-tab" onclick="cShowTab('receipts',this)">Receipts</button>
+      </div>
+      <button class="icon-btn" onclick="cExportDay()" title="Export daily sales report" style="background:rgba(129,140,248,.15);border-color:rgba(129,140,248,.3);color:var(--indigo2);font-size:13px;padding:6px 10px;">📥 Export</button>
     </div>
   </div>
   <div class="c-scroll">
@@ -1180,6 +1183,158 @@ function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds){
   <div class="s"></div>
   <div class="c" style="margin-top:12px;"><div class="b" style="font-size:13px;">✨ Thank You! ✨</div><div class="sub" style="margin-top:4px;">Please visit again · Good Vibes Farm Stay 🌿</div></div>
   <script>window.onload=()=>window.print()<\/script></body></html>`;
+}
+
+/* ── Daily Sales Export (PDF via print) ── */
+function cExportDay(){
+  const receipts=GV.getReceipts();
+  const orders=GV.getOrders();
+  const today=new Date().toLocaleDateString('en-GB');
+  const todayISO=new Date().toISOString().slice(0,10);
+
+  // Filter today's receipts
+  const todayReceipts=receipts.filter(r=>r.savedAt&&r.savedAt.slice(0,10)===todayISO);
+  // Also include all paid orders for revenue calc (in case receipts are missing)
+  const allPaidToday=orders.filter(o=>o.status==='paid'&&o.updatedAt&&o.updatedAt.slice(0,10)===todayISO);
+
+  const totalRevenue=todayReceipts.reduce((s,r)=>s+(r.grand||0),0);
+  const totalOrders=todayReceipts.reduce((s,r)=>s+(r.rounds||1),0);
+  const totalTables=new Set(todayReceipts.map(r=>r.table)).size;
+
+  // Payment method breakdown
+  const pmBreak={cash:0,card:0,qr:0};
+  todayReceipts.forEach(r=>{const pm=r.payMethod||'cash';pmBreak[pm]=(pmBreak[pm]||0)+(r.grand||0);});
+
+  // Category breakdown from receipt items
+  const catBreak={};
+  todayReceipts.forEach(r=>{
+    (r.items||[]).forEach(i=>{
+      const cat=i.cat||'Other';
+      if(!catBreak[cat])catBreak[cat]={qty:0,total:0};
+      catBreak[cat].qty+=(i.qty||1);
+      catBreak[cat].total+=(i.price||0)*(i.qty||1);
+    });
+  });
+
+  // Top items
+  const itemBreak={};
+  todayReceipts.forEach(r=>{
+    (r.items||[]).forEach(i=>{
+      const k=i.name;
+      if(!itemBreak[k])itemBreak[k]={qty:0,total:0};
+      itemBreak[k].qty+=(i.qty||1);
+      itemBreak[k].total+=(i.price||0)*(i.qty||1);
+    });
+  });
+  const topItems=Object.entries(itemBreak).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
+  const catRows=Object.entries(catBreak).sort((a,b)=>b[1].total-a[1].total);
+
+  const w=window.open('','_blank','width=820,height=900');
+  w.document.write(`<!DOCTYPE html><html><head><title>Daily Sales Report — ${today}</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 32px;max-width:780px;margin:0 auto;font-size:12px;}
+    h1{font-size:22px;letter-spacing:3px;text-align:center;margin-bottom:2px;}
+    h2{font-size:14px;letter-spacing:2px;text-align:center;font-weight:normal;margin-bottom:4px;color:#555;}
+    .date{text-align:center;font-size:11px;color:#777;margin-bottom:20px;}
+    .dash{border-top:1px dashed #bbb;margin:14px 0;}
+    .solid{border-top:2px solid #000;margin:14px 0;}
+    .row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;}
+    .row.bold{font-weight:bold;font-size:13px;}
+    .row.big{font-weight:bold;font-size:16px;}
+    .section-title{font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin:14px 0 6px;}
+    table{width:100%;border-collapse:collapse;margin-top:4px;}
+    th{font-size:10px;font-weight:bold;text-align:left;padding:5px 8px;background:#f0f0f0;border:1px solid #ddd;}
+    th.r{text-align:right;}
+    td{font-size:11px;padding:5px 8px;border:1px solid #ddd;}
+    td.r{text-align:right;}
+    tr:nth-child(even){background:#fafafa;}
+    .receipt-section{margin-top:14px;}
+    .r-card{border:1px solid #ddd;border-radius:4px;padding:10px 12px;margin-bottom:8px;page-break-inside:avoid;}
+    .r-card-hdr{display:flex;justify-content:space-between;font-weight:bold;font-size:12px;margin-bottom:5px;}
+    .r-card-meta{font-size:10px;color:#777;margin-bottom:4px;}
+    .r-items{font-size:11px;color:#333;}
+    .summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;}
+    .sum-box{border:1px solid #ddd;border-radius:4px;padding:10px;text-align:center;}
+    .sum-val{font-size:18px;font-weight:bold;margin-bottom:2px;}
+    .sum-lbl{font-size:9px;color:#777;text-transform:uppercase;letter-spacing:.5px;}
+    .pi{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:bold;}
+    .pi-cash{background:#dcfce7;color:#166534;}
+    .pi-card{background:#dbeafe;color:#1e40af;}
+    .pi-qr{background:#fef3c7;color:#92400e;}
+    @media print{
+      body{padding:10px 16px;}
+      button{display:none!important;}
+      .no-break{page-break-inside:avoid;}
+    }
+  </style></head><body>
+
+  <h1>GOOD VIBES FARM STAY</h1>
+  <h2>DAILY SALES REPORT</h2>
+  <div class="date">Date: ${today} &nbsp;·&nbsp; Generated: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
+
+  <div class="solid"></div>
+
+  <div class="summary-grid">
+    <div class="sum-box"><div class="sum-val">Rs.${totalRevenue.toLocaleString()}</div><div class="sum-lbl">Total Revenue</div></div>
+    <div class="sum-box"><div class="sum-val">${todayReceipts.length}</div><div class="sum-lbl">Tables Served</div></div>
+    <div class="sum-box"><div class="sum-val">${totalOrders}</div><div class="sum-lbl">Total Orders</div></div>
+  </div>
+
+  <div class="dash"></div>
+
+  <div class="section-title">Payment Method Breakdown</div>
+  <div class="row"><span>💵 Cash</span><span><b>Rs.${(pmBreak.cash||0).toLocaleString()}</b></span></div>
+  <div class="row"><span>💳 Card / UPI</span><span><b>Rs.${(pmBreak.card||0).toLocaleString()}</b></span></div>
+  <div class="row"><span>📱 QR Code</span><span><b>Rs.${(pmBreak.qr||0).toLocaleString()}</b></span></div>
+  <div class="dash"></div>
+  <div class="row bold"><span>TOTAL REVENUE</span><span>Rs.${totalRevenue.toLocaleString()}</span></div>
+
+  ${catRows.length?`
+  <div class="dash"></div>
+  <div class="section-title">Sales by Category</div>
+  <table>
+    <tr><th>Category</th><th class="r">Qty Sold</th><th class="r">Revenue</th></tr>
+    ${catRows.map(([cat,d])=>`<tr><td>${cat}</td><td class="r">${d.qty}</td><td class="r">Rs.${d.total.toLocaleString()}</td></tr>`).join('')}
+  </table>`:''}
+
+  ${topItems.length?`
+  <div class="dash"></div>
+  <div class="section-title">Top Selling Items</div>
+  <table>
+    <tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Revenue</th></tr>
+    ${topItems.map(([name,d],i)=>`<tr><td>${i+1}</td><td>${name}</td><td class="r">${d.qty}</td><td class="r">Rs.${d.total.toLocaleString()}</td></tr>`).join('')}
+  </table>`:''}
+
+  ${todayReceipts.length?`
+  <div class="dash"></div>
+  <div class="section-title">All Receipts Today (${todayReceipts.length})</div>
+  <div class="receipt-section">
+    ${todayReceipts.map(r=>`
+    <div class="r-card">
+      <div class="r-card-hdr">
+        <span>${r.receiptNo}</span>
+        <span>Rs.${(r.grand||0).toLocaleString()} <span class="pi pi-${r.payMethod||'cash'}">${r.payMethod||'cash'}</span></span>
+      </div>
+      <div class="r-card-meta">Table ${r.table} · ${r.rounds>1?r.rounds+' rounds · ':''}${new Date(r.savedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="r-items">${(r.items||[]).map(i=>`${i.name} ×${i.qty} (Rs.${((i.price||0)*(i.qty||1)).toLocaleString()})`).join(' &nbsp;·&nbsp; ')}</div>
+    </div>`).join('')}
+  </div>`:'<div class="dash"></div><div style="text-align:center;color:#999;padding:20px;">No sales recorded today yet.</div>'}
+
+  <div class="solid"></div>
+  <div style="text-align:center;font-size:10px;color:#999;margin-top:10px;">Good Vibes Farm Stay · Dharan-5, Sunsari, Nepal · @goodvibesfarmstay</div>
+
+  <div style="text-align:center;margin-top:18px;">
+    <button onclick="window.print()" style="padding:10px 28px;background:#4f46e5;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;margin-right:8px;">🖨️ Print / Save PDF</button>
+    <button onclick="window.close()" style="padding:10px 20px;background:#eee;color:#333;border:none;border-radius:6px;font-size:14px;cursor:pointer;">Close</button>
+  </div>
+
+  <script>
+    // Auto-open print dialog if user wants PDF
+    // window.onload=()=>window.print();
+  <\/script>
+  </body></html>`);
+  w.document.close();
 }
 
 function cConfirmDelOrder(id,table){showModal(`Delete Order — Table ${table}?`,'Permanently remove this order.',()=>GV.deleteOrder(id));}
