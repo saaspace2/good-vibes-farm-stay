@@ -336,13 +336,96 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   .table-grid{grid-template-columns:repeat(4,1fr);}
   .role-grid{grid-template-columns:1fr;max-width:240px;margin:0 auto;}
 }
+
+/* ── LOGIN SCREEN ── */
+#loginScreen{align-items:center;justify-content:center;padding:24px;background:var(--dark);position:relative;overflow:hidden;}
+#loginScreen::before{content:'';position:fixed;width:500px;height:500px;background:var(--green);border-radius:50%;filter:blur(80px);opacity:.15;top:-100px;left:-100px;z-index:0;}
+#loginScreen::after{content:'';position:fixed;width:400px;height:400px;background:var(--indigo);border-radius:50%;filter:blur(80px);opacity:.15;bottom:-80px;right:-80px;z-index:0;}
+.login-box{position:relative;z-index:1;width:100%;max-width:360px;text-align:center;}
+.login-logo{margin-bottom:10px;}
+.login-brand{font-family:'Bebas Neue';font-size:38px;letter-spacing:3px;color:#fff;line-height:1;}
+.login-brand span{color:var(--yellow);}
+.login-tagline{font-size:11px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;}
+.login-card{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:26px 22px;text-align:left;}
+.login-title{font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;color:#fff;margin-bottom:18px;text-align:center;}
+.login-field{margin-bottom:14px;}
+.login-label{display:block;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.login-input{width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:11px;padding:11px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;}
+.login-input:focus{border-color:var(--green2);}
+.login-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;border-radius:13px;color:#fff;font-family:'Nunito';font-size:15px;font-weight:900;cursor:pointer;margin-top:6px;transition:opacity .2s;}
+.login-btn:hover{opacity:.9;}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;}
+.login-err{font-size:12px;color:var(--red);text-align:center;margin-top:8px;min-height:18px;}
+.login-mode-toggle{margin-top:14px;text-align:center;font-size:12px;color:var(--muted);}
+.login-mode-toggle span{color:var(--green2);cursor:pointer;font-weight:700;}
+.login-mode-toggle span:hover{text-decoration:underline;}
+/* ── OFFICE SCREEN extra tab ── */
+.office-tab-bar{display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;}
+.office-tab-bar::-webkit-scrollbar{display:none;}
+.office-tab{flex-shrink:0;padding:6px 14px;border-radius:9px;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.45);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+.office-tab.active{background:var(--admin);border-color:var(--admin2);color:#fff;}
+/* ── WAITER MANAGEMENT ── */
+.staff-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:9px;}
+.staff-avatar{width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,var(--green),var(--green2));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0;}
+.staff-info{flex:1;min-width:0;}
+.staff-name{font-size:14px;font-weight:800;color:var(--text);}
+.staff-role{font-size:11px;color:var(--muted);margin-top:2px;}
+.staff-acts{display:flex;gap:5px;flex-shrink:0;}
+
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
 
-<div id="homeScreen" class="screen active">
+<div id="loginScreen" class="screen active">
+  <div class="login-box">
+    <div class="login-logo">
+      <svg width="70" height="70" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="48" fill="#1B4332" stroke="#52B788" stroke-width="2"/>
+        <text x="50" y="44" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="20" fill="#F4A261" letter-spacing="2">GOOD</text>
+        <text x="50" y="66" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="20" fill="#52B788" letter-spacing="2">VIBES</text>
+        <text x="50" y="80" text-anchor="middle" font-family="Nunito,sans-serif" font-size="8" fill="rgba(255,255,255,0.45)" letter-spacing="1">FARM STAY</text>
+      </svg>
+    </div>
+    <div class="login-brand">Good <span>Vibes</span></div>
+    <div class="login-tagline">Farm Stay · Dharan-5</div>
+
+    <!-- TAB SWITCHER: Login / Register -->
+    <div style="display:flex;gap:0;background:rgba(255,255,255,.07);border-radius:12px;padding:3px;margin-bottom:16px;">
+      <button id="tabLoginBtn" onclick="lSwitchTab('login')" style="flex:1;padding:9px;border:none;border-radius:10px;background:var(--green);color:#fff;font-family:'Nunito';font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;">🔐 Login</button>
+      <button id="tabRegBtn" onclick="lSwitchTab('register')" style="flex:1;padding:9px;border:none;border-radius:10px;background:transparent;color:var(--muted);font-family:'Nunito';font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;">📝 Register Waiter</button>
+    </div>
+
+    <!-- LOGIN PANEL -->
+    <div id="loginPanel" class="login-card">
+      <div class="login-title" id="loginTitle">Staff Login</div>
+      <div style="display:flex;gap:7px;margin-bottom:14px;">
+        <button id="roleWaiterBtn" onclick="lSetRole('waiter')" style="flex:1;padding:8px;border-radius:9px;border:1.5px solid var(--green2);background:rgba(82,183,136,.15);color:var(--green2);font-family:'Nunito';font-size:12px;font-weight:800;cursor:pointer;">🛎️ Waiter</button>
+        <button id="roleOfficeBtn" onclick="lSetRole('office')" style="flex:1;padding:8px;border-radius:9px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'Nunito';font-size:12px;font-weight:700;cursor:pointer;">🏢 Office</button>
+      </div>
+      <div class="login-field"><label class="login-label">Username</label><input class="login-input" id="loginUser" placeholder="Enter username" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="login-field"><label class="login-label">Password</label><input class="login-input" id="loginPass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="login-btn" id="loginBtn" onclick="doLogin()">🔐 Login</button>
+      <div class="login-err" id="loginErr"></div>
+      <div style="margin-top:12px;text-align:center;font-size:11px;color:var(--muted);">Office default: admin / admin1234</div>
+    </div>
+
+    <!-- REGISTER PANEL -->
+    <div id="registerPanel" class="login-card" style="display:none;">
+      <div class="login-title">Register New Waiter</div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:14px;">Office password required to register</div>
+      <div class="login-field"><label class="login-label">Office Password</label><input class="login-input" id="regOfficePass" type="password" placeholder="Enter office password"></div>
+      <div class="login-field"><label class="login-label">Waiter Full Name</label><input class="login-input" id="regName" placeholder="e.g. Ram Thapa"></div>
+      <div class="login-field"><label class="login-label">Username</label><input class="login-input" id="regUser" placeholder="e.g. ram123" autocomplete="off"></div>
+      <div class="login-field"><label class="login-label">Password</label><input class="login-input" id="regPass" type="password" placeholder="Min 4 characters"></div>
+      <button class="login-btn" id="regBtn" onclick="doRegister()" style="background:linear-gradient(135deg,var(--indigo),#6366f1);">📝 Register Waiter</button>
+      <div class="login-err" id="regErr"></div>
+    </div>
+  </div>
+</div>
+
+<div id="homeScreen" class="screen">
   <div class="home-inner">
     <div class="home-logo">
       <svg width="100" height="100" viewBox="0 0 100 100">
@@ -360,14 +443,14 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
       <div class="role-card" onclick="goCashier()"><div class="role-icon">💰</div><div class="role-name">Cashier</div><div class="role-desc">Generate bills & receipts</div><button class="role-pill pill-c">Enter</button></div>
       <div class="role-card" onclick="goAdmin()"><div class="role-icon">🍽️</div><div class="role-name">Menu Manager</div><div class="role-desc">Add, edit & delete menu items</div><button class="role-pill pill-a">Enter</button></div>
     </div>
-    <div class="home-footer">© 2025 Good Vibes Farm Stay · @goodvibesfarmstay</div>
+    <div class="home-footer">© 2025 Good Vibes Farm Stay · @goodvibesfarmstay<br><span onclick="doLogout()" style="color:rgba(255,255,255,.3);cursor:pointer;font-size:11px;">🚪 Logout</span></div>
   </div>
 </div>
 
 <div id="waiterScreen" class="screen">
   <div class="topbar topbar-w">
     <div class="topbar-left">
-      <button class="back-btn" onclick="backHome()">←</button>
+      <button class="back-btn" onclick="wBackOrLogout()">←</button>
       <div><div class="tb-title">Good Vibes</div><div class="tb-sub" id="wTopSub">Waiter Portal</div></div>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
@@ -469,6 +552,19 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
                 <option value="0">No Tax (0%)</option><option value="5">5%</option><option value="10">10%</option><option value="13">VAT 13%</option>
               </select>
             </div>
+            <div class="bc-row" style="align-items:flex-start;flex-direction:column;gap:7px;">
+              <span class="bc-lbl">Discount</span>
+              <div style="display:flex;gap:7px;width:100%;">
+                <div style="flex:1;">
+                  <div style="font-size:10px;color:var(--muted);font-weight:700;margin-bottom:4px;">% Percent</div>
+                  <input class="bc-sel" id="discPct" type="number" min="0" max="100" placeholder="0" oninput="cUpdateBill()" style="width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:9px;padding:6px 10px;color:var(--text);font-family:inherit;font-size:13px;outline:none;" value="0">
+                </div>
+                <div style="flex:1;">
+                  <div style="font-size:10px;color:var(--muted);font-weight:700;margin-bottom:4px;">Rs. Amount</div>
+                  <input class="bc-sel" id="discAmt" type="number" min="0" placeholder="0" oninput="cUpdateBill()" style="width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:9px;padding:6px 10px;color:var(--text);font-family:inherit;font-size:13px;outline:none;" value="0">
+                </div>
+              </div>
+            </div>
             <div class="bc-row"><span class="bc-lbl">Payment</span>
               <select class="bc-sel" id="paySel">
                 <option value="cash">💵 Cash</option><option value="card">💳 Card / UPI</option><option value="qr">📱 QR Code</option>
@@ -492,14 +588,54 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 
 <div id="adminScreen" class="screen">
   <div class="topbar topbar-a">
-    <div class="topbar-left"><button class="back-btn" onclick="backHome()">←</button><div><div class="tb-title">🍽️ Menu Manager</div><div class="tb-sub">Add · Edit · Delete Items</div></div></div>
+    <div class="topbar-left"><button class="back-btn" onclick="backHome()">←</button><div><div class="tb-title">🏢 Office</div><div class="tb-sub">Management Portal</div></div></div>
     <div id="aItemCount" style="font-size:12px;color:rgba(255,255,255,.4);font-weight:700;"></div>
   </div>
-  <div class="a-scroll">
+  <div class="office-tab-bar">
+    <button class="office-tab active" id="oTabMenu" onclick="oSetTab('menu',this)">🍽️ Menu</button>
+    <button class="office-tab" id="oTabStaff" onclick="oSetTab('staff',this)">👥 Staff</button>
+    <button class="office-tab" id="oTabAll" onclick="oSetTab('all',this)">📊 All Portals</button>
+  </div>
+  <div class="a-scroll" id="oMenuSection">
     <div class="a-section-hdr"><span class="a-sec-title">All Menu Items</span><button class="add-item-btn" onclick="aOpenForm()">＋ Add Item</button></div>
     <div class="a-search-wrap"><span class="a-search-icon">🔍</span><input class="a-search-input" id="aSearchInput" placeholder="Search items..." oninput="aRender()"></div>
     <div class="a-cat-filter" id="aCatFilter"></div>
     <div class="a-menu-list" id="aMenuList"></div>
+  </div>
+
+  <!-- STAFF MANAGEMENT SECTION -->
+  <div id="oStaffSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 12px;">
+      <span style="font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--admin2);">Staff Members</span>
+      <button class="add-item-btn" onclick="oOpenAddStaff()">＋ Add Waiter</button>
+    </div>
+    <div id="staffList"></div>
+  </div>
+
+  <!-- ALL PORTALS SECTION (office only) -->
+  <div id="oAllSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
+    <div style="padding:14px 0 16px;font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--admin2);">All Portals</div>
+    <div class="role-grid" style="max-width:100%;margin:0;">
+      <div class="role-card" onclick="goWaiter()"><div class="role-icon">🛎️</div><div class="role-name">Waiter</div><div class="role-desc">Take orders & send to kitchen</div><button class="role-pill pill-w">Enter</button></div>
+      <div class="role-card" onclick="goKitchen()"><div class="role-icon">👨‍🍳</div><div class="role-name">Kitchen</div><div class="role-desc">View & manage live orders</div><button class="role-pill pill-k">Enter</button></div>
+      <div class="role-card" onclick="goCashier()"><div class="role-icon">💰</div><div class="role-name">Cashier</div><div class="role-desc">Generate bills & receipts</div><button class="role-pill pill-c">Enter</button></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ADD STAFF MODAL -->
+<div class="modal-ov" id="staffModalOv">
+  <div class="modal-box" style="max-width:360px;">
+    <div class="modal-title" id="staffModalTitle">Add New Waiter</div>
+    <input class="login-input" id="staffName" placeholder="Full name" style="margin-bottom:10px;display:block;width:100%;" autocomplete="off">
+    <input class="login-input" id="staffUser" placeholder="Username (for login)" style="margin-bottom:10px;display:block;width:100%;" autocomplete="off">
+    <input class="login-input" id="staffPass" type="password" placeholder="Password" style="margin-bottom:18px;display:block;width:100%;" autocomplete="off">
+    <div class="modal-btns">
+      <button class="modal-btn modal-cancel" onclick="oCloseStaffModal()">Cancel</button>
+      <button class="modal-btn" style="background:rgba(82,183,136,.2);color:var(--green2);border:1px solid rgba(82,183,136,.3);" onclick="oSaveStaff()">💾 Save</button>
+    </div>
+    <div id="staffModalErr" style="font-size:11px;color:var(--red);margin-top:8px;text-align:center;"></div>
   </div>
 </div>
 
@@ -573,6 +709,8 @@ function _initFirebase(){
       _orders=snap.docs.map(d=>({...d.data(),_docId:d.id}));
       _refreshScreens();
     });
+    // Initialize staff collection
+    if(typeof _initStaffCol==='function')_initStaffCol();
     _rcptCol.orderBy('savedAt','desc').onSnapshot(snap=>{
       _rcpts=snap.docs.map(d=>({...d.data(),_docId:d.id}));
       if(typeof cRenderReceipts==='function'&&document.getElementById('receiptsPanel').style.display!=='none')cRenderReceipts();
@@ -690,11 +828,23 @@ const GV={
    NAVIGATION + MODAL + TOAST
 ═══════════════════════════════════════════════ */
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function backHome(){showScreen('homeScreen');}
+function backHome(){
+  if(_currentRole==='waiter'){showScreen('waiterScreen');wInit();}
+  else{showScreen('homeScreen');}
+}
 function goWaiter(){showScreen('waiterScreen');wInit();}
-function goKitchen(){showScreen('kitchenScreen');kRender();kStartPolling();}
-function goCashier(){showScreen('cashierScreen');cRenderOrders();}
-function goAdmin(){showScreen('adminScreen');aInit();}
+function goKitchen(){
+  if(_currentRole==='waiter'){showToast('❌ No access','error');return;}
+  showScreen('kitchenScreen');kRender();kStartPolling();
+}
+function goCashier(){
+  if(_currentRole==='waiter'){showToast('❌ No access','error');return;}
+  showScreen('cashierScreen');cRenderOrders();
+}
+function goAdmin(){
+  if(_currentRole && _currentRole!=='office'){showToast('❌ Office access only','error');return;}
+  showScreen('adminScreen');aInit();
+}
 function showModal(title,sub,onConfirm){document.getElementById('modalTitle').textContent=title;document.getElementById('modalSub').textContent=sub;document.getElementById('modalConfirm').onclick=()=>{onConfirm();closeModal();};document.getElementById('modalOv').classList.add('open');}
 function closeModal(){document.getElementById('modalOv').classList.remove('open');}
 let _toastTimer=null;
@@ -858,10 +1008,7 @@ function kRender(){
       <div class="k-card-hdr"><div><div class="k-tnum"><span>Table </span>${o.table}</div><div class="k-time">🕐 ${el}m ago ${late?'<span class="late-warn">⚠️ LATE</span>':''}</div></div><span class="k-badge ${o.status}">${slabel[o.status]||o.status}</span></div>
       <div class="k-items">${o.items.map(i=>`<div class="k-item-row"><span class="ki-name">${i.emoji||'🍽️'} ${i.name}</span><span class="ki-qty">×${i.qty}</span></div>`).join('')}<div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>#${o.id.slice(-6)}</span><span style="font-weight:700;color:var(--text)">Rs. ${o.total.toLocaleString()}</span></div></div>
       <div class="k-card-foot">
-        <button class="k-act k-print" onclick="kPrint('${o.id}')">🖨️</button>
-        ${o.status==='pending'?`<button class="k-act k-cook" onclick="kStatus('${o.id}','cooking')">🔥 Start Cooking</button>`:''}
-        ${o.status==='cooking'?`<button class="k-act k-ready" onclick="kStatus('${o.id}','ready')">✅ Mark Ready</button>`:''}
-        ${o.status==='ready'?`<button class="k-act k-served" onclick="kStatus('${o.id}','served')">🍽️ Served</button>`:''}
+        <button class="k-act k-print" style="flex:none;" onclick="kPrint('${o.id}')">🖨️ Print Slip</button>
         ${canDel?`<button class="k-act k-del" onclick="kConfirmDelete('${o.id}','${o.table}')">🗑️ Delete</button>`:''}
       </div></div>`;
   }).join('');
@@ -869,7 +1016,287 @@ function kRender(){
 function kStatus(id,status){GV.updateStatus(id,status);}
 function kConfirmDelete(id,table){showModal(`Delete Order — Table ${table}?`,'This order will be permanently removed.',()=>GV.deleteOrder(id));}
 function kConfirmClearPaid(){const n=GV.getOrders().filter(o=>o.status==='paid').length;if(!n){alert('No paid orders.');return;}showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s).`,()=>GV.deleteAllPaid());}
-function kPrint(id){const o=GV.getOrders().find(o=>o.id===id);if(!o)return;const w=window.open('','_blank','width=380,height=480');w.document.write(`<!DOCTYPE html><html><head><title>Slip</title><style>body{font-family:'Courier New',monospace;padding:18px;font-size:12px;}.c{text-align:center;}.d{border-top:1px dashed #000;margin:7px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}</style></head><body><h3 class="c">KITCHEN SLIP</h3><p class="c">Good Vibes Farm Stay</p><div class="d"></div><div class="r"><b>Table ${o.table}</b><span>#${o.id.slice(-6)}</span></div><div class="r"><span>Time:</span><span>${new Date(o.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${o.items.map(i=>`<div class="r"><span>${i.name}</span><span>×${i.qty}</span></div>`).join('')}<div class="d"></div><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();}
+function kPrint(id){const o=GV.getOrders().find(o=>o.id===id);if(!o)return;const w=window.open('','_blank','width=380,height=480');w.document.write(`<!DOCTYPE html><html><head><title>Slip</title><style>body{font-family:'Courier New',monospace;padding:18px;font-size:12px;}.c{text-align:center;}.d{border-top:1px dashed #000;margin:7px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}</style></head><body><h3 class="c">KITCHEN SLIP</h3><p class="c">Good Vibes Farm Stay</p><div class="d"></div><div class="r"><b>Table ${o.table}</b><span>#${o.id.slice(-6)}</span></div><div class="r"><span>Time:</span><span>${new Date(o.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${o.items.map(i=>`<div class="r"><span>${i.name}</span><span>×${i.qty}</span></div>`).join('')}<div class="d"></div><script>window.onload=()=>window.print()<\/script>
+<script>
+/* ═══════════════════════════════════════════════
+   AUTH + LOGIN SYSTEM
+═══════════════════════════════════════════════ */
+let _currentRole = null;   // 'waiter' | 'office'
+let _currentUser = null;
+let _staffCol    = null;
+let _staffList   = [];
+let _loginRole   = 'waiter'; // selected role on login screen
+
+// Office hard-coded credentials
+const OFFICE_CREDS = [
+  {user:'admin',    pass:'admin1234'},
+  {user:'manager',  pass:'manager123'}
+];
+
+// All office passwords (for register gating)
+function isOfficePass(p){ return OFFICE_CREDS.some(c=>c.pass===p); }
+
+/* ── init staff collection once Firestore is ready ── */
+function _initStaffCol(){
+  if(!_db || _staffCol) return;
+  _staffCol = _db.collection('gv_staff');
+  _staffCol.orderBy('createdAt','asc').onSnapshot(snap=>{
+    _staffList = snap.docs.map(d=>({...d.data(), _docId:d.id}));
+    const el = document.getElementById('staffList');
+    if(el) oRenderStaff();
+  }, err=>{
+    // If orderBy fails (no index yet), try without ordering
+    _staffCol.onSnapshot(snap=>{
+      _staffList = snap.docs.map(d=>({...d.data(), _docId:d.id}));
+      const el = document.getElementById('staffList');
+      if(el) oRenderStaff();
+    });
+  });
+}
+
+/* ── TAB SWITCH: login / register ── */
+function lSwitchTab(tab){
+  const loginP  = document.getElementById('loginPanel');
+  const regP    = document.getElementById('registerPanel');
+  const tabL    = document.getElementById('tabLoginBtn');
+  const tabR    = document.getElementById('tabRegBtn');
+  document.getElementById('loginErr').textContent='';
+  document.getElementById('regErr').textContent='';
+  if(tab==='login'){
+    loginP.style.display='';  regP.style.display='none';
+    tabL.style.background='var(--green)'; tabL.style.color='#fff';
+    tabR.style.background='transparent';  tabR.style.color='var(--muted)';
+  } else {
+    loginP.style.display='none'; regP.style.display='';
+    tabR.style.background='var(--indigo)'; tabR.style.color='#fff';
+    tabL.style.background='transparent';   tabL.style.color='var(--muted)';
+    document.getElementById('regOfficePass').value='';
+    document.getElementById('regName').value='';
+    document.getElementById('regUser').value='';
+    document.getElementById('regPass').value='';
+  }
+}
+
+/* ── ROLE SELECTOR on login panel ── */
+function lSetRole(role){
+  _loginRole = role;
+  const wBtn = document.getElementById('roleWaiterBtn');
+  const oBtn = document.getElementById('roleOfficeBtn');
+  if(role==='waiter'){
+    wBtn.style.background='rgba(82,183,136,.15)'; wBtn.style.borderColor='var(--green2)'; wBtn.style.color='var(--green2)';
+    oBtn.style.background='transparent';           oBtn.style.borderColor='var(--border)'; oBtn.style.color='var(--muted)';
+    document.getElementById('loginTitle').textContent='Waiter Login';
+  } else {
+    oBtn.style.background='rgba(79,70,229,.15)'; oBtn.style.borderColor='var(--indigo2)'; oBtn.style.color='var(--indigo2)';
+    wBtn.style.background='transparent';          wBtn.style.borderColor='var(--border)'; wBtn.style.color='var(--muted)';
+    document.getElementById('loginTitle').textContent='Office Login';
+  }
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+  document.getElementById('loginErr').textContent='';
+  document.getElementById('loginUser').focus();
+}
+
+/* ── MAIN LOGIN ── */
+function doLogin(){
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginErr');
+  const btn   = document.getElementById('loginBtn');
+  errEl.textContent='';
+
+  if(!user){ errEl.textContent='❌ Enter your username.'; return; }
+  if(!pass){ errEl.textContent='❌ Enter your password.'; return; }
+
+  btn.disabled=true; btn.textContent='⏳ Checking...';
+
+  if(_loginRole==='office'){
+    // Check office hard-coded creds
+    const match = OFFICE_CREDS.find(c=>c.user===user && c.pass===pass);
+    if(match){
+      _currentRole='office'; _currentUser=user;
+      btn.disabled=false; btn.textContent='🔐 Login';
+      showScreen('homeScreen');
+      return;
+    }
+    btn.disabled=false; btn.textContent='🔐 Login';
+    errEl.textContent='❌ Wrong office username or password.';
+    return;
+  }
+
+  // Waiter login — check Firestore list
+  // If Firebase hasn't loaded yet, wait briefly and retry
+  const tryWaiterLogin = (attempt) => {
+    const waiter = _staffList.find(s =>
+      s.username === user &&
+      s.password === pass &&
+      s.active !== false
+    );
+    if(waiter){
+      _currentRole='waiter'; _currentUser=waiter.name||user;
+      btn.disabled=false; btn.textContent='🔐 Login';
+      showScreen('waiterScreen'); wInit();
+      return;
+    }
+    // If Firebase is still loading and list is empty, retry once
+    if(_staffList.length===0 && attempt < 3){
+      setTimeout(()=>tryWaiterLogin(attempt+1), 600);
+      return;
+    }
+    btn.disabled=false; btn.textContent='🔐 Login';
+    errEl.textContent='❌ Wrong username or password, or account inactive.';
+  };
+  tryWaiterLogin(0);
+}
+
+/* ── REGISTER NEW WAITER ── */
+async function doRegister(){
+  const offPass = document.getElementById('regOfficePass').value;
+  const name    = document.getElementById('regName').value.trim();
+  const user    = document.getElementById('regUser').value.trim().toLowerCase().replace(/\s+/g,'');
+  const pass    = document.getElementById('regPass').value;
+  const errEl   = document.getElementById('regErr');
+  const btn     = document.getElementById('regBtn');
+  errEl.textContent='';
+
+  if(!offPass){ errEl.textContent='❌ Enter the office password.'; return; }
+  if(!isOfficePass(offPass)){ errEl.textContent='❌ Incorrect office password.'; return; }
+  if(!name){  errEl.textContent='❌ Enter waiter full name.'; return; }
+  if(!user){  errEl.textContent='❌ Enter a username.'; return; }
+  if(pass.length < 4){ errEl.textContent='❌ Password must be at least 4 characters.'; return; }
+  if(_staffList.find(s=>s.username===user)){
+    errEl.textContent='❌ Username already taken. Choose another.'; return;
+  }
+
+  btn.disabled=true; btn.textContent='⏳ Registering...';
+  try{
+    if(!_staffCol){
+      // Firebase may not be ready — initialize it now
+      if(_db){ _staffCol=_db.collection('gv_staff'); }
+      else { errEl.textContent='❌ Database not ready yet. Try again.'; btn.disabled=false; btn.textContent='📝 Register Waiter'; return; }
+    }
+    await _staffCol.add({
+      name, username:user, password:pass,
+      active:true, createdAt:new Date().toISOString()
+    });
+    btn.disabled=false; btn.textContent='📝 Register Waiter';
+    errEl.style.color='var(--green2)';
+    errEl.textContent='✅ Waiter registered! They can now log in.';
+    setTimeout(()=>{ errEl.style.color='var(--red)'; lSwitchTab('login'); },2000);
+  } catch(e){
+    btn.disabled=false; btn.textContent='📝 Register Waiter';
+    errEl.textContent='❌ Error: '+e.message;
+  }
+}
+
+/* ── LOGOUT ── */
+function doLogout(){
+  _currentRole=null; _currentUser=null;
+  lSwitchTab('login');
+  lSetRole('waiter');
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+  showScreen('loginScreen');
+}
+
+/* ── BACK BUTTON for waiter ── */
+function wBackOrLogout(){
+  if(_currentRole==='waiter'){
+    if(document.getElementById('menuView').style.display!=='none'){
+      document.getElementById('menuView').style.display='none';
+      document.getElementById('tableSelectView').style.display='block';
+      document.getElementById('wTableBadge').style.display='none';
+      document.getElementById('wCartBtn').style.display='none';
+      document.getElementById('cartBar').classList.remove('visible');
+      document.getElementById('wTopSub').textContent='Waiter Portal';
+      wCart={}; wTable=null; wActiveCat='All';
+      wBuildTableGrid();
+    } else {
+      doLogout();
+    }
+  } else {
+    showScreen('homeScreen');
+  }
+}
+
+/* ══ OFFICE TAB SYSTEM ══ */
+let oActiveTab='menu';
+function oSetTab(tab,btn){
+  oActiveTab=tab;
+  document.querySelectorAll('.office-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('oMenuSection').style.display=tab==='menu'?'block':'none';
+  document.getElementById('oStaffSection').style.display=tab==='staff'?'flex':'none';
+  document.getElementById('oAllSection').style.display=tab==='all'?'':'none';
+  if(tab==='staff')oRenderStaff();
+}
+
+/* ══ STAFF MANAGEMENT ══ */
+let _editingStaffId=null;
+
+function oRenderStaff(){
+  const el=document.getElementById('staffList');
+  if(!el)return;
+  if(!_staffList.length){
+    el.innerHTML='<div class="empty-state"><span class="empty-icon">👥</span><div style="font-size:14px;font-weight:800;">No waiters yet</div><div style="font-size:12px;margin-top:5px;">Add your first waiter using the button above</div></div>';
+    return;
+  }
+  el.innerHTML=_staffList.map(s=>`
+    <div class="staff-card">
+      <div class="staff-avatar">${(s.name||s.username||'?').slice(0,2).toUpperCase()}</div>
+      <div class="staff-info">
+        <div class="staff-name">${s.name||s.username}</div>
+        <div class="staff-role">@${s.username} · ${s.active===false?'<span style="color:var(--red)">Inactive</span>':'<span style="color:var(--green2)">Active</span>'}</div>
+      </div>
+      <div class="staff-acts">
+        <button class="a-act-btn a-edit-btn" title="Toggle active" onclick="oToggleStaff('${s._docId}',${s.active!==false})">${s.active===false?'✅':'⏸️'}</button>
+        <button class="a-act-btn a-del-btn" title="Delete" onclick="oDeleteStaff('${s._docId}','${(s.name||s.username).replace(/'/g,"\'")}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function oOpenAddStaff(){
+  _editingStaffId=null;
+  document.getElementById('staffModalTitle').textContent='Add New Waiter';
+  document.getElementById('staffName').value='';
+  document.getElementById('staffUser').value='';
+  document.getElementById('staffPass').value='';
+  document.getElementById('staffModalErr').textContent='';
+  document.getElementById('staffModalOv').classList.add('open');
+}
+function oCloseStaffModal(){document.getElementById('staffModalOv').classList.remove('open');}
+
+async function oSaveStaff(){
+  const name=document.getElementById('staffName').value.trim();
+  const username=document.getElementById('staffUser').value.trim().toLowerCase();
+  const password=document.getElementById('staffPass').value;
+  const errEl=document.getElementById('staffModalErr');
+  errEl.textContent='';
+  if(!name){errEl.textContent='Name is required.';return;}
+  if(!username){errEl.textContent='Username is required.';return;}
+  if(!password||password.length<4){errEl.textContent='Password must be at least 4 characters.';return;}
+  // Check duplicate username
+  if(_staffList.find(s=>s.username===username)){errEl.textContent='Username already taken.';return;}
+  try{
+    await _staffCol.add({name,username,password,active:true,createdAt:new Date().toISOString()});
+    showToast('✅ Waiter added!','success');
+    oCloseStaffModal();
+  }catch(e){errEl.textContent='Error: '+e.message;}
+}
+
+async function oToggleStaff(docId,isActive){
+  await _staffCol.doc(docId).update({active:!isActive});
+  showToast(isActive?'⏸️ Waiter deactivated':'✅ Waiter activated','success');
+}
+
+function oDeleteStaff(docId,name){
+  showModal(`Remove "${name}"?`,'This waiter will no longer be able to log in.',()=>{
+    _staffCol.doc(docId).delete().then(()=>showToast('🗑️ Waiter removed','success'));
+  });
+}
+</script>
+
+</body></html>`);w.document.close();}
 function kStartPolling(){if(kTimer)clearInterval(kTimer);kTimer=setInterval(kRender,4000);}
 </script>
 
@@ -1026,6 +1453,10 @@ function cCloseBill(){
   cSelectedTable=null;
   document.getElementById('billPanel').style.display='none';
   document.getElementById('cOrdersTab').style.display='block';
+  // Reset discount and tax fields
+  document.getElementById('discPct').value='0';
+  document.getElementById('discAmt').value='0';
+  document.getElementById('taxSel').value='0';
   cRenderOrders();
 }
 
@@ -1037,15 +1468,21 @@ function cGetTableOrders(){
 function cGetTotals(){
   const tp=Number(document.getElementById('taxSel').value);
   const subtotal=cGetTableOrders().reduce((s,o)=>s+(o.total||0),0);
-  const tax=Math.round(subtotal*tp/100);
-  return{taxPct:tp,tax,subtotal,grand:subtotal+tax};
+  const discPctVal=Math.max(0,Math.min(100,Number(document.getElementById('discPct').value)||0));
+  const discAmtVal=Math.max(0,Number(document.getElementById('discAmt').value)||0);
+  // Apply percentage first, then fixed amount on top
+  const discFromPct=Math.round(subtotal*discPctVal/100);
+  const discTotal=Math.min(subtotal,discFromPct+discAmtVal);
+  const afterDisc=subtotal-discTotal;
+  const tax=Math.round(afterDisc*tp/100);
+  return{taxPct:tp,tax,subtotal,discPct:discPctVal,discAmt:discAmtVal,discFromPct,discTotal,afterDisc,grand:afterDisc+tax};
 }
 
 function cUpdateBill(){
   if(!cSelectedTable)return;
   const tableOrders=cGetTableOrders();
   if(!tableOrders.length){cCloseBill();return;}
-  const{taxPct,tax,subtotal,grand}=cGetTotals();
+  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,grand}=cGetTotals();
   const now=new Date();
 
   // Merge all items across all orders for display, grouped by order round
@@ -1105,6 +1542,7 @@ async function cMarkPaid(){
       items:allItems,
       orderIds:tableOrders.map(o=>o.id),
       subtotal,taxPct,tax,grand,
+      discPct,discAmt,discTotal,
       payMethod:pm,
       rounds:tableOrders.length,
       orderTime:tableOrders[0].time,
@@ -1122,7 +1560,7 @@ async function cMarkPaid(){
 
 function cPrintBill(){
   if(!cSelectedTable)return;
-  const{taxPct,tax,subtotal,grand}=cGetTotals();
+  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,grand}=cGetTotals();
   const tableOrders=cGetTableOrders();
   const allItems=tableOrders.flatMap(o=>o.items);
   const w=window.open('','_blank','width=420,height=640');
