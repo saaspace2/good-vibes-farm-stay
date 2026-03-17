@@ -894,32 +894,8 @@ function wSetCat(c){
   wActiveCat=c;
   wBuildCatPills();
   wRenderMenu();
-  // Keep pills stacked below search bar
-  const _sw=document.querySelector('.search-wrap');
-  const _cp=document.getElementById('catPills');
-  if(_sw&&_cp){_cp.style.top=_sw.offsetHeight+'px';}
-  if(c==='All'){
-    document.querySelector('.w-scroll').scrollTop=0;
-    return;
-  }
-  // Double rAF ensures the DOM is fully rendered before we measure
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    const hdr=document.querySelector(`.cat-hdr[data-cat="${c}"]`);
-    if(!hdr)return;
-    const scroller=document.querySelector('.w-scroll');
-    const searchEl=document.querySelector('.search-wrap');
-    const pillsEl=document.querySelector('.cat-pills');
-    // Total height of sticky bars sitting at top of .w-scroll
-    const stickyH=(searchEl?searchEl.offsetHeight:0)+(pillsEl?pillsEl.offsetHeight:0);
-    // Walk up from hdr to .w-scroll accumulating offsetTop at each level
-    let top=0;
-    let el=hdr;
-    while(el&&el!==scroller){
-      top+=el.offsetTop;
-      el=el.offsetParent;
-    }
-    scroller.scrollTo({top:Math.max(0,top-stickyH-4),behavior:'smooth'});
-  }));
+  // Reset scroll to top whenever category changes
+  document.querySelector('.w-scroll').scrollTop=0;
 }
 function wRenderMenu(){
   const q=document.getElementById('searchInput').value.toLowerCase().trim();
@@ -938,13 +914,14 @@ function wRenderMenu(){
     return;
   }
 
-  // Normal mode: always show ALL categories so pills can scroll to them
-  GV.cats().forEach(cat=>{
+  // Normal mode: show categories (filtered if a category is selected)
+  const catsToShow = wActiveCat==='All' ? GV.cats() : [wActiveCat];
+  catsToShow.forEach(cat=>{
     const ci=GV.menu.filter(i=>i.cat===cat);
     if(!ci.length)return;
     const h=document.createElement('div');
     h.className='cat-hdr';
-    h.dataset.cat=cat;   // <-- anchor for scroll
+    h.dataset.cat=cat;
     h.textContent=cat;
     grid.appendChild(h);
     ci.forEach(item=>grid.appendChild(wMakeCard(item)));
@@ -1803,7 +1780,7 @@ let aActiveCat='All',aEditingDocId=null,aCurrentPhoto=null,aSelectedEmoji='ðŸ½ï
 
 function aInit(){aActiveCat='All';aRender();aPopulateCatFilter();}
 function aPopulateCatFilter(){const cats=['All',...GV.cats()];document.getElementById('aCatFilter').innerHTML=cats.map(c=>`<div class="a-cf-pill ${c===aActiveCat?'active':''}" onclick="aSetCat('${c.replace(/'/g,"\\'")}'')">${c}</div>`).join('');}
-function aSetCat(c){aActiveCat=c;aPopulateCatFilter();aRender();}
+function aSetCat(c){aActiveCat=c;aPopulateCatFilter();aRender();const s=document.querySelector(".a-scroll");if(s)s.scrollTop=0;}
 function aRender(){
   const q=document.getElementById('aSearchInput').value.toLowerCase().trim();
   let items=GV.menu;if(aActiveCat!=='All')items=items.filter(i=>i.cat===aActiveCat);if(q)items=items.filter(i=>i.name.toLowerCase().includes(q));
