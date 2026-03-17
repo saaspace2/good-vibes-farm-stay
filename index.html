@@ -1016,7 +1016,13 @@ function kRender(){
 function kStatus(id,status){GV.updateStatus(id,status);}
 function kConfirmDelete(id,table){showModal(`Delete Order — Table ${table}?`,'This order will be permanently removed.',()=>GV.deleteOrder(id));}
 function kConfirmClearPaid(){const n=GV.getOrders().filter(o=>o.status==='paid').length;if(!n){alert('No paid orders.');return;}showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s).`,()=>GV.deleteAllPaid());}
-function kPrint(id){const o=GV.getOrders().find(o=>o.id===id);if(!o)return;const w=window.open('','_blank','width=380,height=480');w.document.write(`<!DOCTYPE html><html><head><title>Slip</title><style>body{font-family:'Courier New',monospace;padding:18px;font-size:12px;}.c{text-align:center;}.d{border-top:1px dashed #000;margin:7px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}</style></head><body><h3 class="c">KITCHEN SLIP</h3><p class="c">Good Vibes Farm Stay</p><div class="d"></div><div class="r"><b>Table ${o.table}</b><span>#${o.id.slice(-6)}</span></div><div class="r"><span>Time:</span><span>${new Date(o.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${o.items.map(i=>`<div class="r"><span>${i.name}</span><span>×${i.qty}</span></div>`).join('')}<div class="d"></div><script>window.onload=()=>window.print()<\/script>
+function kPrint(id){const o=GV.getOrders().find(o=>o.id===id);if(!o)return;const w=window.open('','_blank','width=380,height=480');w.document.write(`<!DOCTYPE html><html><head><title>Slip</title><style>body{font-family:'Courier New',monospace;padding:18px;font-size:12px;}.c{text-align:center;}.d{border-top:1px dashed #000;margin:7px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}</style></head><body><h3 class="c">KITCHEN SLIP</h3><p class="c">Good Vibes Farm Stay</p><div class="d"></div><div class="r"><b>Table ${o.table}</b><span>#${o.id.slice(-6)}</span></div><div class="r"><span>Time:</span><span>${new Date(o.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${o.items.map(i=>`<div class="r"><span>${i.name}</span><span>×${i.qty}</span></div>`).join('')}<div class="d"></div><`+`script>window.onload=()=>window.print()<`+`/script>
+
+
+</body></html>`);w.document.close();}
+function kStartPolling(){if(kTimer)clearInterval(kTimer);kTimer=setInterval(kRender,4000);}
+</script>
+
 <script>
 /* ═══════════════════════════════════════════════
    AUTH + LOGIN SYSTEM
@@ -1294,10 +1300,6 @@ function oDeleteStaff(docId,name){
     _staffCol.doc(docId).delete().then(()=>showToast('🗑️ Waiter removed','success'));
   });
 }
-</script>
-
-</body></html>`);w.document.close();}
-function kStartPolling(){if(kTimer)clearInterval(kTimer);kTimer=setInterval(kRender,4000);}
 </script>
 
 <script>
@@ -1620,7 +1622,7 @@ function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds){
   <div class="r b lg"><span>TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>
   <div class="s"></div>
   <div class="c" style="margin-top:12px;"><div class="b" style="font-size:13px;">✨ Thank You! ✨</div><div class="sub" style="margin-top:4px;">Please visit again · Good Vibes Farm Stay 🌿</div></div>
-  <script>window.onload=()=>window.print()<\/script></body></html>`;
+  <`+`script>window.onload=()=>window.print()<`+`/script></body></html>`;
 }
 
 /* ── Daily Sales Export (PDF via print) ── */
@@ -1767,10 +1769,10 @@ function cExportDay(){
     <button onclick="window.close()" style="padding:10px 20px;background:#eee;color:#333;border:none;border-radius:6px;font-size:14px;cursor:pointer;">Close</button>
   </div>
 
-  <script>
+  <`+`script>
     // Auto-open print dialog if user wants PDF
     // window.onload=()=>window.print();
-  <\/script>
+  <`+`/script>
   </body></html>`);
   w.document.close();
 }
