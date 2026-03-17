@@ -526,7 +526,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   </div>
   <div class="c-scroll">
     <div id="cOrdersTab">
-      <div class="c-stats" id="cStats"></div>
+      <div class="c-stats" id="cStats" style="margin-top:20px;"></div>
       <div class="c-ofilt-row">
         <button class="c-ofilt active" onclick="cSetOfilt('unpaid',this)">⏳ Unpaid Tables</button>
         <button class="c-ofilt" onclick="cSetOfilt('paid',this)">✅ Paid</button>
@@ -954,7 +954,7 @@ function closeCart(){document.getElementById('drawerOverlay').classList.remove('
 async function sendOrder(){
   const items=wCartItems();if(!items.length)return;
   const btn=document.getElementById('sendBtn');btn.disabled=true;btn.textContent='⏳ Sending...';
-  try{await GV.addOrder({table:wTable,items,total:wCartTotal()});wCart={};wUpdateCartUI();closeCart();wRenderMenu();showToast('✅ Order sent to kitchen!','success');}
+  try{await GV.addOrder({table:wTable,items,total:wCartTotal(),sentBy:_currentUser||'Office',sentByRole:_currentRole||'office'});wCart={};wUpdateCartUI();closeCart();wRenderMenu();showToast('✅ Order sent to kitchen!','success');}
   catch(err){showToast('❌ '+(err.message||'Failed to send'),'error');}
   finally{btn.disabled=false;btn.textContent='🍳 Send to Kitchen';}
 }
@@ -982,8 +982,8 @@ function kRender(){
   grid.innerHTML=orders.map(o=>{
     const el=kElapsed(o.time);const late=el>15&&!['ready','paid','served'].includes(o.status);const canDel=['served','paid'].includes(o.status);
     return`<div class="k-card ${o.status} ${late?'late':''}">
-      <div class="k-card-hdr"><div><div class="k-tnum"><span>Table </span>${o.table}</div><div class="k-time">🕐 ${el}m ago ${late?'<span class="late-warn">⚠️ LATE</span>':''}</div></div><span class="k-badge ${o.status}">${slabel[o.status]||o.status}</span></div>
-      <div class="k-items">${o.items.map(i=>`<div class="k-item-row"><span class="ki-name">${i.emoji||'🍽️'} ${i.name}</span><span class="ki-qty">×${i.qty}</span></div>`).join('')}<div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>#${o.id.slice(-6)}</span><span style="font-weight:700;color:var(--text)">Rs. ${o.total.toLocaleString()}</span></div></div>
+      <div class="k-card-hdr"><div><div class="k-tnum"><span>Table </span>${o.table}</div><div class="k-time">🕐 ${el}m ago ${late?'<span class="late-warn">⚠️ LATE</span>':''}</div>${(()=>{const _isO=o.sentByRole==='office';return '<div style="font-size:10px;font-weight:700;margin-top:2px;color:'+(_isO?'#a78bfa':'#52b788')+'">'+(_isO?'🏢':'🛎️')+' '+(o.sentBy||'Office')+'</div>';})()}</div><span class="k-badge ${o.status}">${slabel[o.status]||o.status}</span></div>
+      <div class="k-items">${o.items.map(i=>`<div class="k-item-row"><span class="ki-name">${i.emoji||'🍽️'} ${i.name}</span><span class="ki-qty">×${i.qty}</span></div>`).join('')}<div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>#${o.id.slice(-6)} · 🛎️ ${o.waiter||'Unknown'}</span><span style="font-weight:700;color:var(--text)">Rs. ${o.total.toLocaleString()}</span></div></div>
       <div class="k-card-foot">
         <button class="k-act k-print" style="flex:none;" onclick="kPrint('${o.id}')">🖨️ Print Slip</button>
         ${canDel?`<button class="k-act k-del" onclick="kConfirmDelete('${o.id}','${o.table}')">🗑️ Delete</button>`:''}
@@ -1507,8 +1507,34 @@ async function cMarkPaid(){
   if(!cSelectedTable)return;
   const tableOrders=cGetTableOrders();
   if(!tableOrders.length)return;
+  const _confirmTotals=cGetTotals();
+  if(!confirm('Confirm Payment\n\nTable '+cSelectedTable+' — Rs.'+_confirmTotals.grand.toLocaleString()+'\n\nPress OK to Print receipt & mark table as Paid.'))return;
   const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();
   const pm=document.getElementById('paySel').value;
+  const pmLabel={cash:'💵 Cash',card:'💳 Card / UPI',qr:'📱 QR Code'}[pm]||pm;
+
+  // Double confirmation
+  const confirmed = await new Promise(resolve=>{
+    showModal(
+      '⚠️ Confirm Payment',
+      `Table ${cSelectedTable} · ${pmLabel}\nGrand Total: Rs.${grand.toLocaleString()}\n\nMark as PAID and print receipt?`,
+      ()=>resolve(true)
+    );
+    // Style confirm button as Print (green) instead of Delete (red)
+    const confirmBtn=document.getElementById('modalConfirm');
+    confirmBtn.textContent='🖨️ Print & Confirm';
+    confirmBtn.style.background='rgba(34,197,94,.2)';
+    confirmBtn.style.color='#22c55e';
+    confirmBtn.style.borderColor='rgba(34,197,94,.4)';
+    // Override cancel to resolve false
+    const cancelBtn=document.querySelector('#modalOv .modal-cancel');
+    const origClose=cancelBtn.onclick;
+    cancelBtn.onclick=()=>{closeModal();resolve(false);};
+  });
+  // Reset modal confirm button to default Delete style
+  const _cb=document.getElementById('modalConfirm');
+  _cb.textContent='Delete';_cb.style.background='';_cb.style.color='';_cb.style.borderColor='';
+  if(!confirmed)return;
 
   const pb=document.getElementById('payBtn');pb.disabled=true;pb.textContent='⏳ Processing...';
 
@@ -1710,9 +1736,7 @@ function cExportDay(){
   <div class="row"><span>💳 Card / UPI</span><span><b>Rs.${(pmBreak.card||0).toLocaleString()}</b></span></div>
   <div class="row"><span>📱 QR Code</span><span><b>Rs.${(pmBreak.qr||0).toLocaleString()}</b></span></div>
   <div class="dash"></div>
-  ${totalDiscount>0?`<div class="row" style="color:green;"><span>Total Discounts Given</span><span>− Rs.${totalDiscount.toLocaleString()}</span></div>`:''}
-  ${totalTax>0?`<div class="row"><span>Total Tax Collected</span><span>Rs.${totalTax.toLocaleString()}</span></div>`:''}
-  <div class="row bold"><span>TOTAL REVENUE (after discount+tax)</span><span>Rs.\${totalRevenue.toLocaleString()}</span></div>
+  <div class="row bold" style="font-size:13px;border-top:1px solid #ccc;padding-top:5px;"><span>NET REVENUE (after discount &amp; tax)</span><span>Rs.${totalRevenue.toLocaleString()}</span></div>
 
   ${catRows.length?`
   <div class="dash"></div>
