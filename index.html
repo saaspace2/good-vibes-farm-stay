@@ -1484,7 +1484,7 @@ function cUpdateBill(){
   if(!cSelectedTable)return;
   const tableOrders=cGetTableOrders();
   if(!tableOrders.length){cCloseBill();return;}
-  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,grand}=cGetTotals();
+  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();
   const now=new Date();
 
   // Merge all items across all orders for display, grouped by order round
@@ -1517,9 +1517,10 @@ function cUpdateBill(){
     ${itemsHtml}
     <div class="r-dash"></div>
     <div class="r-row"><span>Subtotal</span><span>Rs.${subtotal.toLocaleString()}</span></div>
+    ${discTotal>0?`<div class="r-row" style="color:#22c55e;font-weight:700;"><span>Discount${discPct>0?' ('+discPct+'%)':''}${discAmt>0?(discPct>0?' + ':'')+' Rs.'+discAmt.toLocaleString():''}</span><span>− Rs.${discTotal.toLocaleString()}</span></div>`:''}
     ${taxPct>0?`<div class="r-row"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}
     <div class="r-dash"></div>
-    <div class="r-row rtotal"><span>TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>
+    <div class="r-row rtotal"><span>GRAND TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>
     <div class="r-dash"></div>
     <div style="text-align:center;padding-top:6px;font-size:12px;color:var(--muted);">Thank you! Please visit again 🌿</div>`;
 }
@@ -1529,7 +1530,7 @@ async function cMarkPaid(){
   if(!cSelectedTable)return;
   const tableOrders=cGetTableOrders();
   if(!tableOrders.length)return;
-  const{taxPct,tax,subtotal,grand}=cGetTotals();
+  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();
   const pm=document.getElementById('paySel').value;
 
   const pb=document.getElementById('payBtn');pb.disabled=true;pb.textContent='⏳ Processing...';
@@ -1544,7 +1545,7 @@ async function cMarkPaid(){
       items:allItems,
       orderIds:tableOrders.map(o=>o.id),
       subtotal,taxPct,tax,grand,
-      discPct,discAmt,discTotal,
+      discPct,discAmt,discTotal,afterDisc,
       payMethod:pm,
       rounds:tableOrders.length,
       orderTime:tableOrders[0].time,
@@ -1562,11 +1563,11 @@ async function cMarkPaid(){
 
 function cPrintBill(){
   if(!cSelectedTable)return;
-  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,grand}=cGetTotals();
+  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();
   const tableOrders=cGetTableOrders();
   const allItems=tableOrders.flatMap(o=>o.items);
   const w=window.open('','_blank','width=420,height=640');
-  w.document.write(cReceiptHTML(cSelectedTable,allItems,subtotal,taxPct,tax,grand,'PREVIEW',new Date(),tableOrders.length));
+  w.document.write(cReceiptHTML(cSelectedTable,allItems,subtotal,taxPct,tax,grand,'PREVIEW',new Date(),tableOrders.length,discPct,discAmt,discTotal));
   w.document.close();
 }
 
@@ -1598,11 +1599,11 @@ function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>r.orderIds&&r.o
 function cDoPrint(r){
   const now=new Date(r.savedAt);
   const w=window.open('','_blank','width=420,height=640');
-  w.document.write(cReceiptHTML(r.table,r.items,r.subtotal,r.taxPct,r.tax,r.grand,r.receiptNo,now,r.rounds||1));
+  w.document.write(cReceiptHTML(r.table,r.items,r.subtotal,r.taxPct,r.tax,r.grand,r.receiptNo,now,r.rounds||1,r.discPct||0,r.discAmt||0,r.discTotal||0));
   w.document.close();
 }
 
-function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds){
+function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds,discPct,discAmt,discTotal){
   return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:18px;max-width:290px;margin:0 auto;font-size:12px;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:14px;}.xl{font-size:18px;letter-spacing:3px;}.d{border-top:1px dashed #555;margin:8px 0;}.s{border-top:2px solid #000;margin:8px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}.sub{font-size:10px;color:#777;}@media print{button{display:none!important;}}</style></head><body>
   <div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b" style="letter-spacing:2px;">FARM STAY</div><div class="sub" style="margin-top:3px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div>
   <div class="d"></div>
@@ -1617,9 +1618,10 @@ function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds){
   ${items.map(i=>`<div class="r"><span style="flex:1;padding-right:4px;">${i.name}</span><span style="width:22px;text-align:center;">${i.qty}</span><span style="width:60px;text-align:right;">Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
   <div class="d"></div>
   <div class="r"><span>Subtotal</span><span>Rs.${subtotal.toLocaleString()}</span></div>
+  ${(discTotal||0)>0?`<div class="r" style="color:green;"><span>Discount${discPct>0?' ('+discPct+'%)':''}${discAmt>0?(discPct>0?' + ':'')+' Rs.'+Number(discAmt).toLocaleString():''}</span><span>- Rs.${Number(discTotal).toLocaleString()}</span></div>`:''}
   ${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}
-  <div class="s"></div>
-  <div class="r b lg"><span>TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>
+    <div class="s"></div>
+  <div class="r b lg"><span>GRAND TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>
   <div class="s"></div>
   <div class="c" style="margin-top:12px;"><div class="b" style="font-size:13px;">✨ Thank You! ✨</div><div class="sub" style="margin-top:4px;">Please visit again · Good Vibes Farm Stay 🌿</div></div>
   <`+`script>window.onload=()=>window.print()<`+`/script></body></html>`;
@@ -1638,6 +1640,9 @@ function cExportDay(){
   const allPaidToday=orders.filter(o=>o.status==='paid'&&o.updatedAt&&o.updatedAt.slice(0,10)===todayISO);
 
   const totalRevenue=todayReceipts.reduce((s,r)=>s+(r.grand||0),0);
+  const totalDiscount=todayReceipts.reduce((s,r)=>s+(r.discTotal||0),0);
+  const totalTax=todayReceipts.reduce((s,r)=>s+(r.tax||0),0);
+  const grossRevenue=todayReceipts.reduce((s,r)=>s+(r.subtotal||0),0);
   const totalOrders=todayReceipts.reduce((s,r)=>s+(r.rounds||1),0);
   const totalTables=new Set(todayReceipts.map(r=>r.table)).size;
 
@@ -1728,7 +1733,9 @@ function cExportDay(){
   <div class="row"><span>💳 Card / UPI</span><span><b>Rs.${(pmBreak.card||0).toLocaleString()}</b></span></div>
   <div class="row"><span>📱 QR Code</span><span><b>Rs.${(pmBreak.qr||0).toLocaleString()}</b></span></div>
   <div class="dash"></div>
-  <div class="row bold"><span>TOTAL REVENUE</span><span>Rs.${totalRevenue.toLocaleString()}</span></div>
+  ${totalDiscount>0?`<div class="row" style="color:green;"><span>Total Discounts Given</span><span>− Rs.${totalDiscount.toLocaleString()}</span></div>`:''}
+  ${totalTax>0?`<div class="row"><span>Total Tax Collected</span><span>Rs.${totalTax.toLocaleString()}</span></div>`:''}
+  <div class="row bold"><span>TOTAL REVENUE (after discount+tax)</span><span>Rs.\${totalRevenue.toLocaleString()}</span></div>
 
   ${catRows.length?`
   <div class="dash"></div>
@@ -1757,6 +1764,8 @@ function cExportDay(){
         <span>Rs.${(r.grand||0).toLocaleString()} <span class="pi pi-${r.payMethod||'cash'}">${r.payMethod||'cash'}</span></span>
       </div>
       <div class="r-card-meta">Table ${r.table} · ${r.rounds>1?r.rounds+' rounds · ':''}${new Date(r.savedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
+      ${(r.discTotal||0)>0?`<div style="font-size:10px;color:green;margin-bottom:3px;">Discount: ${r.discPct>0?r.discPct+'%':''}${r.discAmt>0?(r.discPct>0?' + ':'')+' Rs.'+Number(r.discAmt).toLocaleString():''} = − Rs.${Number(r.discTotal).toLocaleString()}</div>`:''}
+      ${(r.taxPct||0)>0?`<div style="font-size:10px;color:#555;margin-bottom:3px;">Tax (${r.taxPct}%): Rs.${Number(r.tax).toLocaleString()}</div>`:''}
       <div class="r-items">${(r.items||[]).map(i=>`${i.name} ×${i.qty} (Rs.${((i.price||0)*(i.qty||1)).toLocaleString()})`).join(' &nbsp;·&nbsp; ')}</div>
     </div>`).join('')}
   </div>`:'<div class="dash"></div><div style="text-align:center;color:#999;padding:20px;">No sales recorded today yet.</div>'}
