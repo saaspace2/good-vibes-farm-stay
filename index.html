@@ -346,11 +346,6 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .staff-name{font-size:14px;font-weight:800;color:var(--text);}
 .staff-role{font-size:11px;color:var(--muted);margin-top:2px;}
 .staff-acts{display:flex;gap:5px;flex-shrink:0;}
-/* DB status indicator */
-.db-status{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;}
-.db-status.ok{background:rgba(34,197,94,.1);color:#22c55e;}
-.db-status.err{background:rgba(239,68,68,.1);color:var(--red);}
-.db-status.loading{background:rgba(255,255,255,.07);color:var(--muted);}
 @media(max-width:360px){
   .menu-grid{grid-template-columns:1fr;}
   .table-grid{grid-template-columns:repeat(4,1fr);}
@@ -661,13 +656,16 @@ let _dbReady=false;
 
 async function _initDB(){
   try{
-    // Load initial data
     const [ordRes, rcRes, menuRes, staffRes] = await Promise.all([
       _supa.from('gv_orders').select('*').order('time', {ascending:false}),
       _supa.from('gv_receipts').select('*').order('savedAt', {ascending:false}),
       _supa.from('gv_menu_items').select('*').order('createdAt', {ascending:false}),
       _supa.from('gv_staff').select('*').order('createdAt', {ascending:true}),
     ]);
+    if(ordRes.error) console.error('Orders error:',ordRes.error);
+    if(rcRes.error) console.error('Receipts error:',rcRes.error);
+    if(menuRes.error) console.error('Menu error:',menuRes.error);
+    if(staffRes.error) console.error('Staff error:',staffRes.error);
     _orders = ordRes.data||[];
     _rcpts  = rcRes.data||[];
     _customItems = menuRes.data||[];
@@ -675,7 +673,6 @@ async function _initDB(){
     _dbReady = true;
     _refreshScreens();
 
-    // Realtime subscriptions
     _supa.channel('gv-changes')
       .on('postgres_changes',{event:'*',schema:'public',table:'gv_orders'}, _handleOrderChange)
       .on('postgres_changes',{event:'*',schema:'public',table:'gv_receipts'}, _handleRcptChange)
@@ -692,7 +689,6 @@ function _handleOrderChange(payload){
   else if(eventType==='UPDATE') { const i=_orders.findIndex(x=>x.id===n.id); if(i>=0)_orders[i]=n; else _orders.unshift(n); }
   else if(eventType==='DELETE') _orders=_orders.filter(x=>x.id!==o.id);
   _refreshScreens();
-  // Play sound for new orders in kitchen
   if(eventType==='INSERT' && document.getElementById('kitchenScreen').classList.contains('active')) kPlayAlert();
 }
 function _handleRcptChange(payload){
@@ -761,7 +757,7 @@ const GV = {
     o.id='ORD-'+Date.now();
     o.time=new Date().toISOString();
     o.status='pending';
-    o.items=JSON.stringify(o.items);
+    // FIX: items is jsonb — do NOT stringify, send as array directly
     const {error}=await _supa.from('gv_orders').insert(o);
     if(error) throw error;
   },
@@ -788,19 +784,15 @@ const GV = {
   async saveReceipt(r){
     r.savedAt=new Date().toISOString();
     r.receiptNo='GV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(_rcpts.length+1).padStart(4,'0');
-    r.items=JSON.stringify(r.items);
-    r.orderIds=JSON.stringify(r.orderIds||[]);
+    // FIX: items and orderIds are jsonb — do NOT stringify, send as arrays directly
     const {error}=await _supa.from('gv_receipts').insert(r);
     if(error) throw error;
     return r;
   },
+  // FIX: removed double-quoted column name bug
   async deleteReceipt(no){
-    const {error}=await _supa.from('gv_receipts').delete().eq('"receiptNo"',no);
-    if(error){
-      // try unquoted column name
-      const {error:e2}=await _supa.from('gv_receipts').delete().eq('receiptNo',no);
-      if(e2) throw e2;
-    }
+    const {error}=await _supa.from('gv_receipts').delete().eq('receiptNo',no);
+    if(error) throw error;
   },
   async clearAllReceipts(){
     const ids=_rcpts.map(r=>r.id);
@@ -844,11 +836,12 @@ const GV = {
 
   cats(){return[...new Set(this.menu.map(i=>i.cat))];},
 
-  // Helper: parse items from DB (stored as JSON string or array)
+  // FIX: parseItems now handles jsonb arrays (already parsed) AND legacy strings
   parseItems(items){
     if(!items) return [];
+    if(Array.isArray(items)) return items;
     if(typeof items==='string'){try{return JSON.parse(items);}catch{return [];}}
-    return items;
+    return [];
   }
 };
 
@@ -953,7 +946,6 @@ function doLogin(){
     else errEl.textContent='❌ Wrong office username or password.';
     return;
   }
-  // Waiter login
   const tryLogin=(attempt)=>{
     const waiter=_staffList.find(s=>s.username===user&&s.password===pass&&s.active!==false);
     if(waiter){
@@ -1354,7 +1346,7 @@ function cRenderReceipts(){
 }
 
 function cReprintReceipt(no){const r=GV.getReceipts().find(r=>r.receiptNo===no);if(r)cDoPrint(r);}
-function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>{const ids=typeof r.orderIds==='string'?JSON.parse(r.orderIds||'[]'):r.orderIds||[];return ids.includes(oid)||r.orderId===oid;});if(r)cDoPrint(r);else showToast('No saved receipt for this order','error');}
+function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>{const ids=Array.isArray(r.orderIds)?r.orderIds:(typeof r.orderIds==='string'?JSON.parse(r.orderIds||'[]'):[]);return ids.includes(oid)||r.orderId===oid;});if(r)cDoPrint(r);else showToast('No saved receipt for this order','error');}
 
 function cDoPrint(r){
   const items=GV.parseItems(r.items);
