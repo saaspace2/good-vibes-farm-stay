@@ -272,7 +272,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .a-search-input:focus{border-color:var(--admin2);}
 .a-cat-filter{display:flex;gap:7px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none;}
 .a-cat-filter::-webkit-scrollbar{display:none;}
-.a-cf-pill{flex-shrink:0;padding:4px 12px;border-radius:18px;background:var(--card);border:1.5px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.a-cf-pill{flex-shrink:0;padding:4px 12px;border-radius:18px;background:var(--card);border:1.5px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all .15px;white-space:nowrap;}
 .a-cf-pill.active{background:var(--admin);border-color:var(--admin2);color:#fff;}
 .a-menu-list{display:flex;flex-direction:column;gap:8px;padding:0 16px;}
 .a-item-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;display:flex;align-items:center;gap:12px;padding:10px 12px;}
@@ -300,6 +300,31 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 #renameCatModal .modal-box{text-align:left;}
 #renameCatInput{width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:11px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:15px;outline:none;margin-bottom:16px;}
 #renameCatInput:focus{border-color:var(--admin2);}
+/* ── ADMIN CREDENTIALS ── */
+.cred-section{padding:0 16px 100px;}
+.cred-intro{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px;padding:12px 14px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:12px;}
+.cred-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.cred-card-hdr{padding:14px 16px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.cred-card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cred-card-icon.admin{background:rgba(124,58,237,.2);}
+.cred-card-icon.manager{background:rgba(79,70,229,.2);}
+.cred-card-title{font-size:15px;font-weight:800;color:var(--text);}
+.cred-card-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.cred-badge{margin-left:auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:18px;}
+.cred-badge.active{background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.3);}
+.cred-fields{padding:14px 16px;}
+.cred-field{margin-bottom:13px;}
+.cred-label{display:block;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.cred-input{width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:11px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;}
+.cred-input:focus{border-color:var(--admin2);}
+.cred-input-wrap{position:relative;}
+.cred-input-wrap .cred-input{padding-right:44px;}
+.cred-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);padding:4px;}
+.cred-save-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--admin),#6d28d9);border:none;border-radius:12px;color:#fff;font-family:'Nunito';font-size:14px;font-weight:900;cursor:pointer;transition:opacity .2s;margin-top:4px;}
+.cred-save-btn:hover{opacity:.9;}
+.cred-save-btn:disabled{opacity:.4;cursor:not-allowed;}
+.cred-err{font-size:11px;color:var(--red);margin-top:6px;min-height:16px;}
+.cred-ok{font-size:11px;color:#22c55e;margin-top:6px;min-height:16px;}
 .form-drawer{position:fixed;bottom:0;left:0;right:0;max-height:92vh;background:#131e2b;border-radius:22px 22px 0 0;z-index:300;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
 .form-drawer.open{transform:translateY(0);}
 .form-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:299;display:none;backdrop-filter:blur(5px);}
@@ -578,6 +603,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
     <button class="office-tab active" onclick="oSetTab('menu',this)">🍽️ Menu</button>
     <button class="office-tab" onclick="oSetTab('categories',this)">🏷️ Categories</button>
     <button class="office-tab" onclick="oSetTab('staff',this)">👥 Staff</button>
+    <button class="office-tab" onclick="oSetTab('credentials',this)">🔑 Admin Login</button>
     <button class="office-tab" onclick="oSetTab('all',this)">📊 All Portals</button>
   </div>
   <div class="a-scroll" id="oMenuSection">
@@ -601,6 +627,108 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
     </div>
     <div id="staffList"></div>
   </div>
+
+  <!-- ══ ADMIN CREDENTIALS SECTION ══ -->
+  <div id="oCredSection" style="display:none;flex:1;overflow-y:auto;">
+    <div style="padding:14px 16px 6px;display:flex;align-items:center;gap:10px;">
+      <span style="font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--admin2);">🔑 Admin Login Credentials</span>
+    </div>
+    <div class="cred-section">
+      <div class="cred-intro">
+        🔒 Change the username and password for office accounts. These are used to log into the <b>Office</b> portal and to register new waiters. Changes take effect immediately — make sure to save your new credentials somewhere safe.
+      </div>
+
+      <!-- Admin Account -->
+      <div class="cred-card" id="credCardAdmin">
+        <div class="cred-card-hdr">
+          <div class="cred-card-icon admin">👑</div>
+          <div>
+            <div class="cred-card-title">Admin Account</div>
+            <div class="cred-card-sub" id="credAdminCurrentUser">Username: admin</div>
+          </div>
+          <span class="cred-badge active">Active</span>
+        </div>
+        <div class="cred-fields">
+          <div class="cred-field">
+            <label class="cred-label">New Username</label>
+            <input class="cred-input" id="credAdminUser" placeholder="New username" autocomplete="off">
+          </div>
+          <div class="cred-field">
+            <label class="cred-label">Current Password (to verify)</label>
+            <div class="cred-input-wrap">
+              <input class="cred-input" id="credAdminCurrentPass" type="password" placeholder="Enter current password">
+              <button class="cred-eye" onclick="toggleCredEye('credAdminCurrentPass',this)">👁️</button>
+            </div>
+          </div>
+          <div class="cred-field">
+            <label class="cred-label">New Password</label>
+            <div class="cred-input-wrap">
+              <input class="cred-input" id="credAdminNewPass" type="password" placeholder="Min 6 characters">
+              <button class="cred-eye" onclick="toggleCredEye('credAdminNewPass',this)">👁️</button>
+            </div>
+          </div>
+          <div class="cred-field">
+            <label class="cred-label">Confirm New Password</label>
+            <div class="cred-input-wrap">
+              <input class="cred-input" id="credAdminConfPass" type="password" placeholder="Re-enter new password">
+              <button class="cred-eye" onclick="toggleCredEye('credAdminConfPass',this)">👁️</button>
+            </div>
+          </div>
+          <div class="cred-err" id="credAdminErr"></div>
+          <div class="cred-ok" id="credAdminOk"></div>
+          <button class="cred-save-btn" id="credAdminSaveBtn" onclick="saveCredentials('admin')">🔐 Update Admin Credentials</button>
+        </div>
+      </div>
+
+      <!-- Manager Account -->
+      <div class="cred-card" id="credCardManager">
+        <div class="cred-card-hdr">
+          <div class="cred-card-icon manager">🏢</div>
+          <div>
+            <div class="cred-card-title">Manager Account</div>
+            <div class="cred-card-sub" id="credManagerCurrentUser">Username: manager</div>
+          </div>
+          <span class="cred-badge active">Active</span>
+        </div>
+        <div class="cred-fields">
+          <div class="cred-field">
+            <label class="cred-label">New Username</label>
+            <input class="cred-input" id="credManagerUser" placeholder="New username" autocomplete="off">
+          </div>
+          <div class="cred-field">
+            <label class="cred-label">Current Password (to verify)</label>
+            <div class="cred-input-wrap">
+              <input class="cred-input" id="credManagerCurrentPass" type="password" placeholder="Enter current password">
+              <button class="cred-eye" onclick="toggleCredEye('credManagerCurrentPass',this)">👁️</button>
+            </div>
+          </div>
+          <div class="cred-field">
+            <label class="cred-label">New Password</label>
+            <div class="cred-input-wrap">
+              <input class="cred-input" id="credManagerNewPass" type="password" placeholder="Min 6 characters">
+              <button class="cred-eye" onclick="toggleCredEye('credManagerNewPass',this)">👁️</button>
+            </div>
+          </div>
+          <div class="cred-field">
+            <label class="cred-label">Confirm New Password</label>
+            <div class="cred-input-wrap">
+              <input class="cred-input" id="credManagerConfPass" type="password" placeholder="Re-enter new password">
+              <button class="cred-eye" onclick="toggleCredEye('credManagerConfPass',this)">👁️</button>
+            </div>
+          </div>
+          <div class="cred-err" id="credManagerErr"></div>
+          <div class="cred-ok" id="credManagerOk"></div>
+          <button class="cred-save-btn" id="credManagerSaveBtn" onclick="saveCredentials('manager')">🔐 Update Manager Credentials</button>
+        </div>
+      </div>
+
+      <!-- Info box -->
+      <div style="background:rgba(244,162,97,.06);border:1px solid rgba(244,162,97,.2);border-radius:12px;padding:13px 14px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;">
+        ⚠️ <strong style="color:#f4a261;">Important:</strong> After changing credentials, you will need to use the new username and password on your next login. These credentials are stored securely in your Supabase database.
+      </div>
+    </div>
+  </div>
+
   <div id="oAllSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
     <div style="padding:14px 0 16px;font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--admin2);">All Portals</div>
     <div class="role-grid" style="max-width:100%;margin:0;">
@@ -616,7 +744,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   <div class="modal-box" style="text-align:left;">
     <div class="modal-title" style="margin-bottom:4px;">✏️ Rename Category</div>
     <div id="renameCatOld" style="font-size:11px;color:var(--muted);margin-bottom:14px;"></div>
-    <input id="renameCatInput" placeholder="New category name..." autocomplete="off" onkeydown="if(event.key==='Enter')doRenameCategory()">
+    <input id="renameCatInput" placeholder="New category name..." autocomplete="off" onkeydown="if(event.key==='Enter')doRenameCategory()" style="width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:11px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:15px;outline:none;margin-bottom:16px;">
     <div class="modal-btns">
       <button class="modal-btn modal-cancel" onclick="document.getElementById('renameCatModal').classList.remove('open')">Cancel</button>
       <button class="modal-btn" style="background:rgba(79,70,229,.2);color:var(--indigo2);border:1px solid rgba(79,70,229,.3);" onclick="doRenameCategory()">✏️ Rename</button>
@@ -681,6 +809,51 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 const SUPA_URL = 'https://eadczazfjdvzgunltsiv.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVhZGN6YXpmamR2emd1bmx0c2l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NzAzMzAsImV4cCI6MjA5MjI0NjMzMH0.4PLJ_XZ7HES7ylVpS8TkssBLkoch64713Zq0QkmcNvc';
 const _supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+/* ═══════════════════════════════════════════
+   ADMIN CREDENTIALS STORE
+   Stored in Supabase table: gv_admin_creds
+   Schema: id (text PK), username (text), password (text)
+   Rows: 'admin' and 'manager'
+═══════════════════════════════════════════ */
+
+// In-memory creds — seeded with defaults, overridden by DB on load
+let OFFICE_CREDS = [
+  {id:'admin',    user:'admin',   pass:'admin1234'},
+  {id:'manager',  user:'manager', pass:'manager123'},
+];
+
+async function _loadAdminCreds(){
+  try{
+    const {data,error} = await _supa.from('gv_admin_creds').select('*');
+    if(error){ console.warn('gv_admin_creds not found, using defaults. Create the table to persist changes.'); return; }
+    if(data && data.length){
+      data.forEach(row=>{
+        const idx = OFFICE_CREDS.findIndex(c=>c.id===row.id);
+        if(idx>=0) OFFICE_CREDS[idx] = {id:row.id, user:row.username, pass:row.password};
+        else OFFICE_CREDS.push({id:row.id, user:row.username, pass:row.password});
+      });
+    }
+    _refreshCredUI();
+  }catch(e){ console.warn('Admin creds load error:', e); }
+}
+
+async function _saveAdminCred(id, username, password){
+  const {error} = await _supa.from('gv_admin_creds').upsert({id, username, password}, {onConflict:'id'});
+  if(error) throw error;
+  const idx = OFFICE_CREDS.findIndex(c=>c.id===id);
+  if(idx>=0) OFFICE_CREDS[idx] = {id, user:username, pass:password};
+  else OFFICE_CREDS.push({id, user:username, pass:password});
+}
+
+function _refreshCredUI(){
+  const admin   = OFFICE_CREDS.find(c=>c.id==='admin');
+  const manager = OFFICE_CREDS.find(c=>c.id==='manager');
+  if(admin)   document.getElementById('credAdminCurrentUser').textContent   = 'Username: ' + admin.user;
+  if(manager) document.getElementById('credManagerCurrentUser').textContent = 'Username: ' + manager.user;
+}
+
+function isOfficePass(p){ return OFFICE_CREDS.some(c=>c.pass===p); }
 
 /* ═══════════════════════════════════════════
    IN-MEMORY STORE + REALTIME
@@ -786,97 +959,31 @@ const GV = {
   getCustomItems(){return _customItems;},
   getStaff(){return _staffList;},
 
-  // ── Orders ──
-  async addOrder(o){
-    o.id='ORD-'+Date.now();
-    o.time=new Date().toISOString();
-    o.status='pending';
-    const {error}=await _supa.from('gv_orders').insert(o);
-    if(error) throw error;
-  },
-  async updateStatus(id,status){
-    const {error}=await _supa.from('gv_orders').update({status,updatedAt:new Date().toISOString()}).eq('id',id);
-    if(error) throw error;
-  },
-  async deleteOrder(id){
-    const {error}=await _supa.from('gv_orders').delete().eq('id',id);
-    if(error) throw error;
-  },
-  async deleteAllPaid(){
-    const {error}=await _supa.from('gv_orders').delete().eq('status','paid');
-    if(error) throw error;
-  },
-  async markTablePaid(tableNum){
-    const ids=_orders.filter(o=>o.table===String(tableNum)&&o.status!=='paid').map(o=>o.id);
-    if(!ids.length) return;
-    const {error}=await _supa.from('gv_orders').update({status:'paid',updatedAt:new Date().toISOString()}).in('id',ids);
-    if(error) throw error;
-  },
+  async addOrder(o){o.id='ORD-'+Date.now();o.time=new Date().toISOString();o.status='pending';const {error}=await _supa.from('gv_orders').insert(o);if(error)throw error;},
+  async updateStatus(id,status){const {error}=await _supa.from('gv_orders').update({status,updatedAt:new Date().toISOString()}).eq('id',id);if(error)throw error;},
+  async deleteOrder(id){const {error}=await _supa.from('gv_orders').delete().eq('id',id);if(error)throw error;},
+  async deleteAllPaid(){const {error}=await _supa.from('gv_orders').delete().eq('status','paid');if(error)throw error;},
+  async markTablePaid(tableNum){const ids=_orders.filter(o=>o.table===String(tableNum)&&o.status!=='paid').map(o=>o.id);if(!ids.length)return;const {error}=await _supa.from('gv_orders').update({status:'paid',updatedAt:new Date().toISOString()}).in('id',ids);if(error)throw error;},
 
-  // ── Receipts ──
-  async saveReceipt(r){
-    r.savedAt=new Date().toISOString();
-    r.receiptNo='GV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(_rcpts.length+1).padStart(4,'0');
-    const {error}=await _supa.from('gv_receipts').insert(r);
-    if(error) throw error;
-    return r;
-  },
-  async deleteReceipt(no){
-    const {error}=await _supa.from('gv_receipts').delete().eq('receiptNo',no);
-    if(error) throw error;
-  },
-  async clearAllReceipts(){
-    const ids=_rcpts.map(r=>r.id);
-    if(!ids.length) return;
-    const {error}=await _supa.from('gv_receipts').delete().in('id',ids);
-    if(error) throw error;
-  },
+  async saveReceipt(r){r.savedAt=new Date().toISOString();r.receiptNo='GV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(_rcpts.length+1).padStart(4,'0');const {error}=await _supa.from('gv_receipts').insert(r);if(error)throw error;return r;},
+  async deleteReceipt(no){const {error}=await _supa.from('gv_receipts').delete().eq('receiptNo',no);if(error)throw error;},
+  async clearAllReceipts(){const ids=_rcpts.map(r=>r.id);if(!ids.length)return;const {error}=await _supa.from('gv_receipts').delete().in('id',ids);if(error)throw error;},
 
-  // ── Menu ──
-  async addMenuItem(item){
-    item.createdAt=new Date().toISOString();
-    if(!item.id) item.id='CUSTOM-'+Date.now();
-    const {error}=await _supa.from('gv_menu_items').insert(item);
-    if(error) throw error;
-  },
-  async updateMenuItem(id,data){
-    data.updatedAt=new Date().toISOString();
-    const {error}=await _supa.from('gv_menu_items').update(data).eq('id',id);
-    if(error) throw error;
-  },
-  async deleteMenuItem(id){
-    const {error}=await _supa.from('gv_menu_items').delete().eq('id',id);
-    if(error) throw error;
-  },
+  async addMenuItem(item){item.createdAt=new Date().toISOString();if(!item.id)item.id='CUSTOM-'+Date.now();const {error}=await _supa.from('gv_menu_items').insert(item);if(error)throw error;},
+  async updateMenuItem(id,data){data.updatedAt=new Date().toISOString();const {error}=await _supa.from('gv_menu_items').update(data).eq('id',id);if(error)throw error;},
+  async deleteMenuItem(id){const {error}=await _supa.from('gv_menu_items').delete().eq('id',id);if(error)throw error;},
 
-  // ── Staff ──
-  async addStaff(s){
-    s.createdAt=new Date().toISOString();
-    s.active=true;
-    const {error}=await _supa.from('gv_staff').insert(s);
-    if(error) throw error;
-  },
-  async updateStaff(id,data){
-    const {error}=await _supa.from('gv_staff').update(data).eq('id',id);
-    if(error) throw error;
-  },
-  async deleteStaff(id){
-    const {error}=await _supa.from('gv_staff').delete().eq('id',id);
-    if(error) throw error;
-  },
+  async addStaff(s){s.createdAt=new Date().toISOString();s.active=true;const {error}=await _supa.from('gv_staff').insert(s);if(error)throw error;},
+  async updateStaff(id,data){const {error}=await _supa.from('gv_staff').update(data).eq('id',id);if(error)throw error;},
+  async deleteStaff(id){const {error}=await _supa.from('gv_staff').delete().eq('id',id);if(error)throw error;},
 
   cats(){return[...new Set(this.menu.map(i=>i.cat))];},
-
-  parseItems(items){
-    if(!items) return [];
-    if(Array.isArray(items)) return items;
-    if(typeof items==='string'){try{return JSON.parse(items);}catch{return [];}}
-    return [];
-  }
+  parseItems(items){if(!items)return[];if(Array.isArray(items))return items;if(typeof items==='string'){try{return JSON.parse(items);}catch{return[];}}return[];}
 };
 
 // Start DB
 _initDB();
+_loadAdminCreds();
 </script>
 
 <script>
@@ -884,38 +991,15 @@ _initDB();
    NAVIGATION + MODAL + TOAST
 ═══════════════════════════════════════════ */
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function backHome(){
-  if(_currentRole==='waiter'){showScreen('waiterScreen');wInit();}
-  else showScreen('homeScreen');
-}
+function backHome(){if(_currentRole==='waiter'){showScreen('waiterScreen');wInit();}else showScreen('homeScreen');}
 function goWaiter(){showScreen('waiterScreen');wInit();}
-function goKitchen(){
-  if(_currentRole==='waiter'){showToast('❌ No access','error');return;}
-  showScreen('kitchenScreen');kRender();
-}
-function goCashier(){
-  if(_currentRole==='waiter'){showToast('❌ No access','error');return;}
-  showScreen('cashierScreen');cRenderOrders();
-}
-function goAdmin(){
-  if(_currentRole&&_currentRole!=='office'){showToast('❌ Office access only','error');return;}
-  showScreen('adminScreen');aInit();
-}
-function showModal(title,sub,onConfirm){
-  document.getElementById('modalTitle').textContent=title;
-  document.getElementById('modalSub').textContent=sub;
-  document.getElementById('modalConfirm').onclick=()=>{onConfirm();closeModal();};
-  document.getElementById('modalOv').classList.add('open');
-}
+function goKitchen(){if(_currentRole==='waiter'){showToast('❌ No access','error');return;}showScreen('kitchenScreen');kRender();}
+function goCashier(){if(_currentRole==='waiter'){showToast('❌ No access','error');return;}showScreen('cashierScreen');cRenderOrders();}
+function goAdmin(){if(_currentRole&&_currentRole!=='office'){showToast('❌ Office access only','error');return;}showScreen('adminScreen');aInit();}
+function showModal(title,sub,onConfirm){document.getElementById('modalTitle').textContent=title;document.getElementById('modalSub').textContent=sub;document.getElementById('modalConfirm').onclick=()=>{onConfirm();closeModal();};document.getElementById('modalOv').classList.add('open');}
 function closeModal(){document.getElementById('modalOv').classList.remove('open');}
 let _toastTimer=null;
-function showToast(msg,type='success'){
-  const t=document.getElementById('toast');
-  if(_toastTimer)clearTimeout(_toastTimer);
-  t.textContent=msg;t.className='toast '+type;
-  void t.offsetWidth;t.classList.add('show');
-  _toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
-}
+function showToast(msg,type='success'){const t=document.getElementById('toast');if(_toastTimer)clearTimeout(_toastTimer);t.textContent=msg;t.className='toast '+type;void t.offsetWidth;t.classList.add('show');_toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
 </script>
 
 <script>
@@ -923,8 +1007,6 @@ function showToast(msg,type='success'){
    AUTH
 ═══════════════════════════════════════════ */
 let _currentRole=null, _currentUser=null, _loginRole='waiter';
-const OFFICE_CREDS=[{user:'admin',pass:'admin1234'},{user:'manager',pass:'manager123'}];
-function isOfficePass(p){return OFFICE_CREDS.some(c=>c.pass===p);}
 
 function lSwitchTab(tab){
   const lp=document.getElementById('loginPanel'),rp=document.getElementById('registerPanel');
@@ -978,11 +1060,7 @@ function doLogin(){
   }
   const tryLogin=(attempt)=>{
     const waiter=_staffList.find(s=>s.username===user&&s.password===pass&&s.active!==false);
-    if(waiter){
-      _currentRole='waiter';_currentUser=waiter.name||user;
-      btn.disabled=false;btn.textContent='🔐 Login';
-      showScreen('waiterScreen');wInit();return;
-    }
+    if(waiter){_currentRole='waiter';_currentUser=waiter.name||user;btn.disabled=false;btn.textContent='🔐 Login';showScreen('waiterScreen');wInit();return;}
     if(_staffList.length===0&&attempt<4){setTimeout(()=>tryLogin(attempt+1),700);return;}
     btn.disabled=false;btn.textContent='🔐 Login';
     errEl.textContent='❌ Wrong username or password.';
@@ -1008,13 +1086,9 @@ async function doRegister(){
   try{
     await GV.addStaff({name,username:user,password:pass});
     btn.disabled=false;btn.textContent='📝 Register Waiter';
-    errEl.style.color='var(--green2)';
-    errEl.textContent='✅ Waiter registered!';
+    errEl.style.color='var(--green2)';errEl.textContent='✅ Waiter registered!';
     setTimeout(()=>{errEl.style.color='var(--red)';lSwitchTab('login');},2000);
-  }catch(e){
-    btn.disabled=false;btn.textContent='📝 Register Waiter';
-    errEl.textContent='❌ Error: '+e.message;
-  }
+  }catch(e){btn.disabled=false;btn.textContent='📝 Register Waiter';errEl.textContent='❌ Error: '+e.message;}
 }
 
 function doLogout(){
@@ -1073,11 +1147,7 @@ function wSelectTable(n){
 function wBuildCatPills(){
   const cats=['All',...GV.cats()];
   const el=document.getElementById('catPills');el.innerHTML='';
-  cats.forEach(c=>{
-    const d=document.createElement('div');
-    d.className='cat-pill'+(c===wActiveCat?' active':'');
-    d.textContent=c;d.onclick=()=>wSetCat(c);el.appendChild(d);
-  });
+  cats.forEach(c=>{const d=document.createElement('div');d.className='cat-pill'+(c===wActiveCat?' active':'');d.textContent=c;d.onclick=()=>wSetCat(c);el.appendChild(d);});
 }
 
 function wSetCat(c){wActiveCat=c;wBuildCatPills();wRenderMenu();document.querySelector('.w-scroll').scrollTop=0;}
@@ -1088,8 +1158,7 @@ function wRenderMenu(){
   if(q){
     const matches=GV.menu.filter(i=>i.name.toLowerCase().includes(q));
     if(!matches.length){const e=document.createElement('div');e.style.cssText='grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted);font-weight:700;';e.textContent='No items found';grid.appendChild(e);}
-    else matches.forEach(item=>grid.appendChild(wMakeCard(item)));
-    return;
+    else matches.forEach(item=>grid.appendChild(wMakeCard(item)));return;
   }
   const catsToShow=wActiveCat==='All'?GV.cats():[wActiveCat];
   catsToShow.forEach(cat=>{
@@ -1108,7 +1177,6 @@ function wMakeCard(item){
 }
 
 function wChg(id,delta,e){e.stopPropagation();const n=(wCart[id]||0)+delta;if(n<=0)delete wCart[id];else wCart[id]=n;wUpdateCartUI();wRenderMenu();if(Object.keys(wCart).length>0)wRenderDrawer();}
-
 function wCartItems(){return Object.entries(wCart).map(([id,qty])=>{const item=GV.menu.find(m=>m.id===id);return{...item,qty};});}
 function wCartTotal(){return wCartItems().reduce((s,i)=>s+i.price*i.qty,0);}
 
@@ -1154,12 +1222,9 @@ function toggleSound(){kSoundOn=!kSoundOn;const b=document.getElementById('sound
 function kPlayAlert(){
   if(!kSoundOn)return;
   try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const osc=ctx.createOscillator();const gain=ctx.createGain();
-    osc.connect(gain);gain.connect(ctx.destination);
-    osc.type='sine';osc.frequency.setValueAtTime(880,ctx.currentTime);osc.frequency.setValueAtTime(660,ctx.currentTime+.15);osc.frequency.setValueAtTime(880,ctx.currentTime+.3);
-    gain.gain.setValueAtTime(.3,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.6);
-    osc.start();osc.stop(ctx.currentTime+.6);
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();const osc=ctx.createOscillator();const gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';osc.frequency.setValueAtTime(880,ctx.currentTime);osc.frequency.setValueAtTime(660,ctx.currentTime+.15);osc.frequency.setValueAtTime(880,ctx.currentTime+.3);
+    gain.gain.setValueAtTime(.3,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.6);osc.start();osc.stop(ctx.currentTime+.6);
   }catch(e){}
 }
 
@@ -1176,10 +1241,8 @@ function kRender(){
   if(!orders.length){grid.innerHTML='<div class="k-empty"><span class="k-empty-icon">🍳</span><div style="font-size:17px;font-weight:800;">No orders here</div></div>';return;}
   const slabel={pending:'New Order',cooking:'Cooking',ready:'Ready!',served:'Served',paid:'Paid'};
   grid.innerHTML=orders.map(o=>{
-    const items=GV.parseItems(o.items);
-    const el=kElapsed(o.time);const late=el>15&&!['ready','paid','served'].includes(o.status);
-    const canDel=['served','paid'].includes(o.status);
-    const isO=o.sentByRole==='office';
+    const items=GV.parseItems(o.items);const el=kElapsed(o.time);const late=el>15&&!['ready','paid','served'].includes(o.status);
+    const canDel=['served','paid'].includes(o.status);const isO=o.sentByRole==='office';
     return`<div class="k-card ${o.status} ${late?'late':''}">
       <div class="k-card-hdr"><div><div class="k-tnum"><span>Table </span>${o.table}</div><div class="k-time">🕐 ${el}m ago ${late?'<span class="late-warn">⚠️ LATE</span>':''}</div><div style="font-size:10px;font-weight:700;margin-top:2px;color:${isO?'#a78bfa':'#52b788'}">${isO?'🏢':'🛎️'} ${o.sentBy||'Office'}</div></div><span class="k-badge ${o.status}">${slabel[o.status]||o.status}</span></div>
       <div class="k-items">${items.map(i=>`<div class="k-item-row"><span class="ki-name">${i.emoji||'🍽️'} ${i.name}</span><span class="ki-qty">×${i.qty}</span></div>`).join('')}<div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>#${o.id.slice(-6)}</span><span style="font-weight:700;color:var(--text)">Rs. ${(o.total||0).toLocaleString()}</span></div></div>
@@ -1212,27 +1275,22 @@ function kPrint(id){
 let cActiveTab='orders',cOrderFilter='unpaid',cSelectedTable=null;
 
 function cShowTab(tab,btn){
-  cActiveTab=tab;
-  document.querySelectorAll('.c-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  cActiveTab=tab;document.querySelectorAll('.c-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
   document.getElementById('cOrdersTab').style.display=tab==='orders'?'block':'none';
   document.getElementById('billPanel').style.display='none';
   document.getElementById('receiptsPanel').style.display=tab==='receipts'?'block':'none';
-  if(tab==='receipts')cRenderReceipts();
-  if(tab==='orders')cRenderOrders();
+  if(tab==='receipts')cRenderReceipts();if(tab==='orders')cRenderOrders();
 }
 
 function cSetOfilt(f,btn){cOrderFilter=f;document.querySelectorAll('.c-ofilt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');cRenderOrders();}
 
 function cGroupByTable(orders){
-  const map={};
-  orders.forEach(o=>{if(!map[o.table])map[o.table]={table:o.table,orders:[],total:0};map[o.table].orders.push(o);map[o.table].total+=(o.total||0);});
+  const map={};orders.forEach(o=>{if(!map[o.table])map[o.table]={table:o.table,orders:[],total:0};map[o.table].orders.push(o);map[o.table].total+=(o.total||0);});
   return Object.values(map).sort((a,b)=>Number(a.table)-Number(b.table));
 }
 
 function cRenderOrders(){
-  const all=GV.getOrders();
-  const unpaid=all.filter(o=>o.status!=='paid');
-  const paid=all.filter(o=>o.status==='paid');
+  const all=GV.getOrders();const unpaid=all.filter(o=>o.status!=='paid');const paid=all.filter(o=>o.status==='paid');
   const rev=paid.reduce((s,o)=>s+(o.total||0),0);
   document.getElementById('cStats').innerHTML=`<div class="c-stat"><div class="c-stat-val" style="color:#f4a261">${cGroupByTable(unpaid).length}</div><div class="c-stat-lbl">Unpaid Tables</div></div><div class="c-stat"><div class="c-stat-val" style="color:#22c55e">${paid.length}</div><div class="c-stat-lbl">Paid Orders</div></div><div class="c-stat"><div class="c-stat-val" style="color:#818cf8;font-size:13px;">Rs.${rev.toLocaleString()}</div><div class="c-stat-lbl">Revenue</div></div>`;
   const list=document.getElementById('cOrders');
@@ -1242,10 +1300,7 @@ function cRenderOrders(){
     document.getElementById('cClearPaidBtn').style.display='none';
     if(!groups.length){list.innerHTML='<div class="empty-state"><span class="empty-icon">🎉</span><div style="font-size:14px;font-weight:800;">All tables settled!</div></div>';return;}
     list.innerHTML=groups.map(g=>{
-      const ordersHtml=g.orders.map(o=>{
-        const items=GV.parseItems(o.items);
-        return`<div class="ctb-order-row"><div><span class="ctb-order-badge ${o.status}">${o.status}</span><div class="ctb-order-items">${items.slice(0,3).map(i=>`${i.emoji||'🍽️'} ${i.name} ×${i.qty}`).join(' · ')}${items.length>3?` +${items.length-3} more`:''}</div></div><div class="ctb-order-total">Rs.${(o.total||0).toLocaleString()}</div></div>`;
-      }).join('');
+      const ordersHtml=g.orders.map(o=>{const items=GV.parseItems(o.items);return`<div class="ctb-order-row"><div><span class="ctb-order-badge ${o.status}">${o.status}</span><div class="ctb-order-items">${items.slice(0,3).map(i=>`${i.emoji||'🍽️'} ${i.name} ×${i.qty}`).join(' · ')}${items.length>3?` +${items.length-3} more`:''}</div></div><div class="ctb-order-total">Rs.${(o.total||0).toLocaleString()}</div></div>`;}).join('');
       return`<div class="c-table-bill"><div class="ctb-header"><div><div class="ctb-table-lbl">TABLE</div><div class="ctb-table-num">${g.table}</div></div><div class="ctb-right"><div class="ctb-grand">Rs.${g.total.toLocaleString()}</div><div class="ctb-order-count">${g.orders.length} order${g.orders.length!==1?'s':''}</div></div></div><div class="ctb-orders-list">${ordersHtml}</div><div class="ctb-footer"><button class="ctb-btn ctb-bill-btn" onclick="cOpenTableBill('${g.table}')">🧾 Open Combined Bill</button><button class="ctb-btn ctb-del-btn" onclick="cConfirmDeleteTable('${g.table}',${g.orders.length})">🗑️</button></div></div>`;
     }).join('');
   }else if(cOrderFilter==='paid'){
@@ -1265,110 +1320,64 @@ function cOpenTableBill(tableNum){
   cSelectedTable=String(tableNum);
   const tableOrders=GV.getOrders().filter(o=>o.table===cSelectedTable&&o.status!=='paid');
   if(!tableOrders.length){showToast('No unpaid orders for this table','error');return;}
-  document.getElementById('cOrdersTab').style.display='none';
-  document.getElementById('billPanel').style.display='block';
+  document.getElementById('cOrdersTab').style.display='none';document.getElementById('billPanel').style.display='block';
   document.getElementById('billTitle').textContent=`Table ${cSelectedTable} — Combined Bill`;
   const pb=document.getElementById('payBtn');pb.disabled=false;pb.textContent='💳 Mark Table Paid & Print';
   cUpdateBill();
 }
 
 function cCloseBill(){
-  cSelectedTable=null;
-  document.getElementById('billPanel').style.display='none';
-  document.getElementById('cOrdersTab').style.display='block';
-  document.getElementById('discPct').value='0';
-  document.getElementById('discAmt').value='0';
-  document.getElementById('taxSel').value='0';
-  cRenderOrders();
+  cSelectedTable=null;document.getElementById('billPanel').style.display='none';document.getElementById('cOrdersTab').style.display='block';
+  document.getElementById('discPct').value='0';document.getElementById('discAmt').value='0';document.getElementById('taxSel').value='0';cRenderOrders();
 }
 
 function cGetTableOrders(){return GV.getOrders().filter(o=>o.table===cSelectedTable&&o.status!=='paid');}
 
 function cGetTotals(){
-  const tp=Number(document.getElementById('taxSel').value);
-  const subtotal=cGetTableOrders().reduce((s,o)=>s+(o.total||0),0);
+  const tp=Number(document.getElementById('taxSel').value);const subtotal=cGetTableOrders().reduce((s,o)=>s+(o.total||0),0);
   const discPctVal=Math.max(0,Math.min(100,Number(document.getElementById('discPct').value)||0));
   const discAmtVal=Math.max(0,Number(document.getElementById('discAmt').value)||0);
   const discFromPct=Math.round(subtotal*discPctVal/100);
   const discTotal=Math.min(subtotal,discFromPct+discAmtVal);
-  const afterDisc=subtotal-discTotal;
-  const tax=Math.round(afterDisc*tp/100);
+  const afterDisc=subtotal-discTotal;const tax=Math.round(afterDisc*tp/100);
   return{taxPct:tp,tax,subtotal,discPct:discPctVal,discAmt:discAmtVal,discFromPct,discTotal,afterDisc,grand:afterDisc+tax};
 }
 
 function cUpdateBill(){
-  if(!cSelectedTable)return;
-  const tableOrders=cGetTableOrders();
-  if(!tableOrders.length){cCloseBill();return;}
-  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();
-  const now=new Date();
+  if(!cSelectedTable)return;const tableOrders=cGetTableOrders();if(!tableOrders.length){cCloseBill();return;}
+  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();const now=new Date();
   let itemsHtml='';
-  tableOrders.forEach((o,idx)=>{
-    const items=GV.parseItems(o.items);
-    if(tableOrders.length>1) itemsHtml+=`<div class="r-section-hdr">Round ${idx+1}</div>`;
-    itemsHtml+=items.map(i=>`<div class="r-row"><span>${i.name} ×${i.qty}</span><span>Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('');
-  });
-  document.getElementById('billReceipt').innerHTML=`
-    <div class="r-center"><div class="r-name">GOOD VIBES</div><div class="r-name" style="font-size:13px;letter-spacing:2px;">FARM STAY</div><div class="r-sub">Dharan-5, Sunsari, Nepal</div><div class="r-sub">@goodvibesfarmstay</div></div>
-    <div class="r-dash"></div>
-    <div class="r-row"><span class="r-lbl">Table</span><span style="font-weight:800">${cSelectedTable}</span></div>
-    <div class="r-row"><span class="r-lbl">Date</span><span>${now.toLocaleDateString('en-GB')}</span></div>
-    <div class="r-row"><span class="r-lbl">Time</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div>
-    <div class="r-row"><span class="r-lbl">Orders</span><span>${tableOrders.length} round${tableOrders.length!==1?'s':''}</span></div>
-    <div class="r-dash"></div>
-    <div class="r-row" style="font-size:11px;font-weight:800;color:var(--muted);"><span>ITEM</span><span>AMOUNT</span></div>
-    <div class="r-dash"></div>
-    ${itemsHtml}
-    <div class="r-dash"></div>
-    <div class="r-row"><span>Subtotal</span><span>Rs.${subtotal.toLocaleString()}</span></div>
-    ${discTotal>0?`<div class="r-row" style="color:#22c55e;font-weight:700;"><span>Discount${discPct>0?' ('+discPct+'%)':''}${discAmt>0?(discPct>0?' + ':'')+' Rs.'+discAmt.toLocaleString():''}</span><span>− Rs.${discTotal.toLocaleString()}</span></div>`:''}
-    ${taxPct>0?`<div class="r-row"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}
-    <div class="r-dash"></div>
-    <div class="r-row rtotal"><span>GRAND TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>
-    <div class="r-dash"></div>
-    <div style="text-align:center;padding-top:6px;font-size:12px;color:var(--muted);">Thank you! Please visit again 🌿</div>`;
+  tableOrders.forEach((o,idx)=>{const items=GV.parseItems(o.items);if(tableOrders.length>1)itemsHtml+=`<div class="r-section-hdr">Round ${idx+1}</div>`;itemsHtml+=items.map(i=>`<div class="r-row"><span>${i.name} ×${i.qty}</span><span>Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('');});
+  document.getElementById('billReceipt').innerHTML=`<div class="r-center"><div class="r-name">GOOD VIBES</div><div class="r-name" style="font-size:13px;letter-spacing:2px;">FARM STAY</div><div class="r-sub">Dharan-5, Sunsari, Nepal</div><div class="r-sub">@goodvibesfarmstay</div></div><div class="r-dash"></div><div class="r-row"><span class="r-lbl">Table</span><span style="font-weight:800">${cSelectedTable}</span></div><div class="r-row"><span class="r-lbl">Date</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r-row"><span class="r-lbl">Time</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="r-row"><span class="r-lbl">Orders</span><span>${tableOrders.length} round${tableOrders.length!==1?'s':''}</span></div><div class="r-dash"></div><div class="r-row" style="font-size:11px;font-weight:800;color:var(--muted);"><span>ITEM</span><span>AMOUNT</span></div><div class="r-dash"></div>${itemsHtml}<div class="r-dash"></div><div class="r-row"><span>Subtotal</span><span>Rs.${subtotal.toLocaleString()}</span></div>${discTotal>0?`<div class="r-row" style="color:#22c55e;font-weight:700;"><span>Discount${discPct>0?' ('+discPct+'%)':''}${discAmt>0?(discPct>0?' + ':'')+' Rs.'+discAmt.toLocaleString():''}</span><span>− Rs.${discTotal.toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r-row"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}<div class="r-dash"></div><div class="r-row rtotal"><span>GRAND TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div><div class="r-dash"></div><div style="text-align:center;padding-top:6px;font-size:12px;color:var(--muted);">Thank you! Please visit again 🌿</div>`;
 }
 
 async function cMarkPaid(){
-  if(!cSelectedTable)return;
-  const tableOrders=cGetTableOrders();if(!tableOrders.length)return;
-  const _ct=cGetTotals();
+  if(!cSelectedTable)return;const tableOrders=cGetTableOrders();if(!tableOrders.length)return;const _ct=cGetTotals();
   const confirmed=await new Promise(resolve=>{
     showModal('⚠️ Confirm Payment',`Table ${cSelectedTable} · Grand Total: Rs.${_ct.grand.toLocaleString()}\nMark as PAID and print receipt?`,()=>resolve(true));
-    const cb=document.getElementById('modalConfirm');
-    cb.textContent='🖨️ Print & Confirm';cb.style.background='rgba(34,197,94,.2)';cb.style.color='#22c55e';cb.style.borderColor='rgba(34,197,94,.4)';
+    const cb=document.getElementById('modalConfirm');cb.textContent='🖨️ Print & Confirm';cb.style.background='rgba(34,197,94,.2)';cb.style.color='#22c55e';cb.style.borderColor='rgba(34,197,94,.4)';
     document.querySelector('#modalOv .modal-cancel').onclick=()=>{closeModal();resolve(false);};
   });
   const _cb=document.getElementById('modalConfirm');_cb.textContent='Delete';_cb.style.background='';_cb.style.color='';_cb.style.borderColor='';
   if(!confirmed)return;
   const pb=document.getElementById('payBtn');pb.disabled=true;pb.textContent='⏳ Processing...';
   try{
-    const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();
-    const pm=document.getElementById('paySel').value;
+    const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();const pm=document.getElementById('paySel').value;
     const allItems=tableOrders.flatMap(o=>GV.parseItems(o.items));
     const rcpt=await GV.saveReceipt({tableNum:cSelectedTable,table:cSelectedTable,items:allItems,orderIds:tableOrders.map(o=>o.id),subtotal,taxPct,tax,grand,discPct,discAmt,discTotal,afterDisc,payMethod:pm,rounds:tableOrders.length,orderTime:tableOrders[0].time});
-    await GV.markTablePaid(cSelectedTable);
-    cDoPrint(rcpt);pb.textContent='✅ Paid!';
-    setTimeout(()=>cCloseBill(),1600);
-  }catch(err){
-    showToast('❌ Payment failed: '+err.message,'error');
-    pb.disabled=false;pb.textContent='💳 Mark Table Paid & Print';
-  }
+    await GV.markTablePaid(cSelectedTable);cDoPrint(rcpt);pb.textContent='✅ Paid!';setTimeout(()=>cCloseBill(),1600);
+  }catch(err){showToast('❌ Payment failed: '+err.message,'error');pb.disabled=false;pb.textContent='💳 Mark Table Paid & Print';}
 }
 
 function cPrintBill(){
-  if(!cSelectedTable)return;
-  const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();
-  const tableOrders=cGetTableOrders();
-  const allItems=tableOrders.flatMap(o=>GV.parseItems(o.items));
+  if(!cSelectedTable)return;const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();
+  const tableOrders=cGetTableOrders();const allItems=tableOrders.flatMap(o=>GV.parseItems(o.items));
   const w=window.open('','_blank','width=420,height=640');
-  w.document.write(cReceiptHTML(cSelectedTable,allItems,subtotal,taxPct,tax,grand,'PREVIEW',new Date(),tableOrders.length,discPct,discAmt,discTotal));
-  w.document.close();
+  w.document.write(cReceiptHTML(cSelectedTable,allItems,subtotal,taxPct,tax,grand,'PREVIEW',new Date(),tableOrders.length,discPct,discAmt,discTotal));w.document.close();
 }
 
 function cRenderReceipts(){
-  const list=GV.getReceipts();
-  document.getElementById('cRcptCount').textContent=`${list.length} receipt${list.length!==1?'s':''}`;
+  const list=GV.getReceipts();document.getElementById('cRcptCount').textContent=`${list.length} receipt${list.length!==1?'s':''}`;
   const el=document.getElementById('rList');
   if(!list.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">🧾</span><div style="font-size:14px;font-weight:800;">No receipts yet</div></div>';return;}
   const pi={cash:'💵',card:'💳',qr:'📱'};
@@ -1379,64 +1388,24 @@ function cReprintReceipt(no){const r=GV.getReceipts().find(r=>r.receiptNo===no);
 function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>{const ids=Array.isArray(r.orderIds)?r.orderIds:(typeof r.orderIds==='string'?JSON.parse(r.orderIds||'[]'):[]);return ids.includes(oid)||r.orderId===oid;});if(r)cDoPrint(r);else showToast('No saved receipt for this order','error');}
 
 function cDoPrint(r){
-  const items=GV.parseItems(r.items);
-  const now=new Date(r.savedAt);
+  const items=GV.parseItems(r.items);const now=new Date(r.savedAt);
   const w=window.open('','_blank','width=420,height=640');
-  w.document.write(cReceiptHTML(r.table,items,r.subtotal,r.taxPct,r.tax,r.grand,r.receiptNo,now,r.rounds||1,r.discPct||0,r.discAmt||0,r.discTotal||0));
-  w.document.close();
+  w.document.write(cReceiptHTML(r.table,items,r.subtotal,r.taxPct,r.tax,r.grand,r.receiptNo,now,r.rounds||1,r.discPct||0,r.discAmt||0,r.discTotal||0));w.document.close();
 }
 
 function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds,discPct,discAmt,discTotal){
-  return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:18px;max-width:290px;margin:0 auto;font-size:12px;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:14px;}.xl{font-size:18px;letter-spacing:3px;}.d{border-top:1px dashed #555;margin:8px 0;}.s{border-top:2px solid #000;margin:8px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}.sub{font-size:10px;color:#777;}@media print{button{display:none!important;}}</style></head><body>
-  <div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b" style="letter-spacing:2px;">FARM STAY</div><div class="sub" style="margin-top:3px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div>
-  <div class="d"></div>
-  <div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div>
-  <div class="r"><span>Table:</span><span class="b">${table}</span></div>
-  ${rounds>1?`<div class="r"><span>Rounds:</span><span>${rounds}</span></div>`:''}
-  <div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div>
-  <div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div>
-  <div class="d"></div>
-  <div class="r b sub"><span style="flex:1">ITEM</span><span style="width:22px;text-align:center">QTY</span><span style="width:60px;text-align:right">AMOUNT</span></div>
-  <div class="d"></div>
-  ${items.map(i=>`<div class="r"><span style="flex:1;padding-right:4px;">${i.name}</span><span style="width:22px;text-align:center;">${i.qty}</span><span style="width:60px;text-align:right;">Rs.${((i.price||0)*(i.qty||1)).toLocaleString()}</span></div>`).join('')}
-  <div class="d"></div>
-  <div class="r"><span>Subtotal</span><span>Rs.${(subtotal||0).toLocaleString()}</span></div>
-  ${(discTotal||0)>0?`<div class="r" style="color:green;"><span>Discount${discPct>0?' ('+discPct+'%)':''}${discAmt>0?(discPct>0?' + ':'')+' Rs.'+Number(discAmt).toLocaleString():''}</span><span>- Rs.${Number(discTotal).toLocaleString()}</span></div>`:''}
-  ${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${(tax||0).toLocaleString()}</span></div>`:''}
-  <div class="s"></div>
-  <div class="r b lg"><span>GRAND TOTAL</span><span>Rs.${(grand||0).toLocaleString()}</span></div>
-  <div class="s"></div>
-  <div class="c" style="margin-top:12px;"><div class="b" style="font-size:13px;">✨ Thank You! ✨</div><div class="sub" style="margin-top:4px;">Please visit again · Good Vibes Farm Stay 🌿</div></div>
-  <`+`script>window.onload=()=>window.print()<`+`/script></body></html>`;
+  return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:18px;max-width:290px;margin:0 auto;font-size:12px;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:14px;}.xl{font-size:18px;letter-spacing:3px;}.d{border-top:1px dashed #555;margin:8px 0;}.s{border-top:2px solid #000;margin:8px 0;}.r{display:flex;justify-content:space-between;padding:2px 0;}.sub{font-size:10px;color:#777;}@media print{button{display:none!important;}}</style></head><body><div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b" style="letter-spacing:2px;">FARM STAY</div><div class="sub" style="margin-top:3px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div><div class="d"></div><div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div><div class="r"><span>Table:</span><span class="b">${table}</span></div>${rounds>1?`<div class="r"><span>Rounds:</span><span>${rounds}</span></div>`:''}<div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div><div class="r b sub"><span style="flex:1">ITEM</span><span style="width:22px;text-align:center">QTY</span><span style="width:60px;text-align:right">AMOUNT</span></div><div class="d"></div>${items.map(i=>`<div class="r"><span style="flex:1;padding-right:4px;">${i.name}</span><span style="width:22px;text-align:center;">${i.qty}</span><span style="width:60px;text-align:right;">Rs.${((i.price||0)*(i.qty||1)).toLocaleString()}</span></div>`).join('')}<div class="d"></div><div class="r"><span>Subtotal</span><span>Rs.${(subtotal||0).toLocaleString()}</span></div>${(discTotal||0)>0?`<div class="r" style="color:green;"><span>Discount${discPct>0?' ('+discPct+'%)':''}${discAmt>0?(discPct>0?' + ':'')+' Rs.'+Number(discAmt).toLocaleString():''}</span><span>- Rs.${Number(discTotal).toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${(tax||0).toLocaleString()}</span></div>`:''}<div class="s"></div><div class="r b lg"><span>GRAND TOTAL</span><span>Rs.${(grand||0).toLocaleString()}</span></div><div class="s"></div><div class="c" style="margin-top:12px;"><div class="b" style="font-size:13px;">✨ Thank You! ✨</div><div class="sub" style="margin-top:4px;">Please visit again · Good Vibes Farm Stay 🌿</div></div><`+`script>window.onload=()=>window.print()<`+`/script></body></html>`;
 }
 
 function cExportDay(){
-  const receipts=GV.getReceipts();
-  const todayISO=new Date().toISOString().slice(0,10);
-  const today=new Date().toLocaleDateString('en-GB');
+  const receipts=GV.getReceipts();const todayISO=new Date().toISOString().slice(0,10);const today=new Date().toLocaleDateString('en-GB');
   const todayRcpts=receipts.filter(r=>r.savedAt&&r.savedAt.slice(0,10)===todayISO);
-  const totalRevenue=todayRcpts.reduce((s,r)=>s+(r.grand||0),0);
-  const pmBreak={cash:0,card:0,qr:0};
+  const totalRevenue=todayRcpts.reduce((s,r)=>s+(r.grand||0),0);const pmBreak={cash:0,card:0,qr:0};
   todayRcpts.forEach(r=>{const pm=r.payMethod||'cash';pmBreak[pm]=(pmBreak[pm]||0)+(r.grand||0);});
-  const itemBreak={};
-  todayRcpts.forEach(r=>{GV.parseItems(r.items).forEach(i=>{const k=i.name;if(!itemBreak[k])itemBreak[k]={qty:0,total:0};itemBreak[k].qty+=(i.qty||1);itemBreak[k].total+=(i.price||0)*(i.qty||1);});});
+  const itemBreak={};todayRcpts.forEach(r=>{GV.parseItems(r.items).forEach(i=>{const k=i.name;if(!itemBreak[k])itemBreak[k]={qty:0,total:0};itemBreak[k].qty+=(i.qty||1);itemBreak[k].total+=(i.price||0)*(i.qty||1);});});
   const topItems=Object.entries(itemBreak).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
   const w=window.open('','_blank','width=820,height=900');
-  w.document.write(`<!DOCTYPE html><html><head><title>Daily Report ${today}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:28px;max-width:780px;margin:0 auto;font-size:12px;}h1{font-size:22px;letter-spacing:3px;text-align:center;margin-bottom:4px;}.date{text-align:center;color:#777;margin-bottom:20px;}.d{border-top:1px dashed #bbb;margin:14px 0;}.s{border-top:2px solid #000;margin:14px 0;}.r{display:flex;justify-content:space-between;padding:3px 0;}table{width:100%;border-collapse:collapse;margin-top:4px;}th{font-size:10px;font-weight:bold;padding:5px 8px;background:#f0f0f0;border:1px solid #ddd;text-align:left;}th.r{text-align:right;}td{font-size:11px;padding:5px 8px;border:1px solid #ddd;}td.r{text-align:right;}tr:nth-child(even){background:#fafafa;}.sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;}.sum-box{border:1px solid #ddd;border-radius:4px;padding:10px;text-align:center;}.sum-val{font-size:18px;font-weight:bold;margin-bottom:2px;}.sum-lbl{font-size:9px;color:#777;text-transform:uppercase;}@media print{button{display:none!important;}}</style></head><body>
-  <h1>GOOD VIBES FARM STAY</h1><div style="font-size:14px;letter-spacing:2px;text-align:center;font-weight:normal;margin-bottom:4px;">DAILY SALES REPORT</div>
-  <div class="date">Date: ${today} · Generated: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
-  <div class="s"></div>
-  <div class="sum-grid"><div class="sum-box"><div class="sum-val">Rs.${totalRevenue.toLocaleString()}</div><div class="sum-lbl">Total Revenue</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.length}</div><div class="sum-lbl">Tables Served</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.reduce((s,r)=>s+(r.rounds||1),0)}</div><div class="sum-lbl">Total Orders</div></div></div>
-  <div class="d"></div>
-  <div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Payment Methods</div>
-  <div class="r"><span>💵 Cash</span><span><b>Rs.${(pmBreak.cash||0).toLocaleString()}</b></span></div>
-  <div class="r"><span>💳 Card / UPI</span><span><b>Rs.${(pmBreak.card||0).toLocaleString()}</b></span></div>
-  <div class="r"><span>📱 QR Code</span><span><b>Rs.${(pmBreak.qr||0).toLocaleString()}</b></span></div>
-  ${topItems.length?`<div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Top Selling Items</div><table><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Revenue</th></tr>${topItems.map(([name,d],i)=>`<tr><td>${i+1}</td><td>${name}</td><td class="r">${d.qty}</td><td class="r">Rs.${d.total.toLocaleString()}</td></tr>`).join('')}</table>`:''}
-  <div class="s"></div>
-  <div style="text-align:center;font-size:10px;color:#999;margin-top:10px;">Good Vibes Farm Stay · Dharan-5, Sunsari, Nepal</div>
-  <div style="text-align:center;margin-top:18px;"><button onclick="window.print()" style="padding:10px 28px;background:#4f46e5;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">🖨️ Print / Save PDF</button></div>
-  <`+`script>// window.onload=()=>window.print();<`+`/script></body></html>`);
+  w.document.write(`<!DOCTYPE html><html><head><title>Daily Report ${today}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:28px;max-width:780px;margin:0 auto;font-size:12px;}h1{font-size:22px;letter-spacing:3px;text-align:center;margin-bottom:4px;}.date{text-align:center;color:#777;margin-bottom:20px;}.d{border-top:1px dashed #bbb;margin:14px 0;}.s{border-top:2px solid #000;margin:14px 0;}.r{display:flex;justify-content:space-between;padding:3px 0;}table{width:100%;border-collapse:collapse;margin-top:4px;}th{font-size:10px;font-weight:bold;padding:5px 8px;background:#f0f0f0;border:1px solid #ddd;text-align:left;}th.r{text-align:right;}td{font-size:11px;padding:5px 8px;border:1px solid #ddd;}td.r{text-align:right;}tr:nth-child(even){background:#fafafa;}.sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;}.sum-box{border:1px solid #ddd;border-radius:4px;padding:10px;text-align:center;}.sum-val{font-size:18px;font-weight:bold;margin-bottom:2px;}.sum-lbl{font-size:9px;color:#777;text-transform:uppercase;}@media print{button{display:none!important;}}</style></head><body><h1>GOOD VIBES FARM STAY</h1><div style="font-size:14px;letter-spacing:2px;text-align:center;font-weight:normal;margin-bottom:4px;">DAILY SALES REPORT</div><div class="date">Date: ${today} · Generated: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div><div class="s"></div><div class="sum-grid"><div class="sum-box"><div class="sum-val">Rs.${totalRevenue.toLocaleString()}</div><div class="sum-lbl">Total Revenue</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.length}</div><div class="sum-lbl">Tables Served</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.reduce((s,r)=>s+(r.rounds||1),0)}</div><div class="sum-lbl">Total Orders</div></div></div><div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Payment Methods</div><div class="r"><span>💵 Cash</span><span><b>Rs.${(pmBreak.cash||0).toLocaleString()}</b></span></div><div class="r"><span>💳 Card / UPI</span><span><b>Rs.${(pmBreak.card||0).toLocaleString()}</b></span></div><div class="r"><span>📱 QR Code</span><span><b>Rs.${(pmBreak.qr||0).toLocaleString()}</b></span></div>${topItems.length?`<div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Top Selling Items</div><table><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Revenue</th></tr>${topItems.map(([name,d],i)=>`<tr><td>${i+1}</td><td>${name}</td><td class="r">${d.qty}</td><td class="r">Rs.${d.total.toLocaleString()}</td></tr>`).join('')}</table>`:''}<div class="s"></div><div style="text-align:center;font-size:10px;color:#999;margin-top:10px;">Good Vibes Farm Stay · Dharan-5, Sunsari, Nepal</div><div style="text-align:center;margin-top:18px;"><button onclick="window.print()" style="padding:10px 28px;background:#4f46e5;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">🖨️ Print / Save PDF</button></div><`+`script>// window.onload=()=>window.print();<`+`/script></body></html>`);
   w.document.close();
 }
 
@@ -1463,103 +1432,59 @@ function aPopulateCatFilter(){
 function aSetCat(c){aActiveCat=c;aPopulateCatFilter();aRender();}
 
 function aRender(){
-  const q=document.getElementById('aSearchInput').value.toLowerCase().trim();
-  let items=GV.menu;
-  if(aActiveCat!=='All')items=items.filter(i=>i.cat===aActiveCat);
-  if(q)items=items.filter(i=>i.name.toLowerCase().includes(q));
+  const q=document.getElementById('aSearchInput').value.toLowerCase().trim();let items=GV.menu;
+  if(aActiveCat!=='All')items=items.filter(i=>i.cat===aActiveCat);if(q)items=items.filter(i=>i.name.toLowerCase().includes(q));
   document.getElementById('aItemCount').textContent=`${GV.menu.length} items`;
   const list=document.getElementById('aMenuList');
   if(!items.length){list.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><div>No items found</div></div>';return;}
   list.innerHTML=items.map(item=>{
-    const isCustom=!!item._custom||!!item.createdAt;
-    const isOverride=isCustom&&item._overridesBuiltin;
+    const isCustom=!!item._custom||!!item.createdAt;const isOverride=isCustom&&item._overridesBuiltin;
     const thumb=`<div class="a-item-thumb">${item.emoji||item.name.slice(0,3).toUpperCase()}</div>`;
     const badge=isOverride?`<span class="a-item-tag" style="background:rgba(244,162,97,.15);color:#f4a261;border-color:rgba(244,162,97,.3);">✦ Modified</span>`:isCustom&&!item._overridesBuiltin?`<span class="a-item-tag">✦ Custom</span>`:`<span class="a-built-in-badge">Built-in</span>`;
     const editId=isCustom?item.id:'__builtin__'+item.id;
-    const actBtns=isOverride
-      ?`<button class="a-act-btn a-edit-btn" onclick="aOpenForm('${editId}')">✏️</button><button class="a-act-btn a-del-btn" onclick="aRestoreBuiltin('${item.id}','${item.name.replace(/'/g,"\\'")}')">↩️</button>`
-      :`<button class="a-act-btn a-edit-btn" onclick="aOpenForm('${editId}')">✏️</button><button class="a-act-btn a-del-btn" onclick="aConfirmDelete('${editId}','${item.name.replace(/'/g,"\\'")}')">🗑️</button>`;
+    const actBtns=isOverride?`<button class="a-act-btn a-edit-btn" onclick="aOpenForm('${editId}')">✏️</button><button class="a-act-btn a-del-btn" onclick="aRestoreBuiltin('${item.id}','${item.name.replace(/'/g,"\\'")}')">↩️</button>`:`<button class="a-act-btn a-edit-btn" onclick="aOpenForm('${editId}')">✏️</button><button class="a-act-btn a-del-btn" onclick="aConfirmDelete('${editId}','${item.name.replace(/'/g,"\\'")}')">🗑️</button>`;
     return`<div class="a-item-card ${isCustom?'custom-item':''}">${thumb}<div class="a-item-info"><div class="a-item-name">${item.name}</div><div class="a-item-meta">${item.cat}</div>${badge}</div><div class="a-item-price">Rs.${item.price}</div><div class="a-item-acts">${actBtns}</div></div>`;
   }).join('');
 }
 
 function aOpenForm(itemId=null){
-  aEditingId=itemId;
-  document.getElementById('fdTitle').textContent=itemId?'Edit Item':'Add New Item';
-  document.getElementById('fdName').value='';
-  document.getElementById('fdPrice').value='';
-  document.getElementById('fdCat').value='';
-  document.getElementById('fdCatCustom').value='';
-  const sel=document.getElementById('fdCat');
-  sel.innerHTML='<option value="">-- Select category --</option>'+GV.cats().map(c=>`<option value="${c}">${c}</option>`).join('');
+  aEditingId=itemId;document.getElementById('fdTitle').textContent=itemId?'Edit Item':'Add New Item';
+  document.getElementById('fdName').value='';document.getElementById('fdPrice').value='';document.getElementById('fdCat').value='';document.getElementById('fdCatCustom').value='';
+  const sel=document.getElementById('fdCat');sel.innerHTML='<option value="">-- Select category --</option>'+GV.cats().map(c=>`<option value="${c}">${c}</option>`).join('');
   if(itemId){
     const isBuiltin=itemId.startsWith('__builtin__');
     const src=isBuiltin?GV._builtIn.find(i=>i.id===itemId.replace('__builtin__','')):_customItems.find(i=>i.id===itemId);
-    if(src){
-      document.getElementById('fdName').value=src.name||'';
-      document.getElementById('fdPrice').value=src.price||'';
-      const opts=[...sel.options].map(o=>o.value);
-      if(opts.includes(src.cat))sel.value=src.cat;
-      else document.getElementById('fdCatCustom').value=src.cat||'';
-    }
+    if(src){document.getElementById('fdName').value=src.name||'';document.getElementById('fdPrice').value=src.price||'';const opts=[...sel.options].map(o=>o.value);if(opts.includes(src.cat))sel.value=src.cat;else document.getElementById('fdCatCustom').value=src.cat||'';}
   }
-  document.getElementById('formOverlay').classList.add('open');
-  document.getElementById('itemFormDrawer').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.getElementById('formOverlay').classList.add('open');document.getElementById('itemFormDrawer').classList.add('open');document.body.style.overflow='hidden';
 }
 
 function aCloseForm(){document.getElementById('formOverlay').classList.remove('open');document.getElementById('itemFormDrawer').classList.remove('open');document.body.style.overflow='';}
 
 async function aSaveItem(){
-  const name=document.getElementById('fdName').value.trim();
-  const price=parseInt(document.getElementById('fdPrice').value,10);
-  const catSel=document.getElementById('fdCat').value.trim();
-  const catCustom=document.getElementById('fdCatCustom').value.trim();
-  const cat=catCustom||catSel;
-  if(!name){showToast('❌ Item name required','error');return;}
-  if(!price||price<1){showToast('❌ Valid price required','error');return;}
-  if(!cat){showToast('❌ Category required','error');return;}
-  const btn=document.getElementById('fdSaveBtn');btn.disabled=true;btn.textContent='⏳ Saving...';
-  const data={name,price,cat,emoji:'',photo:null};
+  const name=document.getElementById('fdName').value.trim();const price=parseInt(document.getElementById('fdPrice').value,10);
+  const catSel=document.getElementById('fdCat').value.trim();const catCustom=document.getElementById('fdCatCustom').value.trim();const cat=catCustom||catSel;
+  if(!name){showToast('❌ Item name required','error');return;}if(!price||price<1){showToast('❌ Valid price required','error');return;}if(!cat){showToast('❌ Category required','error');return;}
+  const btn=document.getElementById('fdSaveBtn');btn.disabled=true;btn.textContent='⏳ Saving...';const data={name,price,cat,emoji:'',photo:null};
   try{
     if(aEditingId){
-      if(aEditingId.startsWith('__builtin__')){
-        const builtinId=aEditingId.replace('__builtin__','');
-        data.id=builtinId;data._overridesBuiltin=true;
-        const existing=_customItems.find(i=>i.id===builtinId&&i._overridesBuiltin);
-        if(existing)await GV.updateMenuItem(existing.id,data);
-        else await GV.addMenuItem(data);
-        showToast('✅ Item updated!','success');
-      }else{
-        await GV.updateMenuItem(aEditingId,data);
-        showToast('✅ Item updated!','success');
-      }
-    }else{
-      await GV.addMenuItem(data);
-      showToast('✅ Item added!','success');
-    }
+      if(aEditingId.startsWith('__builtin__')){const builtinId=aEditingId.replace('__builtin__','');data.id=builtinId;data._overridesBuiltin=true;const existing=_customItems.find(i=>i.id===builtinId&&i._overridesBuiltin);if(existing)await GV.updateMenuItem(existing.id,data);else await GV.addMenuItem(data);showToast('✅ Item updated!','success');}
+      else{await GV.updateMenuItem(aEditingId,data);showToast('✅ Item updated!','success');}
+    }else{await GV.addMenuItem(data);showToast('✅ Item added!','success');}
     aCloseForm();aRender();aPopulateCatFilter();
   }catch(err){showToast('❌ '+(err.message||'Save failed'),'error');}
   finally{btn.disabled=false;btn.textContent='💾 Save Item';}
 }
 
 function aRestoreBuiltin(id,name){
-  showModal(`Restore "${name}" to default?`,'Remove your changes and restore original.',()=>{
-    const existing=_customItems.find(i=>i.id===id&&i._overridesBuiltin);
-    if(existing)GV.deleteMenuItem(existing.id).then(()=>{showToast('↩️ Restored','success');aRender();aPopulateCatFilter();});
-  });
+  showModal(`Restore "${name}" to default?`,'Remove your changes and restore original.',()=>{const existing=_customItems.find(i=>i.id===id&&i._overridesBuiltin);if(existing)GV.deleteMenuItem(existing.id).then(()=>{showToast('↩️ Restored','success');aRender();aPopulateCatFilter();});});
 }
 
 function aConfirmDelete(itemId,name){
   const isBuiltin=itemId.startsWith('__builtin__');
   showModal(`Delete "${name}"?`,isBuiltin?'This item will be hidden from menu.':'Permanently remove from menu.',()=>{
-    if(isBuiltin){
-      const builtinId=itemId.replace('__builtin__','');
-      const item=GV._builtIn.find(i=>i.id===builtinId);if(!item)return;
-      GV.addMenuItem({id:builtinId,name:item.name,price:item.price,cat:item.cat,emoji:'',photo:null,_deleted:true,_overridesBuiltin:true}).then(()=>{showToast('🗑️ Item hidden','success');aRender();aPopulateCatFilter();});
-    }else{
-      GV.deleteMenuItem(itemId).then(()=>{showToast('🗑️ Deleted','success');aRender();aPopulateCatFilter();});
-    }
+    if(isBuiltin){const builtinId=itemId.replace('__builtin__','');const item=GV._builtIn.find(i=>i.id===builtinId);if(!item)return;GV.addMenuItem({id:builtinId,name:item.name,price:item.price,cat:item.cat,emoji:'',photo:null,_deleted:true,_overridesBuiltin:true}).then(()=>{showToast('🗑️ Item hidden','success');aRender();aPopulateCatFilter();});}
+    else{GV.deleteMenuItem(itemId).then(()=>{showToast('🗑️ Deleted','success');aRender();aPopulateCatFilter();});}
   });
 }
 
@@ -1569,9 +1494,98 @@ function oSetTab(tab,btn){
   document.getElementById('oMenuSection').style.display=tab==='menu'?'block':'none';
   document.getElementById('oCatSection').style.display=tab==='categories'?'flex':'none';
   document.getElementById('oStaffSection').style.display=tab==='staff'?'flex':'none';
+  document.getElementById('oCredSection').style.display=tab==='credentials'?'flex':'none';
   document.getElementById('oAllSection').style.display=tab==='all'?'block':'none';
   if(tab==='staff')oRenderStaff();
   if(tab==='categories')oCatRender();
+  if(tab==='credentials')oInitCredSection();
+}
+
+/* ════════════════════════════════════════
+   ADMIN CREDENTIALS MANAGER
+════════════════════════════════════════ */
+function oInitCredSection(){
+  // Populate current username hints
+  _refreshCredUI();
+  // Clear all fields
+  ['credAdminUser','credAdminCurrentPass','credAdminNewPass','credAdminConfPass',
+   'credManagerUser','credManagerCurrentPass','credManagerNewPass','credManagerConfPass'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  ['credAdminErr','credAdminOk','credManagerErr','credManagerOk'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.textContent='';
+  });
+}
+
+function toggleCredEye(inputId, btn){
+  const input=document.getElementById(inputId);
+  if(!input)return;
+  if(input.type==='password'){input.type='text';btn.textContent='🙈';}
+  else{input.type='password';btn.textContent='👁️';}
+}
+
+async function saveCredentials(accountId){
+  const prefix = accountId==='admin' ? 'credAdmin' : 'credManager';
+  const errEl = document.getElementById(prefix+'Err');
+  const okEl  = document.getElementById(prefix+'Ok');
+  const btn   = document.getElementById(prefix+'SaveBtn');
+  errEl.textContent='';okEl.textContent='';
+
+  const newUser    = document.getElementById(prefix+'User').value.trim().toLowerCase();
+  const currentPass= document.getElementById(prefix+'CurrentPass').value;
+  const newPass    = document.getElementById(prefix+'NewPass').value;
+  const confPass   = document.getElementById(prefix+'ConfPass').value;
+
+  // Find current cred record
+  const cred = OFFICE_CREDS.find(c=>c.id===accountId);
+  if(!cred){errEl.textContent='❌ Account not found.';return;}
+
+  // Validate current password
+  if(!currentPass){errEl.textContent='❌ Enter your current password to verify.';return;}
+  if(currentPass !== cred.pass){errEl.textContent='❌ Current password is incorrect.';return;}
+
+  // Determine final username (keep old if blank)
+  const finalUser = newUser || cred.user;
+
+  // Check username conflict with the OTHER account
+  if(newUser){
+    const conflict = OFFICE_CREDS.find(c=>c.id!==accountId && c.user===newUser);
+    if(conflict){errEl.textContent='❌ That username is already used by another admin account.';return;}
+  }
+
+  // Determine final password (keep old if both blank)
+  let finalPass = cred.pass;
+  if(newPass || confPass){
+    if(newPass.length < 6){errEl.textContent='❌ New password must be at least 6 characters.';return;}
+    if(newPass !== confPass){errEl.textContent='❌ New passwords do not match.';return;}
+    finalPass = newPass;
+  }
+
+  // Nothing changed
+  if(finalUser === cred.user && finalPass === cred.pass){
+    errEl.textContent='ℹ️ No changes detected.';return;
+  }
+
+  btn.disabled=true;btn.textContent='⏳ Saving...';
+  try{
+    await _saveAdminCred(accountId, finalUser, finalPass);
+    okEl.textContent='✅ Credentials updated successfully!';
+    // Clear sensitive fields
+    ['CurrentPass','NewPass','ConfPass'].forEach(s=>{
+      const el=document.getElementById(prefix+s);if(el)el.value='';
+    });
+    // Reset eye icons
+    document.querySelectorAll('.cred-eye').forEach(b=>b.textContent='👁️');
+    document.querySelectorAll('.cred-input').forEach(el=>{if(el.type==='text'&&el.closest('.cred-input-wrap'))el.type='password';});
+    _refreshCredUI();
+    showToast('🔐 Credentials updated!','success');
+    // Clear ok message after a few seconds
+    setTimeout(()=>{if(okEl)okEl.textContent='';},4000);
+  }catch(e){
+    errEl.textContent='❌ Save failed: '+e.message+'. Make sure the gv_admin_creds table exists in Supabase.';
+  }finally{
+    btn.disabled=false;btn.textContent='🔐 Update '+(accountId==='admin'?'Admin':'Manager')+' Credentials';
+  }
 }
 
 /* ════════════════════════════════════════
@@ -1580,127 +1594,44 @@ function oSetTab(tab,btn){
 let _renameCatOld = null;
 
 function oCatRender(){
-  const cats = GV.cats();
-  const list = document.getElementById('catMgrList');
+  const cats = GV.cats();const list = document.getElementById('catMgrList');
   if(!cats.length){list.innerHTML='<div class="empty-state"><span class="empty-icon">🏷️</span><div>No categories yet</div></div>';return;}
-
-  // Count items per category (from full menu)
-  const countMap = {};
-  GV.menu.forEach(i=>{countMap[i.cat]=(countMap[i.cat]||0)+1;});
-
-  // Which cats are built-in (have at least 1 built-in item that isn't overridden/deleted)
+  const countMap = {};GV.menu.forEach(i=>{countMap[i.cat]=(countMap[i.cat]||0)+1;});
   const builtinCats = new Set(GV._builtIn.map(i=>i.cat));
-
   list.innerHTML = cats.map(cat=>{
-    const count = countMap[cat]||0;
-    const isBuiltin = builtinCats.has(cat);
+    const count = countMap[cat]||0;const isBuiltin = builtinCats.has(cat);
     const safeAttr = cat.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    return`<div class="cat-mgr-row">
-      <div style="flex:1;min-width:0;">
-        <div class="cat-mgr-name">${cat}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;">${count} item${count!==1?'s':''}${isBuiltin?' · <span style="color:rgba(255,255,255,.3)">includes built-in items</span>':''}</div>
-      </div>
-      <button class="cat-mgr-rename" title="Rename category" onclick="oOpenRenameCategory('${safeAttr}')">✏️</button>
-      <button class="cat-mgr-delete" title="Delete category and all its items" onclick="oConfirmDeleteCategory('${safeAttr}',${count})">🗑️</button>
-    </div>`;
+    return`<div class="cat-mgr-row"><div style="flex:1;min-width:0;"><div class="cat-mgr-name">${cat}</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">${count} item${count!==1?'s':''}${isBuiltin?' · <span style="color:rgba(255,255,255,.3)">includes built-in items</span>':''}</div></div><button class="cat-mgr-rename" title="Rename category" onclick="oOpenRenameCategory('${safeAttr}')">✏️</button><button class="cat-mgr-delete" title="Delete category and all its items" onclick="oConfirmDeleteCategory('${safeAttr}',${count})">🗑️</button></div>`;
   }).join('');
 }
 
 function oOpenRenameCategory(oldName){
-  _renameCatOld = oldName;
-  document.getElementById('renameCatOld').textContent = `Current name: "${oldName}"`;
-  document.getElementById('renameCatInput').value = oldName;
-  document.getElementById('renameCatErr').textContent = '';
-  document.getElementById('renameCatModal').classList.add('open');
-  setTimeout(()=>document.getElementById('renameCatInput').focus(),120);
+  _renameCatOld = oldName;document.getElementById('renameCatOld').textContent = `Current name: "${oldName}"`;document.getElementById('renameCatInput').value = oldName;document.getElementById('renameCatErr').textContent = '';
+  document.getElementById('renameCatModal').classList.add('open');setTimeout(()=>document.getElementById('renameCatInput').focus(),120);
 }
 
 async function doRenameCategory(){
-  const newName = document.getElementById('renameCatInput').value.trim();
-  const errEl = document.getElementById('renameCatErr');
-  errEl.textContent='';
-  if(!newName){errEl.textContent='❌ Enter a new name.';return;}
-  if(newName === _renameCatOld){document.getElementById('renameCatModal').classList.remove('open');return;}
+  const newName = document.getElementById('renameCatInput').value.trim();const errEl = document.getElementById('renameCatErr');errEl.textContent='';
+  if(!newName){errEl.textContent='❌ Enter a new name.';return;}if(newName === _renameCatOld){document.getElementById('renameCatModal').classList.remove('open');return;}
   if(GV.cats().includes(newName)&&newName!==_renameCatOld){errEl.textContent='❌ A category with this name already exists.';return;}
-
   document.getElementById('renameCatModal').classList.remove('open');
-
-  // 1. Rename in built-in list (in memory only — rename override records in DB)
-  const builtinsInCat = GV._builtIn.filter(i=>i.cat===_renameCatOld);
-
-  // 2. Update custom items in DB that have this cat
-  const customInCat = _customItems.filter(i=>i.cat===_renameCatOld);
-
-  const ops = [];
-
-  // For each built-in item in this category, we need a DB override with the new cat
-  for(const bi of builtinsInCat){
-    const existingOverride = _customItems.find(ci=>ci.id===bi.id&&ci._overridesBuiltin);
-    if(existingOverride){
-      // Update existing override
-      ops.push(GV.updateMenuItem(existingOverride.id,{...existingOverride,cat:newName}));
-    } else {
-      // Create new override just to change the category
-      ops.push(GV.addMenuItem({id:bi.id,name:bi.name,price:bi.price,cat:newName,emoji:bi.emoji||'',_overridesBuiltin:true}));
-    }
-  }
-
-  // Update custom items
-  for(const ci of customInCat){
-    if(!ci._overridesBuiltin){
-      ops.push(GV.updateMenuItem(ci.id,{...ci,cat:newName}));
-    }
-  }
-
-  try{
-    await Promise.all(ops);
-    showToast(`✅ Category renamed to "${newName}"`, 'success');
-    oCatRender();
-    aRender();
-    aPopulateCatFilter();
-  }catch(e){
-    showToast('❌ Rename failed: '+e.message,'error');
-  }
+  const builtinsInCat = GV._builtIn.filter(i=>i.cat===_renameCatOld);const customInCat = _customItems.filter(i=>i.cat===_renameCatOld);const ops = [];
+  for(const bi of builtinsInCat){const existingOverride = _customItems.find(ci=>ci.id===bi.id&&ci._overridesBuiltin);if(existingOverride){ops.push(GV.updateMenuItem(existingOverride.id,{...existingOverride,cat:newName}));}else{ops.push(GV.addMenuItem({id:bi.id,name:bi.name,price:bi.price,cat:newName,emoji:bi.emoji||'',_overridesBuiltin:true}));}}
+  for(const ci of customInCat){if(!ci._overridesBuiltin){ops.push(GV.updateMenuItem(ci.id,{...ci,cat:newName}));}}
+  try{await Promise.all(ops);showToast(`✅ Category renamed to "${newName}"`, 'success');oCatRender();aRender();aPopulateCatFilter();}
+  catch(e){showToast('❌ Rename failed: '+e.message,'error');}
 }
 
-function oConfirmDeleteCategory(catName, count){
-  showModal(
-    `Delete category "${catName}"?`,
-    `This will permanently delete all ${count} item(s) in this category. This cannot be undone.`,
-    ()=>oDeleteCategory(catName)
-  );
-}
+function oConfirmDeleteCategory(catName, count){showModal(`Delete category "${catName}"?`,`This will permanently delete all ${count} item(s) in this category. This cannot be undone.`,()=>oDeleteCategory(catName));}
 
 async function oDeleteCategory(catName){
-  // Items in this category
-  const itemsInCat = GV.menu.filter(i=>i.cat===catName);
-  const ops = [];
-
-  for(const item of itemsInCat){
-    const isCustom = !!item.createdAt;
-    const isOverride = isCustom && item._overridesBuiltin;
-    if(isOverride){
-      // Already a DB record — update to _deleted
-      ops.push(GV.updateMenuItem(item.id,{...item,_deleted:true}));
-    } else if(isCustom){
-      // Pure custom — delete from DB
-      ops.push(GV.deleteMenuItem(item.id));
-    } else {
-      // Built-in — create a _deleted override
-      ops.push(GV.addMenuItem({id:item.id,name:item.name,price:item.price,cat:item.cat,emoji:item.emoji||'',_deleted:true,_overridesBuiltin:true}));
-    }
-  }
-
-  try{
-    await Promise.all(ops);
-    showToast(`🗑️ Category "${catName}" deleted`,'success');
-    oCatRender();
-    aRender();
-    aPopulateCatFilter();
-    if(document.getElementById('menuView').style.display!=='none') wRenderMenu();
-  }catch(e){
-    showToast('❌ Delete failed: '+e.message,'error');
-  }
+  const itemsInCat = GV.menu.filter(i=>i.cat===catName);const ops = [];
+  for(const item of itemsInCat){const isCustom = !!item.createdAt;const isOverride = isCustom && item._overridesBuiltin;
+    if(isOverride)ops.push(GV.updateMenuItem(item.id,{...item,_deleted:true}));
+    else if(isCustom)ops.push(GV.deleteMenuItem(item.id));
+    else ops.push(GV.addMenuItem({id:item.id,name:item.name,price:item.price,cat:item.cat,emoji:item.emoji||'',_deleted:true,_overridesBuiltin:true}));}
+  try{await Promise.all(ops);showToast(`🗑️ Category "${catName}" deleted`,'success');oCatRender();aRender();aPopulateCatFilter();if(document.getElementById('menuView').style.display!=='none')wRenderMenu();}
+  catch(e){showToast('❌ Delete failed: '+e.message,'error');}
 }
 
 /* ── Staff ── */
@@ -1717,26 +1648,14 @@ function oOpenAddStaff(){
 function oCloseStaffModal(){document.getElementById('staffModalOv').classList.remove('open');}
 
 async function oSaveStaff(){
-  const name=document.getElementById('staffName').value.trim();
-  const username=document.getElementById('staffUser').value.trim().toLowerCase();
-  const password=document.getElementById('staffPass').value;
+  const name=document.getElementById('staffName').value.trim();const username=document.getElementById('staffUser').value.trim().toLowerCase();const password=document.getElementById('staffPass').value;
   const errEl=document.getElementById('staffModalErr');errEl.textContent='';
-  if(!name){errEl.textContent='Name required.';return;}
-  if(!username){errEl.textContent='Username required.';return;}
-  if(!password||password.length<4){errEl.textContent='Password min 4 chars.';return;}
-  if(_staffList.find(s=>s.username===username)){errEl.textContent='Username taken.';return;}
-  try{await GV.addStaff({name,username,password});showToast('✅ Waiter added!','success');oCloseStaffModal();}
-  catch(e){errEl.textContent='Error: '+e.message;}
+  if(!name){errEl.textContent='Name required.';return;}if(!username){errEl.textContent='Username required.';return;}if(!password||password.length<4){errEl.textContent='Password min 4 chars.';return;}if(_staffList.find(s=>s.username===username)){errEl.textContent='Username taken.';return;}
+  try{await GV.addStaff({name,username,password});showToast('✅ Waiter added!','success');oCloseStaffModal();}catch(e){errEl.textContent='Error: '+e.message;}
 }
 
-async function oToggleStaff(id,isActive){
-  await GV.updateStaff(id,{active:!isActive});
-  showToast(isActive?'⏸️ Deactivated':'✅ Activated','success');
-}
-
-function oDeleteStaff(id,name){
-  showModal(`Remove "${name}"?`,'This waiter cannot log in.',()=>{GV.deleteStaff(id).then(()=>showToast('🗑️ Removed','success'));});
-}
+async function oToggleStaff(id,isActive){await GV.updateStaff(id,{active:!isActive});showToast(isActive?'⏸️ Deactivated':'✅ Activated','success');}
+function oDeleteStaff(id,name){showModal(`Remove "${name}"?`,'This waiter cannot log in.',()=>{GV.deleteStaff(id).then(()=>showToast('🗑️ Removed','success'));});}
 </script>
 
 <script>
