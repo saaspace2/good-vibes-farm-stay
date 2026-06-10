@@ -289,6 +289,17 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
 .a-edit-btn{background:rgba(79,70,229,.2);color:var(--indigo2);}
 .a-del-btn{background:rgba(239,68,68,.1);color:var(--red);}
 .a-built-in-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--border);display:inline-block;margin-top:3px;}
+/* ── CATEGORY MANAGER ── */
+.cat-mgr-row{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:13px;margin-bottom:8px;}
+.cat-mgr-name{flex:1;font-size:14px;font-weight:800;color:var(--text);}
+.cat-mgr-count{font-size:11px;color:var(--muted);margin-right:4px;}
+.cat-mgr-rename{background:rgba(79,70,229,.2);color:var(--indigo2);border:1px solid rgba(79,70,229,.3);width:32px;height:32px;border-radius:8px;border:1px solid rgba(79,70,229,.3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.cat-mgr-delete{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.3);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.cat-mgr-builtin{font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--border);}
+/* ── RENAME CATEGORY MODAL ── */
+#renameCatModal .modal-box{text-align:left;}
+#renameCatInput{width:100%;background:#0f1117;border:1.5px solid var(--border);border-radius:11px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:15px;outline:none;margin-bottom:16px;}
+#renameCatInput:focus{border-color:var(--admin2);}
 .form-drawer{position:fixed;bottom:0;left:0;right:0;max-height:92vh;background:#131e2b;border-radius:22px 22px 0 0;z-index:300;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
 .form-drawer.open{transform:translateY(0);}
 .form-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:299;display:none;backdrop-filter:blur(5px);}
@@ -565,6 +576,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
   </div>
   <div class="office-tab-bar">
     <button class="office-tab active" onclick="oSetTab('menu',this)">🍽️ Menu</button>
+    <button class="office-tab" onclick="oSetTab('categories',this)">🏷️ Categories</button>
     <button class="office-tab" onclick="oSetTab('staff',this)">👥 Staff</button>
     <button class="office-tab" onclick="oSetTab('all',this)">📊 All Portals</button>
   </div>
@@ -573,6 +585,14 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
     <div class="a-search-wrap"><span class="a-search-icon">🔍</span><input class="a-search-input" id="aSearchInput" placeholder="Search items..." oninput="aRender()"></div>
     <div class="a-cat-filter" id="aCatFilter"></div>
     <div class="a-menu-list" id="aMenuList"></div>
+  </div>
+  <!-- CATEGORIES SECTION -->
+  <div id="oCatSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 6px;">
+      <span style="font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--admin2);">Categories</span>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5;">✏️ Rename a category to update it across all items. 🗑️ Deleting a category will also delete all items in it.</div>
+    <div id="catMgrList"></div>
   </div>
   <div id="oStaffSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 12px;">
@@ -588,6 +608,20 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--dark);col
       <div class="role-card" onclick="goKitchen()"><div class="role-icon">👨‍🍳</div><div class="role-name">Kitchen</div><div class="role-desc">View & manage live orders</div><button class="role-pill pill-k">Enter</button></div>
       <div class="role-card" onclick="goCashier()"><div class="role-icon">💰</div><div class="role-name">Cashier</div><div class="role-desc">Generate bills & receipts</div><button class="role-pill pill-c">Enter</button></div>
     </div>
+  </div>
+</div>
+
+<!-- RENAME CATEGORY MODAL -->
+<div class="modal-ov" id="renameCatModal">
+  <div class="modal-box" style="text-align:left;">
+    <div class="modal-title" style="margin-bottom:4px;">✏️ Rename Category</div>
+    <div id="renameCatOld" style="font-size:11px;color:var(--muted);margin-bottom:14px;"></div>
+    <input id="renameCatInput" placeholder="New category name..." autocomplete="off" onkeydown="if(event.key==='Enter')doRenameCategory()">
+    <div class="modal-btns">
+      <button class="modal-btn modal-cancel" onclick="document.getElementById('renameCatModal').classList.remove('open')">Cancel</button>
+      <button class="modal-btn" style="background:rgba(79,70,229,.2);color:var(--indigo2);border:1px solid rgba(79,70,229,.3);" onclick="doRenameCategory()">✏️ Rename</button>
+    </div>
+    <div id="renameCatErr" style="font-size:11px;color:var(--red);margin-top:8px;min-height:16px;"></div>
   </div>
 </div>
 
@@ -757,7 +791,6 @@ const GV = {
     o.id='ORD-'+Date.now();
     o.time=new Date().toISOString();
     o.status='pending';
-    // FIX: items is jsonb — do NOT stringify, send as array directly
     const {error}=await _supa.from('gv_orders').insert(o);
     if(error) throw error;
   },
@@ -784,12 +817,10 @@ const GV = {
   async saveReceipt(r){
     r.savedAt=new Date().toISOString();
     r.receiptNo='GV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(_rcpts.length+1).padStart(4,'0');
-    // FIX: items and orderIds are jsonb — do NOT stringify, send as arrays directly
     const {error}=await _supa.from('gv_receipts').insert(r);
     if(error) throw error;
     return r;
   },
-  // FIX: removed double-quoted column name bug
   async deleteReceipt(no){
     const {error}=await _supa.from('gv_receipts').delete().eq('receiptNo',no);
     if(error) throw error;
@@ -836,7 +867,6 @@ const GV = {
 
   cats(){return[...new Set(this.menu.map(i=>i.cat))];},
 
-  // FIX: parseItems now handles jsonb arrays (already parsed) AND legacy strings
   parseItems(items){
     if(!items) return [];
     if(Array.isArray(items)) return items;
@@ -1427,7 +1457,7 @@ function aInit(){aActiveCat='All';aRender();aPopulateCatFilter();}
 
 function aPopulateCatFilter(){
   const cats=['All',...GV.cats()];
-  document.getElementById('aCatFilter').innerHTML=cats.map(c=>`<div class="a-cf-pill ${c===aActiveCat?'active':''}" onclick="aSetCat('${c.replace(/'/g,"\\'")}')">${c}</div>`).join('');
+  document.getElementById('aCatFilter').innerHTML=cats.map(c=>`<div class="a-cf-pill ${c===aActiveCat?'active':''}" onclick="aSetCat('${c.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">${c}</div>`).join('');
 }
 
 function aSetCat(c){aActiveCat=c;aPopulateCatFilter();aRender();}
@@ -1537,9 +1567,140 @@ function aConfirmDelete(itemId,name){
 function oSetTab(tab,btn){
   document.querySelectorAll('.office-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
   document.getElementById('oMenuSection').style.display=tab==='menu'?'block':'none';
+  document.getElementById('oCatSection').style.display=tab==='categories'?'flex':'none';
   document.getElementById('oStaffSection').style.display=tab==='staff'?'flex':'none';
   document.getElementById('oAllSection').style.display=tab==='all'?'block':'none';
   if(tab==='staff')oRenderStaff();
+  if(tab==='categories')oCatRender();
+}
+
+/* ════════════════════════════════════════
+   CATEGORY MANAGER
+════════════════════════════════════════ */
+let _renameCatOld = null;
+
+function oCatRender(){
+  const cats = GV.cats();
+  const list = document.getElementById('catMgrList');
+  if(!cats.length){list.innerHTML='<div class="empty-state"><span class="empty-icon">🏷️</span><div>No categories yet</div></div>';return;}
+
+  // Count items per category (from full menu)
+  const countMap = {};
+  GV.menu.forEach(i=>{countMap[i.cat]=(countMap[i.cat]||0)+1;});
+
+  // Which cats are built-in (have at least 1 built-in item that isn't overridden/deleted)
+  const builtinCats = new Set(GV._builtIn.map(i=>i.cat));
+
+  list.innerHTML = cats.map(cat=>{
+    const count = countMap[cat]||0;
+    const isBuiltin = builtinCats.has(cat);
+    const safeAttr = cat.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return`<div class="cat-mgr-row">
+      <div style="flex:1;min-width:0;">
+        <div class="cat-mgr-name">${cat}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">${count} item${count!==1?'s':''}${isBuiltin?' · <span style="color:rgba(255,255,255,.3)">includes built-in items</span>':''}</div>
+      </div>
+      <button class="cat-mgr-rename" title="Rename category" onclick="oOpenRenameCategory('${safeAttr}')">✏️</button>
+      <button class="cat-mgr-delete" title="Delete category and all its items" onclick="oConfirmDeleteCategory('${safeAttr}',${count})">🗑️</button>
+    </div>`;
+  }).join('');
+}
+
+function oOpenRenameCategory(oldName){
+  _renameCatOld = oldName;
+  document.getElementById('renameCatOld').textContent = `Current name: "${oldName}"`;
+  document.getElementById('renameCatInput').value = oldName;
+  document.getElementById('renameCatErr').textContent = '';
+  document.getElementById('renameCatModal').classList.add('open');
+  setTimeout(()=>document.getElementById('renameCatInput').focus(),120);
+}
+
+async function doRenameCategory(){
+  const newName = document.getElementById('renameCatInput').value.trim();
+  const errEl = document.getElementById('renameCatErr');
+  errEl.textContent='';
+  if(!newName){errEl.textContent='❌ Enter a new name.';return;}
+  if(newName === _renameCatOld){document.getElementById('renameCatModal').classList.remove('open');return;}
+  if(GV.cats().includes(newName)&&newName!==_renameCatOld){errEl.textContent='❌ A category with this name already exists.';return;}
+
+  document.getElementById('renameCatModal').classList.remove('open');
+
+  // 1. Rename in built-in list (in memory only — rename override records in DB)
+  const builtinsInCat = GV._builtIn.filter(i=>i.cat===_renameCatOld);
+
+  // 2. Update custom items in DB that have this cat
+  const customInCat = _customItems.filter(i=>i.cat===_renameCatOld);
+
+  const ops = [];
+
+  // For each built-in item in this category, we need a DB override with the new cat
+  for(const bi of builtinsInCat){
+    const existingOverride = _customItems.find(ci=>ci.id===bi.id&&ci._overridesBuiltin);
+    if(existingOverride){
+      // Update existing override
+      ops.push(GV.updateMenuItem(existingOverride.id,{...existingOverride,cat:newName}));
+    } else {
+      // Create new override just to change the category
+      ops.push(GV.addMenuItem({id:bi.id,name:bi.name,price:bi.price,cat:newName,emoji:bi.emoji||'',_overridesBuiltin:true}));
+    }
+  }
+
+  // Update custom items
+  for(const ci of customInCat){
+    if(!ci._overridesBuiltin){
+      ops.push(GV.updateMenuItem(ci.id,{...ci,cat:newName}));
+    }
+  }
+
+  try{
+    await Promise.all(ops);
+    showToast(`✅ Category renamed to "${newName}"`, 'success');
+    oCatRender();
+    aRender();
+    aPopulateCatFilter();
+  }catch(e){
+    showToast('❌ Rename failed: '+e.message,'error');
+  }
+}
+
+function oConfirmDeleteCategory(catName, count){
+  showModal(
+    `Delete category "${catName}"?`,
+    `This will permanently delete all ${count} item(s) in this category. This cannot be undone.`,
+    ()=>oDeleteCategory(catName)
+  );
+}
+
+async function oDeleteCategory(catName){
+  // Items in this category
+  const itemsInCat = GV.menu.filter(i=>i.cat===catName);
+  const ops = [];
+
+  for(const item of itemsInCat){
+    const isCustom = !!item.createdAt;
+    const isOverride = isCustom && item._overridesBuiltin;
+    if(isOverride){
+      // Already a DB record — update to _deleted
+      ops.push(GV.updateMenuItem(item.id,{...item,_deleted:true}));
+    } else if(isCustom){
+      // Pure custom — delete from DB
+      ops.push(GV.deleteMenuItem(item.id));
+    } else {
+      // Built-in — create a _deleted override
+      ops.push(GV.addMenuItem({id:item.id,name:item.name,price:item.price,cat:item.cat,emoji:item.emoji||'',_deleted:true,_overridesBuiltin:true}));
+    }
+  }
+
+  try{
+    await Promise.all(ops);
+    showToast(`🗑️ Category "${catName}" deleted`,'success');
+    oCatRender();
+    aRender();
+    aPopulateCatFilter();
+    if(document.getElementById('menuView').style.display!=='none') wRenderMenu();
+  }catch(e){
+    showToast('❌ Delete failed: '+e.message,'error');
+  }
 }
 
 /* ── Staff ── */
