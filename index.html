@@ -17,7 +17,6 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{
-  /* Farm-stay palette: deep forest, warm terracotta amber, cream, moss */
   --forest:#14352A;--forest2:#1E4D3B;--moss:#5FA87A;--moss2:#7BC496;
   --amber:#E8A044;--amber2:#F2B865;--clay:#C4623A;
   --cream:#F5EFE2;--paper:#FBF7EE;
@@ -33,18 +32,13 @@
 html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
 .screen{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;}
 .screen.active{display:flex;}
-
-/* ─── shared display type ─── */
 .font-display{font-family:'Fraunces',serif;}
 .font-mono{font-family:'Space Mono',monospace;}
-
-/* ═══ HOME / LOGIN shared backdrop ═══ */
 #homeScreen,#loginScreen{align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden;
   background:radial-gradient(circle at 20% 15%,#1a3d2e 0%,transparent 45%),radial-gradient(circle at 85% 85%,#2a1f12 0%,transparent 50%),var(--bg);}
 #homeScreen::before,#loginScreen::before{content:'';position:fixed;width:520px;height:520px;border-radius:50%;filter:blur(90px);opacity:.16;background:var(--moss);top:-140px;left:-120px;z-index:0;animation:drift 14s ease-in-out infinite alternate;}
 #homeScreen::after,#loginScreen::after{content:'';position:fixed;width:420px;height:420px;border-radius:50%;filter:blur(90px);opacity:.14;background:var(--amber);bottom:-100px;right:-90px;z-index:0;animation:drift 16s ease-in-out infinite alternate-reverse;}
 @keyframes drift{from{transform:translate(0,0) scale(1);}to{transform:translate(40px,30px) scale(1.15);}}
-
 .home-inner{position:relative;z-index:1;width:100%;max-width:520px;text-align:center;}
 .home-logo{margin-bottom:14px;animation:riseIn .7s cubic-bezier(.2,.7,.3,1) both;}
 .home-brand{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(44px,11vw,68px);letter-spacing:-1px;color:var(--cream);line-height:.95;animation:riseIn .7s cubic-bezier(.2,.7,.3,1) both .08s;}
@@ -69,8 +63,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .home-footer .logout-link{color:rgba(245,239,226,.4);cursor:pointer;font-weight:600;}
 .home-footer .logout-link:hover{color:var(--muted2);}
 @keyframes riseIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
-
-/* ═══ TOPBARS ═══ */
 .topbar{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-shrink:0;padding-top:max(14px,env(safe-area-inset-top));}
 .topbar-w{background:linear-gradient(135deg,var(--forest),var(--forest2));box-shadow:var(--shadow);}
 .topbar-k{background:linear-gradient(135deg,#2a1512,#3a1e18);box-shadow:var(--shadow);}
@@ -88,19 +80,14 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .live-badge{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--ready);letter-spacing:.5px;}
 .live-badge::before{content:'';width:8px;height:8px;background:var(--ready);border-radius:50%;box-shadow:0 0 8px var(--ready);animation:livepulse 1.6s ease-in-out infinite;}
 @keyframes livepulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.35);}}
-
-/* sync status chip */
 .sync-chip{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--muted2);transition:all .2s;}
 .sync-chip.ok{color:var(--ready);border-color:rgba(79,180,119,.3);background:rgba(79,180,119,.1);}
 .sync-chip.saving{color:var(--amber2);border-color:rgba(232,160,68,.3);background:rgba(232,160,68,.1);}
 .sync-chip.err{color:var(--redsoft);border-color:rgba(229,72,77,.35);background:rgba(229,72,77,.12);}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
 .sync-chip.saving .sync-dot{animation:livepulse 1s ease-in-out infinite;}
-
 #waiterScreen,#kitchenScreen,#cashierScreen,#adminScreen{background:var(--bg);}
 .w-scroll,.k-scroll,.c-scroll,.a-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-
-/* ═══ WAITER: table select ═══ */
 #tableSelectView{padding:22px 20px;}
 .table-prompt{font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:20px;text-align:center;color:var(--text2);}
 .table-prompt em{font-style:italic;color:var(--moss2);}
@@ -110,7 +97,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .table-btn.occupied{border-color:var(--amber);color:var(--amber2);background:rgba(232,160,68,.06);}
 .table-lbl{font-size:9px;font-weight:700;color:var(--muted);font-family:'Outfit',sans-serif;letter-spacing:.5px;text-transform:uppercase;}
 .table-btn.occupied .table-lbl{color:var(--amber2);}
-
 #menuView{display:none;}
 .search-wrap{padding:12px 16px 8px;position:sticky;top:0;z-index:52;background:var(--bg);}
 .search-icon{position:absolute;left:29px;top:calc(50% + 2px);transform:translateY(-50%);font-size:15px;pointer-events:none;opacity:.6;}
@@ -136,13 +122,11 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .qty-add{background:rgba(95,168,122,.16);color:var(--moss2);width:100%;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:800;padding:7px 0;transition:background .15s;}
 .qty-add:hover{background:rgba(95,168,122,.26);}
 .qty-num{font-weight:800;font-size:15px;color:var(--text2);min-width:20px;text-align:center;font-family:'Space Mono',monospace;}
-
 .cart-bar{position:fixed;bottom:0;left:0;right:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(14,22,19,.92);border-top:1px solid var(--border2);backdrop-filter:blur(14px);z-index:90;transform:translateY(120%);transition:transform .32s cubic-bezier(.2,.7,.3,1);}
 .cart-bar.visible{transform:translateY(0);}
 .cart-bar-btn{width:100%;padding:15px 22px;background:linear-gradient(135deg,var(--forest2),var(--moss));border:none;border-radius:16px;color:var(--cream);font-family:'Outfit';font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 20px rgba(30,77,59,.5);transition:transform .12s;}
 .cart-bar-btn:active{transform:scale(.98);}
 .cart-bar-btn .ct-total{font-family:'Space Mono',monospace;}
-/* ═══ DRAWERS ═══ */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:200;display:none;backdrop-filter:blur(5px);}
 .drawer-overlay.open{display:block;animation:fadeIn .2s ease;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
@@ -166,14 +150,10 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .send-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--forest2),var(--moss));border:none;border-radius:16px;color:var(--cream);font-family:'Outfit';font-size:15px;font-weight:800;cursor:pointer;transition:opacity .2s,transform .12s;box-shadow:0 6px 20px rgba(30,77,59,.4);}
 .send-btn:active{transform:scale(.98);}
 .send-btn:disabled{opacity:.5;cursor:not-allowed;}
-
-/* ═══ TOAST ═══ */
-.toast{position:fixed;bottom:calc(26px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(90px);padding:14px 28px;border-radius:16px;font-weight:800;font-size:14px;z-index:9999;transition:transform .32s cubic-bezier(.2,.7,.3,1);box-shadow:var(--shadow-lg);white-space:nowrap;pointer-events:none;}
+.toast{position:fixed;bottom:calc(26px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(90px);padding:14px 28px;border-radius:16px;font-weight:800;font-size:14px;z-index:9999;transition:transform .32s cubic-bezier(.2,.7,.3,1);box-shadow:var(--shadow-lg);white-space:nowrap;pointer-events:none;max-width:90vw;overflow:hidden;text-overflow:ellipsis;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.success{background:var(--moss);color:var(--forest);}
 .toast.error{background:var(--red);color:#fff;}
-
-/* ═══ KITCHEN ═══ */
 .k-stats{display:flex;gap:10px;padding:16px 16px 8px;overflow-x:auto;scrollbar-width:none;}
 .k-stats::-webkit-scrollbar{display:none;}
 .stat-chip{flex-shrink:0;display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:7px 13px;font-size:12.5px;font-weight:700;}
@@ -220,8 +200,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .k-del{background:rgba(229,72,77,.1);color:var(--redsoft);border:1px solid rgba(229,72,77,.3);}
 .k-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted2);}
 .k-empty-icon{font-size:60px;display:block;margin-bottom:12px;opacity:.7;}
-
-/* ═══ CASHIER ═══ */
 .c-tabs{display:flex;gap:6px;}
 .c-tab{padding:7px 15px;border-radius:11px;border:1.5px solid rgba(255,255,255,.16);background:transparent;color:rgba(255,255,255,.5);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;}
 .c-tab.active{background:var(--amber);border-color:var(--amber);color:var(--forest);}
@@ -272,8 +250,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .coa-btn{flex:1;padding:9px 7px;border-radius:11px;border:none;cursor:pointer;font-family:'Outfit';font-size:12.5px;font-weight:800;}
 .coa-reprint{background:rgba(255,255,255,.05);color:var(--muted2);border:1px solid var(--border);}
 .coa-del{background:rgba(229,72,77,.1);color:var(--redsoft);border:1px solid rgba(229,72,77,.3);}
-
-/* bill panel */
 #billPanel{display:none;}
 .bill-back{display:flex;align-items:center;gap:11px;padding:15px 16px 12px;}
 .bill-back-btn{background:rgba(255,255,255,.08);border:none;color:var(--muted2);width:36px;height:36px;border-radius:11px;cursor:pointer;font-size:18px;}
@@ -289,7 +265,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .r-lbl{color:var(--muted2);font-size:11px;}
 .r-section-hdr{font-size:10px;font-weight:800;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;padding:5px 0 2px;}
 .r-qr-box{text-align:center;padding:10px 0 2px;}
-.r-qr-box img{width:120px;height:120px;border-radius:8px;background:#fff;padding:6px;}
+.r-qr-box img{width:120px;height:120px;border-radius:8px;background:#fff;padding:6px;object-fit:contain;}
 .r-qr-cap{font-size:10px;color:var(--muted2);margin-top:5px;}
 .bill-ctrls{padding:16px 20px;border-top:1px solid var(--border);}
 .bc-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
@@ -301,7 +277,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .pay-btn:disabled{opacity:.45;cursor:default;}
 .print-btn{width:100%;padding:11px;background:transparent;border:1.5px solid var(--border2);border-radius:14px;color:var(--muted2);font-family:'Outfit';font-size:13px;font-weight:700;cursor:pointer;}
 .print-btn:hover{border-color:var(--amber);color:var(--text);}
-
 #receiptsPanel{display:none;}
 .r-list{display:flex;flex-direction:column;gap:9px;}
 .rr-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
@@ -312,7 +287,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .rr-btn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;cursor:pointer;border:none;font-family:inherit;}
 .rr-print{background:rgba(232,160,68,.16);color:var(--amber2);}
 .rr-del{background:rgba(229,72,77,.1);color:var(--redsoft);}
-/* ═══ ADMIN / OFFICE ═══ */
 .a-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 10px;}
 .a-sec-title{font-family:'Fraunces',serif;font-weight:700;font-size:19px;letter-spacing:-.3px;color:var(--admin2);}
 .add-item-btn{display:flex;align-items:center;gap:6px;padding:9px 17px;background:linear-gradient(135deg,var(--admin),#6d3fb0);border:none;border-radius:12px;color:var(--cream);font-family:'Outfit';font-size:13px;font-weight:800;cursor:pointer;transition:transform .12s;}
@@ -340,15 +314,12 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .a-edit-btn{background:rgba(91,110,225,.2);color:var(--indigo2);}
 .a-del-btn{background:rgba(229,72,77,.1);color:var(--redsoft);}
 .a-built-in-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.07);color:var(--muted2);border:1px solid var(--border);display:inline-block;margin-top:4px;}
-
 .cat-mgr-row{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--card);border:1.5px solid var(--border);border-radius:14px;margin-bottom:9px;}
 .cat-mgr-name{flex:1;font-size:14px;font-weight:800;color:var(--text);}
 .cat-mgr-rename{background:rgba(91,110,225,.2);color:var(--indigo2);border:1px solid rgba(91,110,225,.3);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
 .cat-mgr-delete{background:rgba(229,72,77,.1);color:var(--redsoft);border:1px solid rgba(229,72,77,.3);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
-
 #renameCatInput{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;color:var(--text);font-family:inherit;font-size:15px;outline:none;margin-bottom:16px;}
 #renameCatInput:focus{border-color:var(--admin2);}
-
 .cred-section{padding:0 16px 100px;}
 .cred-intro{font-size:12px;color:var(--muted2);line-height:1.65;margin-bottom:18px;padding:13px 15px;background:rgba(169,139,224,.06);border:1px solid rgba(169,139,224,.2);border-radius:13px;}
 .cred-card{background:var(--card);border:1.5px solid var(--border);border-radius:17px;overflow:hidden;margin-bottom:14px;}
@@ -372,7 +343,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .cred-save-btn:disabled{opacity:.4;cursor:not-allowed;}
 .cred-err{font-size:11px;color:var(--redsoft);margin-top:6px;min-height:16px;}
 .cred-ok{font-size:11px;color:var(--ready);margin-top:6px;min-height:16px;}
-
 .form-drawer{position:fixed;bottom:0;left:0;right:0;max-height:92vh;background:var(--bg2);border-radius:26px 26px 0 0;z-index:300;transform:translateY(100%);transition:transform .36s cubic-bezier(.2,.7,.3,1);display:flex;flex-direction:column;border-top:1px solid var(--border2);}
 .form-drawer.open{transform:translateY(0);}
 .form-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:299;display:none;backdrop-filter:blur(5px);}
@@ -392,7 +362,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .fd-save-btn{flex:1;padding:14px;background:linear-gradient(135deg,var(--admin),#6d3fb0);border:none;border-radius:14px;color:var(--cream);font-family:'Outfit';font-size:14px;font-weight:800;cursor:pointer;}
 .fd-save-btn:disabled{opacity:.45;cursor:not-allowed;}
 .fd-cancel-btn{padding:14px 22px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px;color:var(--muted2);font-family:'Outfit';font-size:14px;font-weight:700;cursor:pointer;}
-
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.74);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px);padding:20px;}
 .modal-ov.open{display:flex;animation:fadeIn .2s ease;}
 .modal-box{background:var(--card2);border:1px solid var(--border2);border-radius:22px;padding:28px 24px;width:100%;max-width:340px;text-align:center;animation:riseIn .28s cubic-bezier(.2,.7,.3,1);}
@@ -402,11 +371,8 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .modal-btn{flex:1;padding:12px;border-radius:13px;border:none;cursor:pointer;font-family:'Outfit';font-size:13px;font-weight:800;}
 .modal-cancel{background:rgba(255,255,255,.07);color:var(--muted2);}
 .modal-confirm{background:rgba(229,72,77,.2);color:var(--redsoft);border:1px solid rgba(229,72,77,.4);}
-
 .empty-state{text-align:center;padding:48px 20px;color:var(--muted2);}
 .empty-icon{font-size:52px;display:block;margin-bottom:12px;opacity:.7;}
-
-/* login */
 .login-box{position:relative;z-index:1;width:100%;max-width:380px;text-align:center;}
 .login-brand{font-family:'Fraunces',serif;font-weight:900;font-size:40px;letter-spacing:-.8px;color:var(--cream);line-height:1;}
 .login-brand em{font-style:italic;color:var(--amber2);}
@@ -421,7 +387,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .login-btn:active{transform:scale(.98);}
 .login-btn:disabled{opacity:.5;cursor:not-allowed;}
 .login-err{font-size:12px;color:var(--redsoft);text-align:center;margin-top:10px;min-height:18px;}
-
 .office-tab-bar{display:flex;gap:7px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;}
 .office-tab-bar::-webkit-scrollbar{display:none;}
 .office-tab{flex-shrink:0;padding:7px 15px;border-radius:11px;border:1.5px solid rgba(255,255,255,.16);background:transparent;color:rgba(255,255,255,.5);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;}
@@ -432,7 +397,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .staff-name{font-size:14px;font-weight:800;color:var(--text);}
 .staff-role{font-size:11px;color:var(--muted2);margin-top:2px;}
 .staff-acts{display:flex;gap:6px;flex-shrink:0;}
-
 @media(max-width:380px){
   .menu-grid{grid-template-columns:1fr;}
   .table-grid{grid-template-columns:repeat(4,1fr);}
@@ -448,7 +412,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 
 <div class="toast" id="toast"></div>
 
-<!-- LOGIN SCREEN -->
 <div id="loginScreen" class="screen active">
   <div class="login-box">
     <div class="home-logo">
@@ -473,7 +436,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
       </div>
       <div class="login-field"><label class="login-label">Username</label><input class="login-input" id="loginUser" placeholder="Enter username" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="login-field"><label class="login-label">Password</label><input class="login-input" id="loginPass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <button class="login-btn" id="loginBtn" onclick="doLogin()">Log in →</button>
+      <button class="login-btn" id="loginBtn" onclick="doLogin()">Log in &rarr;</button>
       <div class="login-err" id="loginErr"></div>
     </div>
     <div id="registerPanel" class="login-card" style="display:none;">
@@ -489,7 +452,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   </div>
 </div>
 
-<!-- HOME SCREEN -->
 <div id="homeScreen" class="screen">
   <div class="home-inner">
     <div class="home-logo">
@@ -512,11 +474,10 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   </div>
 </div>
 
-<!-- WAITER SCREEN -->
 <div id="waiterScreen" class="screen">
   <div class="topbar topbar-w">
     <div class="topbar-left">
-      <button class="back-btn" onclick="wBackOrLogout()">←</button>
+      <button class="back-btn" onclick="wBackOrLogout()">&larr;</button>
       <div><div class="tb-title">Good Vibes</div><div class="tb-sub" id="wTopSub">Waiter Portal</div></div>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
@@ -532,7 +493,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
       <div class="table-grid" id="tableGrid"></div>
     </div>
     <div id="menuView" style="display:none;">
-      <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" placeholder="Search menu…" oninput="wRenderMenu()"></div>
+      <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" placeholder="Search menu&hellip;" oninput="wRenderMenu()"></div>
       <div class="cat-pills" id="catPills"></div>
       <div class="menu-grid" id="menuGrid"></div>
     </div>
@@ -548,7 +509,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeCart()"></div>
 <div class="drawer" id="cartDrawer">
   <div class="drawer-handle"></div>
-  <div class="drawer-hdr"><div class="drawer-title" id="drawerTitle">Your Order</div><button class="drawer-close" onclick="closeCart()">×</button></div>
+  <div class="drawer-hdr"><div class="drawer-title" id="drawerTitle">Your Order</div><button class="drawer-close" onclick="closeCart()">&times;</button></div>
   <div class="drawer-body" id="drawerBody"></div>
   <div class="drawer-foot">
     <div class="total-row"><span class="total-lbl">Total</span><span class="total-amt" id="drawerTotal">Rs. 0</span></div>
@@ -556,10 +517,9 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   </div>
 </div>
 
-<!-- KITCHEN SCREEN -->
 <div id="kitchenScreen" class="screen">
   <div class="topbar topbar-k">
-    <div class="topbar-left"><button class="back-btn" onclick="backHome()">←</button><div class="tb-title">👨‍🍳 Kitchen</div></div>
+    <div class="topbar-left"><button class="back-btn" onclick="backHome()">&larr;</button><div class="tb-title">👨‍🍳 Kitchen</div></div>
     <div style="display:flex;align-items:center;gap:7px;">
       <div class="live-badge">LIVE</div>
       <button class="icon-btn sound-on" id="soundBtn" onclick="toggleSound()">🔔 Sound</button>
@@ -580,10 +540,9 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   </div>
 </div>
 
-<!-- CASHIER SCREEN -->
 <div id="cashierScreen" class="screen">
   <div class="topbar topbar-c">
-    <div class="topbar-left"><button class="back-btn" onclick="backHome()">←</button><div class="tb-title">💰 Cashier</div></div>
+    <div class="topbar-left"><button class="back-btn" onclick="backHome()">&larr;</button><div class="tb-title">💰 Cashier</div></div>
     <div style="display:flex;align-items:center;gap:6px;">
       <div class="c-tabs">
         <button class="c-tab active" onclick="cShowTab('orders',this)">Orders</button>
@@ -608,7 +567,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     </div>
     <div id="billPanel">
       <div class="bill-back">
-        <button class="bill-back-btn" onclick="cCloseBill()">←</button>
+        <button class="bill-back-btn" onclick="cCloseBill()">&larr;</button>
         <span class="bill-title" id="billTitle">Bill</span>
       </div>
       <div style="padding:0 16px 28px;">
@@ -653,10 +612,9 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   </div>
 </div>
 
-<!-- ADMIN / OFFICE SCREEN -->
 <div id="adminScreen" class="screen">
   <div class="topbar topbar-a">
-    <div class="topbar-left"><button class="back-btn" onclick="backHome()">←</button><div><div class="tb-title">🏢 Office</div><div class="tb-sub">Management Portal</div></div></div>
+    <div class="topbar-left"><button class="back-btn" onclick="backHome()">&larr;</button><div><div class="tb-title">🏢 Office</div><div class="tb-sub">Management Portal</div></div></div>
     <div style="display:flex;align-items:center;gap:8px;">
       <div class="sync-chip" id="syncChip"><span class="sync-dot"></span><span id="synctxt">Synced</span></div>
       <div id="aItemCount" style="font-size:12px;color:rgba(255,255,255,.4);font-weight:700;"></div>
@@ -666,12 +624,13 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <button class="office-tab active" onclick="oSetTab('menu',this)">🍽️ Menu</button>
     <button class="office-tab" onclick="oSetTab('categories',this)">🏷️ Categories</button>
     <button class="office-tab" onclick="oSetTab('staff',this)">👥 Staff</button>
+    <button class="office-tab" onclick="oSetTab('paymentqr',this)">💳 Payment QR</button>
     <button class="office-tab" onclick="oSetTab('credentials',this)">🔑 Admin Login</button>
     <button class="office-tab" onclick="oSetTab('all',this)">📊 All Portals</button>
   </div>
   <div class="a-scroll" id="oMenuSection">
     <div class="a-section-hdr"><span class="a-sec-title">All Menu Items</span><button class="add-item-btn" onclick="aOpenForm()">＋ Add item</button></div>
-    <div class="a-search-wrap"><span class="a-search-icon">🔍</span><input class="a-search-input" id="aSearchInput" placeholder="Search items…" oninput="aRender()"></div>
+    <div class="a-search-wrap"><span class="a-search-icon">🔍</span><input class="a-search-input" id="aSearchInput" placeholder="Search items&hellip;" oninput="aRender()"></div>
     <div class="a-cat-filter" id="aCatFilter"></div>
     <div class="a-menu-list" id="aMenuList"></div>
     <div style="height:100px;"></div>
@@ -687,6 +646,21 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
       <button class="add-item-btn" onclick="oOpenAddStaff()">＋ Add waiter</button>
     </div>
     <div id="staffList"></div>
+  </div>
+  <div id="oQrSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
+    <div style="padding:16px 0 6px;"><span class="a-sec-title">💳 Payment QR Code</span></div>
+    <div style="font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:16px;padding:13px 15px;background:rgba(232,160,68,.06);border:1px solid rgba(232,160,68,.2);border-radius:13px;">📱 Upload your FonePay / eSewa QR once. It prints on every customer bill across all devices. Use a clear, flat screenshot or scan — not an angled photo — so it scans reliably on thermal paper.</div>
+    <div style="background:var(--card);border:1.5px solid var(--border);border-radius:17px;padding:20px;text-align:center;">
+      <div id="qrPreviewWrap" style="margin-bottom:16px;">
+        <div id="qrEmpty" style="padding:36px 20px;color:var(--muted2);"><div style="font-size:48px;margin-bottom:10px;opacity:.6;">📱</div><div style="font-weight:700;">No QR uploaded yet</div></div>
+        <img id="qrPreview" style="display:none;width:200px;height:200px;object-fit:contain;background:#fff;border-radius:12px;padding:8px;" alt="Payment QR">
+      </div>
+      <input type="file" id="qrFileInput" accept="image/*" style="display:none;" onchange="oQrFileChosen(event)">
+      <button class="add-item-btn" style="width:100%;justify-content:center;margin-bottom:9px;" onclick="document.getElementById('qrFileInput').click()">📤 Choose QR image</button>
+      <button class="cred-save-btn" id="qrSaveBtn" style="display:none;" onclick="oSaveQr()">💾 Save QR (shows on all bills)</button>
+      <button class="print-btn" id="qrRemoveBtn" style="display:none;margin-top:8px;border-color:rgba(229,72,77,.3);color:var(--redsoft);" onclick="oRemoveQr()">🗑️ Remove QR</button>
+      <div id="qrMsg" style="font-size:11px;margin-top:10px;min-height:16px;"></div>
+    </div>
   </div>
   <div id="oCredSection" style="display:none;flex:1;overflow-y:auto;">
     <div style="padding:16px 16px 6px;"><span class="a-sec-title">🔑 Admin Login Credentials</span></div>
@@ -727,12 +701,11 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   </div>
 </div>
 
-<!-- RENAME CATEGORY MODAL -->
 <div class="modal-ov" id="renameCatModal">
   <div class="modal-box" style="text-align:left;">
     <div class="modal-title" style="margin-bottom:4px;">✏️ Rename Category</div>
     <div id="renameCatOld" style="font-size:11px;color:var(--muted2);margin-bottom:14px;"></div>
-    <input id="renameCatInput" placeholder="New category name…" autocomplete="off" onkeydown="if(event.key==='Enter')doRenameCategory()">
+    <input id="renameCatInput" placeholder="New category name&hellip;" autocomplete="off" onkeydown="if(event.key==='Enter')doRenameCategory()">
     <div class="modal-btns">
       <button class="modal-btn modal-cancel" onclick="document.getElementById('renameCatModal').classList.remove('open')">Cancel</button>
       <button class="modal-btn" style="background:rgba(91,110,225,.2);color:var(--indigo2);border:1px solid rgba(91,110,225,.3);" onclick="doRenameCategory()">✏️ Rename</button>
@@ -741,7 +714,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   </div>
 </div>
 
-<!-- ADD STAFF MODAL -->
 <div class="modal-ov" id="staffModalOv">
   <div class="modal-box" style="max-width:360px;">
     <div class="modal-title" id="staffModalTitle">Add New Waiter</div>
@@ -759,15 +731,15 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 <div class="form-drawer-overlay" id="formOverlay" onclick="aCloseForm()"></div>
 <div class="form-drawer" id="itemFormDrawer">
   <div class="fd-handle"></div>
-  <div class="fd-hdr"><div class="fd-title" id="fdTitle">Add New Item</div><button class="fd-close" onclick="aCloseForm()">×</button></div>
+  <div class="fd-hdr"><div class="fd-title" id="fdTitle">Add New Item</div><button class="fd-close" onclick="aCloseForm()">&times;</button></div>
   <div class="fd-body">
     <input type="hidden" id="fdItemId">
     <div class="fd-field"><label class="fd-label">Item Name *</label><input class="fd-input" id="fdName" placeholder="e.g. Chicken Wings" maxlength="60"></div>
     <div class="fd-field"><label class="fd-label">Price (Rs.) *</label><input class="fd-input" id="fdPrice" type="number" placeholder="e.g. 350" min="1" max="99999"></div>
     <div class="fd-field">
       <label class="fd-label">Category *</label>
-      <select class="fd-select" id="fdCat"><option value="">— Select category —</option></select>
-      <input class="fd-input" id="fdCatCustom" placeholder="Or type a new category…" style="margin-top:8px;">
+      <select class="fd-select" id="fdCat"><option value="">&mdash; Select category &mdash;</option></select>
+      <input class="fd-input" id="fdCatCustom" placeholder="Or type a new category&hellip;" style="margin-top:8px;">
     </div>
   </div>
   <div class="fd-foot">
@@ -789,25 +761,17 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ═══════════════════════════════════════════
-   ⚙️ FONEPAY QR IMAGE — PASTE YOUR CLEAN QR HERE
-   Replace the empty string below with a data-URL of your
-   flat FonePay QR screenshot/scan, e.g.:
-   const FONEPAY_QR = "data:image/png;base64,iVBORw0KGgo...";
-   Leave it "" to print a text-only FonePay note instead.
-═══════════════════════════════════════════ */
-const FONEPAY_QR = "";
-const FONEPAY_TERMINAL = "222020016290484"; // from the FonePay card
+/* ═══ FONEPAY / PAYMENT QR — now uploaded by admin in Office → Payment QR ═══ */
+let FONEPAY_QR = ""; // loaded from Supabase on startup
+const FONEPAY_TERMINAL = "222020016290484";
 
-/* ═══════════════════════════════════════════
-   SUPABASE CONFIG  (unchanged — your project)
-═══════════════════════════════════════════ */
+/* ═══ SUPABASE CONFIG (unchanged — your project) ═══ */
 const SUPA_URL = 'https://eadczazfjdvzgunltsiv.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVhZGN6YXpmamR2emd1bmx0c2l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NzAzMzAsImV4cCI6MjA5MjI0NjMzMH0.4PLJ_XZ7HES7ylVpS8TkssBLkoch64713Zq0QkmcNvc';
 const _supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-/* ── sync-status chip helper (NEW) ── */
-function setSync(state){ // 'ok' | 'saving' | 'err'
+/* sync-status chip helper */
+function setSync(state){
   const chip=document.getElementById('syncChip'),txt=document.getElementById('synctxt');
   if(!chip||!txt)return;
   chip.className='sync-chip '+state;
@@ -815,9 +779,7 @@ function setSync(state){ // 'ok' | 'saving' | 'err'
   if(state==='ok'){clearTimeout(chip._t);chip._t=setTimeout(()=>{chip.className='sync-chip';txt.textContent='Synced';},2500);}
 }
 
-/* ═══════════════════════════════════════════
-   ADMIN CREDENTIALS STORE (Supabase: gv_admin_creds)
-═══════════════════════════════════════════ */
+/* ═══ ADMIN CREDENTIALS + PAYMENT QR STORE (Supabase: gv_admin_creds) ═══ */
 let OFFICE_CREDS = [
   {id:'admin',    user:'admin',   pass:'admin1234'},
   {id:'manager',  user:'manager', pass:'manager123'},
@@ -828,6 +790,7 @@ async function _loadAdminCreds(){
     if(error){ console.warn('gv_admin_creds not found, using defaults.'); return; }
     if(data && data.length){
       data.forEach(row=>{
+        if(row.id==='payment_qr'){ if(row.password) FONEPAY_QR = row.password; return; }
         const idx = OFFICE_CREDS.findIndex(c=>c.id===row.id);
         if(idx>=0) OFFICE_CREDS[idx] = {id:row.id, user:row.username, pass:row.password};
         else OFFICE_CREDS.push({id:row.id, user:row.username, pass:row.password});
@@ -845,14 +808,12 @@ async function _saveAdminCred(id, username, password){
 }
 function _refreshCredUI(){
   const admin=OFFICE_CREDS.find(c=>c.id==='admin'),manager=OFFICE_CREDS.find(c=>c.id==='manager');
-  if(admin)document.getElementById('credAdminCurrentUser').textContent='Username: '+admin.user;
-  if(manager)document.getElementById('credManagerCurrentUser').textContent='Username: '+manager.user;
+  if(admin&&document.getElementById('credAdminCurrentUser'))document.getElementById('credAdminCurrentUser').textContent='Username: '+admin.user;
+  if(manager&&document.getElementById('credManagerCurrentUser'))document.getElementById('credManagerCurrentUser').textContent='Username: '+manager.user;
 }
 function isOfficePass(p){ return OFFICE_CREDS.some(c=>c.pass===p); }
 
-/* ═══════════════════════════════════════════
-   IN-MEMORY STORE + REALTIME
-═══════════════════════════════════════════ */
+/* ═══ IN-MEMORY STORE + REALTIME ═══ */
 let _orders=[], _rcpts=[], _customItems=[], _staffList=[];
 let _dbReady=false;
 
@@ -884,44 +845,52 @@ async function _initDB(){
   } catch(e){ console.error('DB init error:',e); }
 }
 function _handleOrderChange(payload){
-  const {eventType, new:n, old:o} = payload;
-  if(eventType==='INSERT') _orders.unshift(n);
-  else if(eventType==='UPDATE'){const i=_orders.findIndex(x=>x.id===n.id);if(i>=0)_orders[i]=n;else _orders.unshift(n);}
-  else if(eventType==='DELETE') _orders=_orders.filter(x=>x.id!==o.id);
-  _refreshScreens();
-  if(eventType==='INSERT' && document.getElementById('kitchenScreen').classList.contains('active')) kPlayAlert();
+  try{
+    const {eventType, new:n, old:o} = payload;
+    if(eventType==='INSERT') _orders.unshift(n);
+    else if(eventType==='UPDATE'){const i=_orders.findIndex(x=>x.id===n.id);if(i>=0)_orders[i]=n;else _orders.unshift(n);}
+    else if(eventType==='DELETE') _orders=_orders.filter(x=>x.id!==o.id);
+    _refreshScreens();
+    if(eventType==='INSERT' && document.getElementById('kitchenScreen').classList.contains('active')) kPlayAlert();
+  }catch(err){console.error('order change handler error:',err);}
 }
 function _handleRcptChange(payload){
-  const {eventType,new:n,old:o}=payload;
-  if(eventType==='INSERT')_rcpts.unshift(n);
-  else if(eventType==='UPDATE'){const i=_rcpts.findIndex(x=>x.id===n.id);if(i>=0)_rcpts[i]=n;else _rcpts.unshift(n);}
-  else if(eventType==='DELETE')_rcpts=_rcpts.filter(x=>x.id!==o.id);
-  if(document.getElementById('receiptsPanel')&&document.getElementById('cashierScreen').classList.contains('active')) cRenderReceipts();
+  try{
+    const {eventType,new:n,old:o}=payload;
+    if(eventType==='INSERT')_rcpts.unshift(n);
+    else if(eventType==='UPDATE'){const i=_rcpts.findIndex(x=>x.id===n.id);if(i>=0)_rcpts[i]=n;else _rcpts.unshift(n);}
+    else if(eventType==='DELETE')_rcpts=_rcpts.filter(x=>x.id!==o.id);
+    if(document.getElementById('cashierScreen').classList.contains('active')) cRenderReceipts();
+  }catch(err){console.error('rcpt handler error:',err);}
 }
 function _handleMenuChange(payload){
-  const {eventType,new:n,old:o}=payload;
-  if(eventType==='INSERT')_customItems.unshift(n);
-  else if(eventType==='UPDATE'){const i=_customItems.findIndex(x=>x.id===n.id);if(i>=0)_customItems[i]=n;else _customItems.unshift(n);}
-  else if(eventType==='DELETE')_customItems=_customItems.filter(x=>x.id!==o.id);
-  if(document.getElementById('adminScreen').classList.contains('active'))aRender();
-  if(document.getElementById('menuView').style.display!=='none')wRenderMenu();
+  try{
+    const {eventType,new:n,old:o}=payload;
+    if(eventType==='INSERT')_customItems.unshift(n);
+    else if(eventType==='UPDATE'){const i=_customItems.findIndex(x=>x.id===n.id);if(i>=0)_customItems[i]=n;else _customItems.unshift(n);}
+    else if(eventType==='DELETE')_customItems=_customItems.filter(x=>x.id!==o.id);
+    if(document.getElementById('adminScreen').classList.contains('active'))aRender();
+    if(document.getElementById('menuView').style.display!=='none')wRenderMenu();
+  }catch(err){console.error('menu handler error:',err);}
 }
 function _handleStaffChange(payload){
-  const {eventType,new:n,old:o}=payload;
-  if(eventType==='INSERT')_staffList.push(n);
-  else if(eventType==='UPDATE'){const i=_staffList.findIndex(x=>x.id===n.id);if(i>=0)_staffList[i]=n;else _staffList.push(n);}
-  else if(eventType==='DELETE')_staffList=_staffList.filter(x=>x.id!==o.id);
-  if(document.getElementById('oStaffSection').style.display!=='none') oRenderStaff();
+  try{
+    const {eventType,new:n,old:o}=payload;
+    if(eventType==='INSERT')_staffList.push(n);
+    else if(eventType==='UPDATE'){const i=_staffList.findIndex(x=>x.id===n.id);if(i>=0)_staffList[i]=n;else _staffList.push(n);}
+    else if(eventType==='DELETE')_staffList=_staffList.filter(x=>x.id!==o.id);
+    if(document.getElementById('oStaffSection').style.display!=='none') oRenderStaff();
+  }catch(err){console.error('staff handler error:',err);}
 }
 function _refreshScreens(){
-  if(typeof kRender==='function' && document.getElementById('kitchenScreen').classList.contains('active')) kRender();
-  if(typeof cRenderOrders==='function' && document.getElementById('cashierScreen').classList.contains('active') && cActiveTab==='orders') cRenderOrders();
-  if(typeof wBuildTableGrid==='function' && document.getElementById('waiterScreen').classList.contains('active')) wBuildTableGrid();
+  try{
+    if(typeof kRender==='function' && document.getElementById('kitchenScreen').classList.contains('active')) kRender();
+    if(typeof cRenderOrders==='function' && document.getElementById('cashierScreen').classList.contains('active') && cActiveTab==='orders') cRenderOrders();
+    if(typeof wBuildTableGrid==='function' && document.getElementById('waiterScreen').classList.contains('active')) wBuildTableGrid();
+  }catch(err){console.error('refresh error:',err);}
 }
 
-/* ═══════════════════════════════════════════
-   DATA ACCESS LAYER (GV) — menu data unchanged
-═══════════════════════════════════════════ */
+/* ═══ DATA ACCESS LAYER (GV) — menu unchanged ═══ */
 const GV = {
   _builtIn:[
     {id:'v1',name:'Chatpate',cat:'Veg Starters',price:160,emoji:'🥗'},{id:'v2',name:'French Fry',cat:'Veg Starters',price:200,emoji:'🍟'},{id:'v3',name:'Green Salad',cat:'Veg Starters',price:180,emoji:'🥗'},{id:'v4',name:'Papad Masala',cat:'Veg Starters',price:200,emoji:'🫓'},{id:'v5',name:'Veg Pakora',cat:'Veg Starters',price:180,emoji:'🧆'},{id:'v6',name:'Aloo Pakora',cat:'Veg Starters',price:160,emoji:'🧆'},{id:'v7',name:'Paneer Pakora',cat:'Veg Starters',price:320,emoji:'🧆'},{id:'v8',name:'Peanuts Sadheko',cat:'Veg Starters',price:200,emoji:'🥜'},{id:'v9',name:'Bhatmas Sadheko',cat:'Veg Starters',price:160,emoji:'🫘'},{id:'v10',name:'Waiwai Sadheko',cat:'Veg Starters',price:160,emoji:'🍜'},{id:'v11',name:'Aloo Jeera Sadheko',cat:'Veg Starters',price:160,emoji:'🥔'},{id:'v12',name:'Chips Chilly',cat:'Veg Starters',price:250,emoji:'🌶️'},
@@ -950,12 +919,12 @@ const GV = {
   getReceipts(){return _rcpts;},
   getCustomItems(){return _customItems;},
   getStaff(){return _staffList;},
-  async addOrder(o){o.id='ORD-'+Date.now();o.time=new Date().toISOString();o.status='pending';const {error}=await _supa.from('gv_orders').insert(o);if(error)throw error;},
+  async addOrder(o){o.id='ORD-'+Date.now();o.time=new Date().toISOString();o.status='pending';if(Array.isArray(o.items))o.items=JSON.stringify(o.items);const {error}=await _supa.from('gv_orders').insert(o);if(error)throw error;},
   async updateStatus(id,status){const {error}=await _supa.from('gv_orders').update({status,updatedAt:new Date().toISOString()}).eq('id',id);if(error)throw error;},
   async deleteOrder(id){const {error}=await _supa.from('gv_orders').delete().eq('id',id);if(error)throw error;},
   async deleteAllPaid(){const {error}=await _supa.from('gv_orders').delete().eq('status','paid');if(error)throw error;},
   async markTablePaid(tableNum){const ids=_orders.filter(o=>o.table===String(tableNum)&&o.status!=='paid').map(o=>o.id);if(!ids.length)return;const {error}=await _supa.from('gv_orders').update({status:'paid',updatedAt:new Date().toISOString()}).in('id',ids);if(error)throw error;},
-  async saveReceipt(r){r.savedAt=new Date().toISOString();r.receiptNo='GV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(_rcpts.length+1).padStart(4,'0');const {error}=await _supa.from('gv_receipts').insert(r);if(error)throw error;return r;},
+  async saveReceipt(r){r.savedAt=new Date().toISOString();r.receiptNo='GV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(_rcpts.length+1).padStart(4,'0');if(Array.isArray(r.items))r.items=JSON.stringify(r.items);if(Array.isArray(r.orderIds))r.orderIds=JSON.stringify(r.orderIds);const {error}=await _supa.from('gv_receipts').insert(r);if(error)throw error;return r;},
   async deleteReceipt(no){const {error}=await _supa.from('gv_receipts').delete().eq('receiptNo',no);if(error)throw error;},
   async clearAllReceipts(){const ids=_rcpts.map(r=>r.id);if(!ids.length)return;const {error}=await _supa.from('gv_receipts').delete().in('id',ids);if(error)throw error;},
   async addMenuItem(item){item.createdAt=new Date().toISOString();if(!item.id)item.id='CUSTOM-'+Date.now();const {error}=await _supa.from('gv_menu_items').insert(item);if(error)throw error;},
@@ -1009,7 +978,7 @@ function wUpdateCartUI(){const count=Object.values(wCart).reduce((s,v)=>s+v,0);d
 function wRenderDrawer(){const items=wCartItems();document.getElementById('drawerTitle').textContent='Order — Table '+wTable;document.getElementById('drawerTotal').textContent='Rs. '+wCartTotal().toLocaleString();const body=document.getElementById('drawerBody');if(!items.length){body.innerHTML='<p style="text-align:center;color:var(--muted2);padding:22px;">Cart is empty</p>';return;}body.innerHTML=items.map(i=>`<div class="cart-row"><div><div class="ci-name">${i.emoji||'🍽️'} ${i.name}</div><div class="ci-meta">×${i.qty} · Rs.${i.price} each</div></div><div class="ci-price">Rs. ${(i.price*i.qty).toLocaleString()}</div></div>`).join('');}
 function openCart(){wRenderDrawer();document.getElementById('drawerOverlay').classList.add('open');document.getElementById('cartDrawer').classList.add('open');}
 function closeCart(){document.getElementById('drawerOverlay').classList.remove('open');document.getElementById('cartDrawer').classList.remove('open');}
-async function sendOrder(){const items=wCartItems();if(!items.length)return;const btn=document.getElementById('sendBtn');btn.disabled=true;btn.textContent='⏳ Sending…';try{await GV.addOrder({table:wTable,items,total:wCartTotal(),sentBy:_currentUser||'Office',sentByRole:_currentRole||'office'});wCart={};wUpdateCartUI();closeCart();wRenderMenu();showToast('✅ Order sent to kitchen!','success');}catch(err){showToast('❌ '+(err.message||'Failed to send'),'error');}finally{btn.disabled=false;btn.textContent='🍳 Send to kitchen';}}
+async function sendOrder(){const items=wCartItems();if(!items.length)return;const btn=document.getElementById('sendBtn');btn.disabled=true;btn.textContent='⏳ Sending…';try{await GV.addOrder({table:wTable,items,total:wCartTotal(),sentBy:_currentUser||'Office',sentByRole:_currentRole||'office'});wCart={};wUpdateCartUI();closeCart();wRenderMenu();showToast('✅ Order sent to kitchen!','success');}catch(err){console.error('SEND ORDER ERROR:',err);showToast('❌ '+(err.message||err.details||err.hint||'Failed to send'),'error');}finally{btn.disabled=false;btn.textContent='🍳 Send to kitchen';}}
 
 /* KITCHEN */
 let kFilter='active',kSoundOn=true;
@@ -1024,7 +993,7 @@ function kPrint(id){const o=GV.getOrders().find(x=>x.id===id);if(!o)return;const
 
 /* CASHIER */
 let cActiveTab='orders',cOrderFilter='unpaid',cSelectedTable=null;
-let cPaper=Number(localStorage.getItem('gv_paper')||'58'); /* FIX: paper size persists */
+let cPaper=Number(localStorage.getItem('gv_paper')||'58');
 function cSavePaper(){cPaper=Number(document.getElementById('paperSel').value);localStorage.setItem('gv_paper',String(cPaper));}
 function cShowTab(tab,btn){cActiveTab=tab;document.querySelectorAll('.c-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('cOrdersTab').style.display=tab==='orders'?'block':'none';document.getElementById('billPanel').style.display='none';document.getElementById('receiptsPanel').style.display=tab==='receipts'?'block':'none';if(tab==='receipts')cRenderReceipts();if(tab==='orders')cRenderOrders();}
 function cSetOfilt(f,btn){cOrderFilter=f;document.querySelectorAll('.c-ofilt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');cRenderOrders();}
@@ -1041,13 +1010,7 @@ function cRenderReceipts(){const list=GV.getReceipts();document.getElementById('
 function cReprintReceipt(no){const r=GV.getReceipts().find(r=>r.receiptNo===no);if(r)cDoPrint(r);}
 function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>{const ids=Array.isArray(r.orderIds)?r.orderIds:(typeof r.orderIds==='string'?JSON.parse(r.orderIds||'[]'):[]);return ids.includes(oid)||r.orderId===oid;});if(r)cDoPrint(r);else showToast('No saved receipt for this order','error');}
 function cDoPrint(r){const items=GV.parseItems(r.items);const now=new Date(r.savedAt);const w=window.open('','_blank','width=420,height=640');w.document.write(cReceiptHTML(r.table,items,r.subtotal,r.taxPct,r.tax,r.grand,r.receiptNo,now,r.rounds||1,r.discPct||0,r.discAmt||0,r.discTotal||0));w.document.close();}
-/* FIX: thermal receipt — auto-fits 58/80mm, embeds FonePay QR */
-function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds,discPct,discAmt,discTotal){
-  const W=cPaper===80?'72mm':'54mm';const base=cPaper===80?12:11;
-  const qrBlock=FONEPAY_QR
-    ?`<div style="text-align:center;margin-top:8px;"><img src="${FONEPAY_QR}" style="width:${cPaper===80?'46mm':'40mm'};height:auto;"/><div style="font-size:${base-2}px;margin-top:3px;">Scan to pay · FonePay</div><div style="font-size:${base-2}px;">Amount: Rs.${(grand||0).toLocaleString()}</div></div>`
-    :`<div style="text-align:center;margin-top:8px;font-size:${base-1}px;">— Pay via FonePay QR —<br>Terminal ${FONEPAY_TERMINAL}<br>Amount: Rs.${(grand||0).toLocaleString()}</div>`;
-  return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>@page{size:${W} auto;margin:0;}*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;width:${W};padding:4mm 2mm;font-size:${base}px;line-height:1.35;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:${base+3}px;}.xl{font-size:${base+6}px;letter-spacing:2px;}.d{border-top:1px dashed #000;margin:5px 0;}.s{border-top:2px solid #000;margin:5px 0;}.r{display:flex;justify-content:space-between;padding:1px 0;gap:4px;}.r span:last-child{white-space:nowrap;}.sub{font-size:${base-2}px;}@media print{button{display:none!important;}}</style></head><body><div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b">FARM STAY</div><div class="sub" style="margin-top:2px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div><div class="d"></div><div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div><div class="r"><span>Table:</span><span class="b">${table}</span></div>${rounds>1?`<div class="r"><span>Rounds:</span><span>${rounds}</span></div>`:''}<div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${items.map(i=>`<div class="r"><span>${i.name} x${i.qty}</span><span>Rs.${((i.price||0)*(i.qty||1)).toLocaleString()}</span></div>`).join('')}<div class="d"></div><div class="r"><span>Subtotal</span><span>Rs.${(subtotal||0).toLocaleString()}</span></div>${(discTotal||0)>0?`<div class="r"><span>Discount${discPct>0?' ('+discPct+'%)':''}</span><span>-Rs.${Number(discTotal).toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${(tax||0).toLocaleString()}</span></div>`:''}<div class="s"></div><div class="r b lg"><span>TOTAL</span><span>Rs.${(grand||0).toLocaleString()}</span></div><div class="s"></div>${qrBlock}<div class="d"></div><div class="c"><div class="b">Thank You!</div><div class="sub" style="margin-top:2px;">Please visit again 🌿</div></div><`+`script>window.onload=()=>{window.print();setTimeout(()=>window.close(),400);}<`+`/script></body></html>`;}
+function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds,discPct,discAmt,discTotal){const W=cPaper===80?'72mm':'54mm';const base=cPaper===80?12:11;const qrBlock=FONEPAY_QR?`<div style="text-align:center;margin-top:8px;"><img src="${FONEPAY_QR}" style="width:${cPaper===80?'46mm':'40mm'};height:auto;"/><div style="font-size:${base-2}px;margin-top:3px;">Scan to pay · FonePay</div><div style="font-size:${base-2}px;">Amount: Rs.${(grand||0).toLocaleString()}</div></div>`:`<div style="text-align:center;margin-top:8px;font-size:${base-1}px;">— Pay via FonePay QR —<br>Terminal ${FONEPAY_TERMINAL}<br>Amount: Rs.${(grand||0).toLocaleString()}</div>`;return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>@page{size:${W} auto;margin:0;}*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;width:${W};padding:4mm 2mm;font-size:${base}px;line-height:1.35;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:${base+3}px;}.xl{font-size:${base+6}px;letter-spacing:2px;}.d{border-top:1px dashed #000;margin:5px 0;}.s{border-top:2px solid #000;margin:5px 0;}.r{display:flex;justify-content:space-between;padding:1px 0;gap:4px;}.r span:last-child{white-space:nowrap;}.sub{font-size:${base-2}px;}@media print{button{display:none!important;}}</style></head><body><div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b">FARM STAY</div><div class="sub" style="margin-top:2px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div><div class="d"></div><div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div><div class="r"><span>Table:</span><span class="b">${table}</span></div>${rounds>1?`<div class="r"><span>Rounds:</span><span>${rounds}</span></div>`:''}<div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${items.map(i=>`<div class="r"><span>${i.name} x${i.qty}</span><span>Rs.${((i.price||0)*(i.qty||1)).toLocaleString()}</span></div>`).join('')}<div class="d"></div><div class="r"><span>Subtotal</span><span>Rs.${(subtotal||0).toLocaleString()}</span></div>${(discTotal||0)>0?`<div class="r"><span>Discount${discPct>0?' ('+discPct+'%)':''}</span><span>-Rs.${Number(discTotal).toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${(tax||0).toLocaleString()}</span></div>`:''}<div class="s"></div><div class="r b lg"><span>TOTAL</span><span>Rs.${(grand||0).toLocaleString()}</span></div><div class="s"></div>${qrBlock}<div class="d"></div><div class="c"><div class="b">Thank You!</div><div class="sub" style="margin-top:2px;">Please visit again 🌿</div></div><`+`script>window.onload=()=>{window.print();setTimeout(()=>window.close(),400);}<`+`/script></body></html>`;}
 function cExportDay(){const receipts=GV.getReceipts();const todayISO=new Date().toISOString().slice(0,10);const today=new Date().toLocaleDateString('en-GB');const todayRcpts=receipts.filter(r=>r.savedAt&&r.savedAt.slice(0,10)===todayISO);const totalRevenue=todayRcpts.reduce((s,r)=>s+(r.grand||0),0);const pmBreak={cash:0,card:0,qr:0};todayRcpts.forEach(r=>{const pm=r.payMethod||'cash';pmBreak[pm]=(pmBreak[pm]||0)+(r.grand||0);});const itemBreak={};todayRcpts.forEach(r=>{GV.parseItems(r.items).forEach(i=>{const k=i.name;if(!itemBreak[k])itemBreak[k]={qty:0,total:0};itemBreak[k].qty+=(i.qty||1);itemBreak[k].total+=(i.price||0)*(i.qty||1);});});const topItems=Object.entries(itemBreak).sort((a,b)=>b[1].total-a[1].total).slice(0,10);const w=window.open('','_blank','width=820,height=900');w.document.write(`<!DOCTYPE html><html><head><title>Daily Report ${today}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:28px;max-width:780px;margin:0 auto;font-size:12px;}h1{font-size:22px;letter-spacing:3px;text-align:center;margin-bottom:4px;}.date{text-align:center;color:#777;margin-bottom:20px;}.d{border-top:1px dashed #bbb;margin:14px 0;}.s{border-top:2px solid #000;margin:14px 0;}.r{display:flex;justify-content:space-between;padding:3px 0;}table{width:100%;border-collapse:collapse;margin-top:4px;}th{font-size:10px;font-weight:bold;padding:5px 8px;background:#f0f0f0;border:1px solid #ddd;text-align:left;}th.r{text-align:right;}td{font-size:11px;padding:5px 8px;border:1px solid #ddd;}td.r{text-align:right;}tr:nth-child(even){background:#fafafa;}.sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;}.sum-box{border:1px solid #ddd;border-radius:4px;padding:10px;text-align:center;}.sum-val{font-size:18px;font-weight:bold;margin-bottom:2px;}.sum-lbl{font-size:9px;color:#777;text-transform:uppercase;}@media print{button{display:none!important;}}</style></head><body><h1>GOOD VIBES FARM STAY</h1><div style="font-size:14px;letter-spacing:2px;text-align:center;font-weight:normal;margin-bottom:4px;">DAILY SALES REPORT</div><div class="date">Date: ${today} · Generated: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div><div class="s"></div><div class="sum-grid"><div class="sum-box"><div class="sum-val">Rs.${totalRevenue.toLocaleString()}</div><div class="sum-lbl">Total Revenue</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.length}</div><div class="sum-lbl">Tables Served</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.reduce((s,r)=>s+(r.rounds||1),0)}</div><div class="sum-lbl">Total Orders</div></div></div><div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Payment Methods</div><div class="r"><span>💵 Cash</span><span><b>Rs.${(pmBreak.cash||0).toLocaleString()}</b></span></div><div class="r"><span>📱 FonePay QR</span><span><b>Rs.${(pmBreak.qr||0).toLocaleString()}</b></span></div><div class="r"><span>💳 Card / UPI</span><span><b>Rs.${(pmBreak.card||0).toLocaleString()}</b></span></div>${topItems.length?`<div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Top Selling Items</div><table><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Revenue</th></tr>${topItems.map(([name,d],i)=>`<tr><td>${i+1}</td><td>${name}</td><td class="r">${d.qty}</td><td class="r">Rs.${d.total.toLocaleString()}</td></tr>`).join('')}</table>`:''}<div class="s"></div><div style="text-align:center;font-size:10px;color:#999;margin-top:10px;">Good Vibes Farm Stay · Dharan-5, Sunsari, Nepal</div><div style="text-align:center;margin-top:18px;"><button onclick="window.print()" style="padding:10px 28px;background:#8257C4;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">🖨️ Print / Save PDF</button></div></body></html>`);w.document.close();}
 function cConfirmDelOrder(id,table){showModal(`Delete Order — Table ${table}?`,'Permanently remove this order.',()=>GV.deleteOrder(id));}
 function cConfirmDeleteTable(tableNum,count){showModal(`Clear all orders for Table ${tableNum}?`,`Delete all ${count} order(s) for this table.`,()=>{GV.getOrders().filter(o=>o.table===String(tableNum)).forEach(o=>GV.deleteOrder(o.id));});}
@@ -1066,10 +1029,19 @@ function aCloseForm(){document.getElementById('formOverlay').classList.remove('o
 async function aSaveItem(){const name=document.getElementById('fdName').value.trim();const price=parseInt(document.getElementById('fdPrice').value,10);const catSel=document.getElementById('fdCat').value.trim();const catCustom=document.getElementById('fdCatCustom').value.trim();const cat=catCustom||catSel;if(!name){showToast('❌ Item name required','error');return;}if(!price||price<1){showToast('❌ Valid price required','error');return;}if(!cat){showToast('❌ Category required','error');return;}const btn=document.getElementById('fdSaveBtn');btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');const data={name,price,cat,emoji:'',photo:null};try{if(aEditingId){if(aEditingId.startsWith('__builtin__')){const builtinId=aEditingId.replace('__builtin__','');data.id=builtinId;data._overridesBuiltin=true;const existing=_customItems.find(i=>i.id===builtinId&&i._overridesBuiltin);if(existing)await GV.updateMenuItem(existing.id,data);else await GV.addMenuItem(data);showToast('✅ Item updated!','success');}else{await GV.updateMenuItem(aEditingId,data);showToast('✅ Item updated!','success');}}else{await GV.addMenuItem(data);showToast('✅ Item added!','success');}setSync('ok');aCloseForm();aRender();aPopulateCatFilter();}catch(err){setSync('err');showToast('❌ '+(err.message||'Save failed'),'error');}finally{btn.disabled=false;btn.textContent='💾 Save item';}}
 function aRestoreBuiltin(id,name){showModal(`Restore "${name}" to default?`,'Remove your changes and restore original.',()=>{const existing=_customItems.find(i=>i.id===id&&i._overridesBuiltin);if(existing)GV.deleteMenuItem(existing.id).then(()=>{showToast('↩️ Restored','success');aRender();aPopulateCatFilter();});});}
 function aConfirmDelete(itemId,name){const isBuiltin=itemId.startsWith('__builtin__');showModal(`Delete "${name}"?`,isBuiltin?'This item will be hidden from menu.':'Permanently remove from menu.',()=>{if(isBuiltin){const builtinId=itemId.replace('__builtin__','');const item=GV._builtIn.find(i=>i.id===builtinId);if(!item)return;GV.addMenuItem({id:builtinId,name:item.name,price:item.price,cat:item.cat,emoji:'',photo:null,_deleted:true,_overridesBuiltin:true}).then(()=>{showToast('🗑️ Item hidden','success');aRender();aPopulateCatFilter();});}else{GV.deleteMenuItem(itemId).then(()=>{showToast('🗑️ Deleted','success');aRender();aPopulateCatFilter();});}});}
-function oSetTab(tab,btn){document.querySelectorAll('.office-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('oMenuSection').style.display=tab==='menu'?'block':'none';document.getElementById('oCatSection').style.display=tab==='categories'?'flex':'none';document.getElementById('oStaffSection').style.display=tab==='staff'?'flex':'none';document.getElementById('oCredSection').style.display=tab==='credentials'?'flex':'none';document.getElementById('oAllSection').style.display=tab==='all'?'block':'none';if(tab==='staff')oRenderStaff();if(tab==='categories')oCatRender();if(tab==='credentials')oInitCredSection();}
+function oSetTab(tab,btn){document.querySelectorAll('.office-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('oMenuSection').style.display=tab==='menu'?'block':'none';document.getElementById('oCatSection').style.display=tab==='categories'?'flex':'none';document.getElementById('oStaffSection').style.display=tab==='staff'?'flex':'none';document.getElementById('oQrSection').style.display=tab==='paymentqr'?'flex':'none';document.getElementById('oCredSection').style.display=tab==='credentials'?'flex':'none';document.getElementById('oAllSection').style.display=tab==='all'?'block':'none';if(tab==='staff')oRenderStaff();if(tab==='categories')oCatRender();if(tab==='credentials')oInitCredSection();if(tab==='paymentqr')oInitQr();}
 function oInitCredSection(){_refreshCredUI();['credAdminUser','credAdminCurrentPass','credAdminNewPass','credAdminConfPass','credManagerUser','credManagerCurrentPass','credManagerNewPass','credManagerConfPass'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['credAdminErr','credAdminOk','credManagerErr','credManagerOk'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='';});}
 function toggleCredEye(inputId,btn){const input=document.getElementById(inputId);if(!input)return;if(input.type==='password'){input.type='text';btn.textContent='🙈';}else{input.type='password';btn.textContent='👁️';}}
 async function saveCredentials(accountId){const prefix=accountId==='admin'?'credAdmin':'credManager';const errEl=document.getElementById(prefix+'Err');const okEl=document.getElementById(prefix+'Ok');const btn=document.getElementById(prefix+'SaveBtn');errEl.textContent='';okEl.textContent='';const newUser=document.getElementById(prefix+'User').value.trim().toLowerCase();const currentPass=document.getElementById(prefix+'CurrentPass').value;const newPass=document.getElementById(prefix+'NewPass').value;const confPass=document.getElementById(prefix+'ConfPass').value;const cred=OFFICE_CREDS.find(c=>c.id===accountId);if(!cred){errEl.textContent='❌ Account not found.';return;}if(!currentPass){errEl.textContent='❌ Enter your current password to verify.';return;}if(currentPass!==cred.pass){errEl.textContent='❌ Current password is incorrect.';return;}const finalUser=newUser||cred.user;if(newUser){const conflict=OFFICE_CREDS.find(c=>c.id!==accountId&&c.user===newUser);if(conflict){errEl.textContent='❌ That username is already used by another admin account.';return;}}let finalPass=cred.pass;if(newPass||confPass){if(newPass.length<6){errEl.textContent='❌ New password must be at least 6 characters.';return;}if(newPass!==confPass){errEl.textContent='❌ New passwords do not match.';return;}finalPass=newPass;}if(finalUser===cred.user&&finalPass===cred.pass){errEl.textContent='ℹ️ No changes detected.';return;}btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');try{await _saveAdminCred(accountId,finalUser,finalPass);setSync('ok');okEl.textContent='✅ Credentials updated successfully!';['CurrentPass','NewPass','ConfPass'].forEach(s=>{const el=document.getElementById(prefix+s);if(el)el.value='';});document.querySelectorAll('.cred-eye').forEach(b=>b.textContent='👁️');document.querySelectorAll('.cred-input').forEach(el=>{if(el.type==='text'&&el.closest('.cred-input-wrap'))el.type='password';});_refreshCredUI();showToast('🔐 Credentials updated!','success');setTimeout(()=>{if(okEl)okEl.textContent='';},4000);}catch(e){setSync('err');errEl.textContent='❌ Save failed: '+e.message+'. Make sure the gv_admin_creds table exists in Supabase.';}finally{btn.disabled=false;btn.textContent='🔐 Update '+(accountId==='admin'?'Admin':'Manager')+' Credentials';}}
+
+/* PAYMENT QR UPLOAD */
+let _pendingQr=null;
+function oInitQr(){_pendingQr=null;document.getElementById('qrMsg').textContent='';document.getElementById('qrSaveBtn').style.display='none';const img=document.getElementById('qrPreview'),empty=document.getElementById('qrEmpty'),rm=document.getElementById('qrRemoveBtn');if(FONEPAY_QR){img.src=FONEPAY_QR;img.style.display='inline-block';empty.style.display='none';rm.style.display='block';}else{img.style.display='none';empty.style.display='block';rm.style.display='none';}}
+function oQrFileChosen(e){const file=e.target.files[0];if(!file)return;const msg=document.getElementById('qrMsg');if(!file.type.startsWith('image/')){msg.style.color='var(--redsoft)';msg.textContent='❌ Please choose an image file.';return;}if(file.size>900*1024){msg.style.color='var(--redsoft)';msg.textContent='❌ Image too large (max ~900KB). Use a smaller screenshot.';return;}const reader=new FileReader();reader.onload=()=>{_pendingQr=reader.result;const img=document.getElementById('qrPreview');img.src=_pendingQr;img.style.display='inline-block';document.getElementById('qrEmpty').style.display='none';document.getElementById('qrSaveBtn').style.display='block';msg.style.color='var(--muted2)';msg.textContent='Preview ready — tap Save to use on all bills.';};reader.readAsDataURL(file);}
+async function oSaveQr(){if(!_pendingQr)return;const btn=document.getElementById('qrSaveBtn'),msg=document.getElementById('qrMsg');btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');try{const {error}=await _supa.from('gv_admin_creds').upsert({id:'payment_qr',username:'payment_qr',password:_pendingQr},{onConflict:'id'});if(error)throw error;FONEPAY_QR=_pendingQr;_pendingQr=null;setSync('ok');msg.style.color='var(--moss2)';msg.textContent='✅ Saved! This QR now prints on every bill.';document.getElementById('qrSaveBtn').style.display='none';document.getElementById('qrRemoveBtn').style.display='block';showToast('💳 Payment QR saved!','success');}catch(e){setSync('err');msg.style.color='var(--redsoft)';msg.textContent='❌ Save failed: '+e.message;}finally{btn.disabled=false;btn.textContent='💾 Save QR (shows on all bills)';}}
+function oRemoveQr(){showModal('Remove payment QR?','Bills will show a text FonePay note instead until you upload a new one.',async()=>{setSync('saving');try{await _supa.from('gv_admin_creds').upsert({id:'payment_qr',username:'payment_qr',password:''},{onConflict:'id'});FONEPAY_QR='';setSync('ok');showToast('🗑️ QR removed','success');oInitQr();}catch(e){setSync('err');showToast('❌ '+e.message,'error');}});}
+
+/* CATEGORY MANAGER */
 let _renameCatOld=null;
 function oCatRender(){const cats=GV.cats();const list=document.getElementById('catMgrList');if(!cats.length){list.innerHTML='<div class="empty-state"><span class="empty-icon">🏷️</span><div>No categories yet</div></div>';return;}const countMap={};GV.menu.forEach(i=>{countMap[i.cat]=(countMap[i.cat]||0)+1;});const builtinCats=new Set(GV._builtIn.map(i=>i.cat));list.innerHTML=cats.map(cat=>{const count=countMap[cat]||0;const isBuiltin=builtinCats.has(cat);const safeAttr=cat.replace(/\\/g,'\\\\').replace(/'/g,"\\'");return`<div class="cat-mgr-row"><div style="flex:1;min-width:0;"><div class="cat-mgr-name">${cat}</div><div style="font-size:11px;color:var(--muted2);margin-top:2px;">${count} item${count!==1?'s':''}${isBuiltin?' · <span style="color:rgba(245,239,226,.3)">includes built-in items</span>':''}</div></div><button class="cat-mgr-rename" onclick="oOpenRenameCategory('${safeAttr}')">✏️</button><button class="cat-mgr-delete" onclick="oConfirmDeleteCategory('${safeAttr}',${count})">🗑️</button></div>`;}).join('');}
 function oOpenRenameCategory(oldName){_renameCatOld=oldName;document.getElementById('renameCatOld').textContent=`Current name: "${oldName}"`;document.getElementById('renameCatInput').value=oldName;document.getElementById('renameCatErr').textContent='';document.getElementById('renameCatModal').classList.add('open');setTimeout(()=>document.getElementById('renameCatInput').focus(),120);}
@@ -1085,25 +1057,19 @@ function oDeleteStaff(id,name){showModal(`Remove "${name}"?`,'This waiter cannot
 </script>
 
 <script>
-/* ═══ PWA — FIX: never cache Supabase API; only cache static shell ═══ */
+/* PWA — never cache Supabase; only cache static shell (fixes overnight-edit bug) */
 (function(){
   const manifest={name:"Good Vibes Farm Stay",short_name:"Good Vibes",start_url:".",display:"standalone",background_color:"#0E1613",theme_color:"#14352A",orientation:"portrait-primary",icons:[{src:"data:image/svg+xml,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='256' fill='%2314352A'/><text x='256' y='320' text-anchor='middle' font-family='Georgia,serif' font-size='210' font-weight='900' fill='%23F2B865'>GV</text></svg>`),sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
   const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
   document.getElementById('pwaManifest').href=URL.createObjectURL(blob);
   if('serviceWorker' in navigator){
-    /* FIX: bumped cache to v3 (clears old v2), and network-only for supabase.co
-       so DB reads/writes never come from a stale cache — the overnight-edit bug. */
     const swCode=`const CACHE='gv-v3';
 self.addEventListener('install',e=>{self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))));self.clients.claim();});
 self.addEventListener('fetch',e=>{
   if(e.request.method!=='GET'){return;}
   const url=e.request.url;
-  /* Never cache Supabase or any API/websocket traffic — always go to network */
-  if(url.includes('supabase.co')||url.includes('supabase.in')||url.includes('/rest/')||url.includes('/realtime/')||url.includes('/auth/')){
-    e.respondWith(fetch(e.request));return;
-  }
-  /* Static shell: network-first, fall back to cache when offline */
+  if(url.includes('supabase.co')||url.includes('supabase.in')||url.includes('/rest/')||url.includes('/realtime/')||url.includes('/auth/')){e.respondWith(fetch(e.request));return;}
   e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(CACHE).then(ca=>ca.put(e.request,c));return r;}).catch(()=>caches.match(e.request)));
 });`;
     const swBlob=new Blob([swCode],{type:'text/javascript'});
