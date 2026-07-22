@@ -397,6 +397,47 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .staff-name{font-size:14px;font-weight:800;color:var(--text);}
 .staff-role{font-size:11px;color:var(--muted2);margin-top:2px;}
 .staff-acts{display:flex;gap:6px;flex-shrink:0;}
+
+/* ═══ INVENTORY ═══ */
+.inv-toolbar{display:flex;gap:8px;align-items:center;padding:14px 16px 10px;flex-wrap:wrap;}
+.inv-search{flex:1;min-width:140px;position:relative;}
+.inv-search input{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:9px 14px 9px 36px;color:var(--text);font-family:inherit;font-size:13px;outline:none;}
+.inv-search input:focus{border-color:var(--admin2);}
+.inv-search .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.6;}
+.inv-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;padding:0 16px 12px;}
+.inv-stat{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:12px 10px;text-align:center;}
+.inv-stat-val{font-size:16px;font-weight:800;line-height:1;margin-bottom:3px;font-family:'Space Mono',monospace;}
+.inv-stat-lbl{font-size:9px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.inv-list{padding:0 16px 120px;display:flex;flex-direction:column;gap:9px;}
+.inv-card{background:var(--card);border:1.5px solid var(--border);border-radius:15px;padding:13px 14px;}
+.inv-card.low{border-color:rgba(229,72,77,.5);background:linear-gradient(160deg,rgba(229,72,77,.07),var(--card));}
+.inv-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.inv-name{font-size:15px;font-weight:800;color:var(--text2);display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.inv-low-tag{font-size:9px;font-weight:800;padding:2px 8px;border-radius:7px;background:rgba(229,72,77,.16);color:var(--redsoft);border:1px solid rgba(229,72,77,.3);text-transform:uppercase;letter-spacing:.4px;}
+.inv-val{text-align:right;flex-shrink:0;}
+.inv-val-num{font-size:16px;font-weight:800;color:var(--amber2);font-family:'Space Mono',monospace;line-height:1;}
+.inv-val-lbl{font-size:9px;color:var(--muted2);font-weight:700;text-transform:uppercase;margin-top:2px;}
+.inv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;}
+.inv-cell{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:7px 4px;text-align:center;}
+.inv-cell-lbl{font-size:8.5px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px;}
+.inv-cell-val{font-size:14px;font-weight:800;font-family:'Space Mono',monospace;}
+.inv-cell.closing .inv-cell-val{color:var(--moss2);}
+.inv-cell.closing.neg .inv-cell-val{color:var(--redsoft);}
+.inv-card-acts{display:flex;gap:6px;}
+.inv-act{flex:1;padding:8px;border-radius:10px;border:none;cursor:pointer;font-family:'Outfit';font-size:12px;font-weight:800;transition:transform .1s;}
+.inv-act:active{transform:scale(.96);}
+.inv-buy{background:rgba(95,168,122,.16);color:var(--moss2);border:1px solid rgba(95,168,122,.3);}
+.inv-sell{background:rgba(232,160,68,.14);color:var(--amber2);border:1px solid rgba(232,160,68,.3);}
+.inv-edit{background:rgba(91,110,225,.18);color:var(--indigo2);border:1px solid rgba(91,110,225,.3);flex:none;width:42px;}
+.inv-del{background:rgba(229,72,77,.1);color:var(--redsoft);border:1px solid rgba(229,72,77,.3);flex:none;width:42px;}
+.inv-quick-ov{position:fixed;inset:0;background:rgba(0,0,0,.74);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px);padding:20px;}
+.inv-quick-ov.open{display:flex;animation:fadeIn .2s ease;}
+.inv-quick-box{background:var(--card2);border:1px solid var(--border2);border-radius:22px;padding:24px 22px;width:100%;max-width:330px;animation:riseIn .28s cubic-bezier(.2,.7,.3,1);}
+.inv-quick-title{font-family:'Fraunces',serif;font-weight:700;font-size:19px;margin-bottom:4px;text-align:center;}
+.inv-quick-sub{font-size:12px;color:var(--muted2);text-align:center;margin-bottom:18px;}
+.inv-quick-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:14px;color:var(--text);font-family:'Space Mono',monospace;font-size:22px;font-weight:700;text-align:center;outline:none;margin-bottom:16px;}
+.inv-quick-input:focus{border-color:var(--admin2);}
+
 @media(max-width:380px){
   .menu-grid{grid-template-columns:1fr;}
   .table-grid{grid-template-columns:repeat(4,1fr);}
@@ -624,6 +665,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <button class="office-tab active" onclick="oSetTab('menu',this)">🍽️ Menu</button>
     <button class="office-tab" onclick="oSetTab('categories',this)">🏷️ Categories</button>
     <button class="office-tab" onclick="oSetTab('staff',this)">👥 Staff</button>
+    <button class="office-tab" onclick="oSetTab('inventory',this)">📦 Inventory</button>
     <button class="office-tab" onclick="oSetTab('paymentqr',this)">💳 Payment QR</button>
     <button class="office-tab" onclick="oSetTab('credentials',this)">🔑 Admin Login</button>
     <button class="office-tab" onclick="oSetTab('all',this)">📊 All Portals</button>
@@ -646,6 +688,18 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
       <button class="add-item-btn" onclick="oOpenAddStaff()">＋ Add waiter</button>
     </div>
     <div id="staffList"></div>
+  </div>
+  <div id="oInvSection" style="display:none;flex:1;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 4px;">
+      <span class="a-sec-title">📦 Inventory</span>
+      <button class="add-item-btn" onclick="invOpenForm()">＋ Add stock item</button>
+    </div>
+    <div class="inv-toolbar">
+      <div class="inv-search"><span class="ic">🔍</span><input id="invSearch" placeholder="Search stock…" oninput="invRender()"></div>
+      <button class="c-ofilt" id="invLowBtn" onclick="invToggleLow(this)" style="flex-shrink:0;">⚠️ Low stock only</button>
+    </div>
+    <div class="inv-stats" id="invStats"></div>
+    <div class="inv-list" id="invList"></div>
   </div>
   <div id="oQrSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
     <div style="padding:16px 0 6px;"><span class="a-sec-title">💳 Payment QR Code</span></div>
@@ -748,6 +802,43 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   </div>
 </div>
 
+<div class="form-drawer-overlay" id="invFormOverlay" onclick="invCloseForm()"></div>
+<div class="form-drawer" id="invFormDrawer">
+  <div class="fd-handle"></div>
+  <div class="fd-hdr"><div class="fd-title" id="invFdTitle">Add Stock Item</div><button class="fd-close" onclick="invCloseForm()">&times;</button></div>
+  <div class="fd-body">
+    <input type="hidden" id="invId">
+    <div class="fd-field"><label class="fd-label">Item Name *</label><input class="fd-input" id="invName" placeholder="e.g. Gorkha small" maxlength="60"></div>
+    <div style="display:flex;gap:10px;">
+      <div class="fd-field" style="flex:1;"><label class="fd-label">Opening Stock</label><input class="fd-input" id="invOpening" type="number" step="any" placeholder="0"></div>
+      <div class="fd-field" style="flex:1;"><label class="fd-label">Price (Rs.)</label><input class="fd-input" id="invPrice" type="number" step="any" placeholder="0"></div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <div class="fd-field" style="flex:1;"><label class="fd-label">Purchases</label><input class="fd-input" id="invPurchases" type="number" step="any" placeholder="0"></div>
+      <div class="fd-field" style="flex:1;"><label class="fd-label">Sales</label><input class="fd-input" id="invSales" type="number" step="any" placeholder="0"></div>
+    </div>
+    <div class="fd-field"><label class="fd-label">Reorder Level (low-stock alert)</label><input class="fd-input" id="invReorder" type="number" step="any" placeholder="e.g. 5"></div>
+    <div style="font-size:11px;color:var(--muted2);line-height:1.5;padding:10px 12px;background:rgba(95,168,122,.06);border:1px solid rgba(95,168,122,.2);border-radius:11px;">💡 Closing stock = Opening + Purchases − Sales. Total value = Closing × Price. Both are calculated automatically.</div>
+  </div>
+  <div class="fd-foot">
+    <button class="fd-cancel-btn" onclick="invCloseForm()">Cancel</button>
+    <button class="fd-save-btn" id="invSaveBtn" onclick="invSave()">💾 Save item</button>
+  </div>
+</div>
+
+<div class="inv-quick-ov" id="invQuickOv">
+  <div class="inv-quick-box">
+    <div class="inv-quick-title" id="invQuickTitle">Add Purchase</div>
+    <div class="inv-quick-sub" id="invQuickSub"></div>
+    <input class="inv-quick-input" id="invQuickInput" type="number" step="any" placeholder="0" onkeydown="if(event.key==='Enter')invQuickSave()">
+    <div class="modal-btns">
+      <button class="modal-btn modal-cancel" onclick="invCloseQuick()">Cancel</button>
+      <button class="modal-btn" id="invQuickBtn" style="background:rgba(95,168,122,.2);color:var(--moss2);border:1px solid rgba(95,168,122,.3);" onclick="invQuickSave()">Add</button>
+    </div>
+    <div id="invQuickErr" style="font-size:11px;color:var(--redsoft);margin-top:8px;text-align:center;min-height:14px;"></div>
+  </div>
+</div>
+
 <div class="modal-ov" id="modalOv">
   <div class="modal-box">
     <div class="modal-title" id="modalTitle">Are you sure?</div>
@@ -814,16 +905,17 @@ function _refreshCredUI(){
 function isOfficePass(p){ return OFFICE_CREDS.some(c=>c.pass===p); }
 
 /* ═══ IN-MEMORY STORE + REALTIME ═══ */
-let _orders=[], _rcpts=[], _customItems=[], _staffList=[];
+let _orders=[], _rcpts=[], _customItems=[], _staffList=[], _inventory=[];
 let _dbReady=false;
 
 async function _initDB(){
   try{
-    const [ordRes, rcRes, menuRes, staffRes] = await Promise.all([
+    const [ordRes, rcRes, menuRes, staffRes, invRes] = await Promise.all([
       _supa.from('gv_orders').select('*').order('time', {ascending:false}),
       _supa.from('gv_receipts').select('*').order('savedAt', {ascending:false}),
       _supa.from('gv_menu_items').select('*').order('createdAt', {ascending:false}),
       _supa.from('gv_staff').select('*').order('createdAt', {ascending:true}),
+      _supa.from('gv_inventory').select('*').order('createdAt', {ascending:true}),
     ]);
     if(ordRes.error) console.error('Orders error:',ordRes.error);
     if(rcRes.error) console.error('Receipts error:',rcRes.error);
@@ -833,6 +925,8 @@ async function _initDB(){
     _rcpts  = rcRes.data||[];
     _customItems = menuRes.data||[];
     _staffList   = staffRes.data||[];
+    if(invRes.error) console.error('Inventory error:',invRes.error);
+    _inventory   = invRes.data||[];
     _dbReady = true;
     _refreshScreens();
 
@@ -841,6 +935,7 @@ async function _initDB(){
       .on('postgres_changes',{event:'*',schema:'public',table:'gv_receipts'}, _handleRcptChange)
       .on('postgres_changes',{event:'*',schema:'public',table:'gv_menu_items'}, _handleMenuChange)
       .on('postgres_changes',{event:'*',schema:'public',table:'gv_staff'}, _handleStaffChange)
+      .on('postgres_changes',{event:'*',schema:'public',table:'gv_inventory'}, _handleInvChange)
       .subscribe();
   } catch(e){ console.error('DB init error:',e); }
 }
@@ -881,6 +976,15 @@ function _handleStaffChange(payload){
     else if(eventType==='DELETE')_staffList=_staffList.filter(x=>x.id!==o.id);
     if(document.getElementById('oStaffSection').style.display!=='none') oRenderStaff();
   }catch(err){console.error('staff handler error:',err);}
+}
+function _handleInvChange(payload){
+  try{
+    const {eventType,new:n,old:o}=payload;
+    if(eventType==='INSERT')_inventory.push(n);
+    else if(eventType==='UPDATE'){const i=_inventory.findIndex(x=>x.id===n.id);if(i>=0)_inventory[i]=n;else _inventory.push(n);}
+    else if(eventType==='DELETE')_inventory=_inventory.filter(x=>x.id!==o.id);
+    if(document.getElementById('oInvSection').style.display!=='none') invRender();
+  }catch(err){console.error('inv handler error:',err);}
 }
 function _refreshScreens(){
   try{
@@ -933,6 +1037,68 @@ const GV = {
   async addStaff(s){s.createdAt=new Date().toISOString();s.active=true;const {error}=await _supa.from('gv_staff').insert(s);if(error)throw error;},
   async updateStaff(id,data){const {error}=await _supa.from('gv_staff').update(data).eq('id',id);if(error)throw error;},
   async deleteStaff(id){const {error}=await _supa.from('gv_staff').delete().eq('id',id);if(error)throw error;},
+  getInventory(){return _inventory;},
+  async addInventory(it){it.createdAt=new Date().toISOString();if(!it.id)it.id='INV-'+Date.now()+'-'+Math.floor(Math.random()*1000);const {error}=await _supa.from('gv_inventory').insert(it);if(error)throw error;},
+  async updateInventory(id,data){data.updatedAt=new Date().toISOString();const {error}=await _supa.from('gv_inventory').update(data).eq('id',id);if(error)throw error;},
+  async deleteInventory(id){const {error}=await _supa.from('gv_inventory').delete().eq('id',id);if(error)throw error;},
+  _invSeed:[
+  {name:"Sprite small",opening:18.0,purchases:0.0,sales:2.0,price:46.25,reorder:5.0},
+  {name:"Coke small",opening:8.0,purchases:0.0,sales:0.0,price:46.25,reorder:5.0},
+  {name:"Coke Zero",opening:3.0,purchases:0.0,sales:0.0,price:0,reorder:0},
+  {name:"Blue redbull",opening:5.0,purchases:0.0,sales:0.0,price:191.6,reorder:2.0},
+  {name:"Badam juice",opening:12.0,purchases:0.0,sales:3.0,price:62.5,reorder:2.0},
+  {name:"Xtreme",opening:22.0,purchases:0.0,sales:2.0,price:100.0,reorder:2.0},
+  {name:"Barasinghe small",opening:19.0,purchases:0.0,sales:0.0,price:193.75,reorder:5.0},
+  {name:"Barasinghe large",opening:24.0,purchases:0.0,sales:0.0,price:391.6,reorder:5.0},
+  {name:"Tuborg large",opening:16.0,purchases:0.0,sales:2.0,price:404.1,reorder:5.0},
+  {name:"Gorkha small",opening:47.0,purchases:24.0,sales:35.0,price:167.0,reorder:5.0},
+  {name:"Gorkha large",opening:11.0,purchases:24.0,sales:8.0,price:321.0,reorder:5.0},
+  {name:"Carlsberg",opening:0.0,purchases:0.0,sales:0.0,price:443.3,reorder:0},
+  {name:"Big master white",opening:0.0,purchases:2.0,sales:0.0,price:0,reorder:2.0},
+  {name:"Divine red",opening:2.0,purchases:0.0,sales:0.0,price:740.0,reorder:2.0},
+  {name:"Divine white",opening:1.0,purchases:0.0,sales:1.0,price:740.0,reorder:2.0},
+  {name:"Black chimney OD 1 half",opening:2.25,purchases:0.0,sales:0.0,price:0,reorder:2.0},
+  {name:"OD red full",opening:2.75,purchases:0.0,sales:0.25,price:2800.0,reorder:2.0},
+  {name:"8848 full",opening:1.75,purchases:0.0,sales:0.75,price:2180.0,reorder:2.0},
+  {name:"Black oak",opening:2.5,purchases:0.0,sales:0.0,price:1380.0,reorder:2.0},
+  {name:"Khukuri rum",opening:2.75,purchases:0.0,sales:1.15,price:2080.0,reorder:1.0},
+  {name:"Coke 1.5ltr",opening:1.0,purchases:0.0,sales:0.0,price:220.0,reorder:3.0},
+  {name:"Sprite 1.5ltr",opening:2.0,purchases:0.0,sales:2.0,price:165.0,reorder:3.0},
+  {name:"Fanta 1.5ltr",opening:2.0,purchases:0.0,sales:0.0,price:165.0,reorder:3.0},
+  {name:"Cranberry juice",opening:4.0,purchases:0.0,sales:0.0,price:280.0,reorder:2.0},
+  {name:"Waiwai",opening:23.0,purchases:0.0,sales:31.0,price:18.0,reorder:2.0},
+  {name:"Current",opening:3.0,purchases:5.0,sales:4.0,price:38.0,reorder:2.0},
+  {name:"Current Cheeseball",opening:3.0,purchases:0.0,sales:0.0,price:40.0,reorder:1.0},
+  {name:"Mad angles",opening:1.0,purchases:0.0,sales:0.0,price:40.0,reorder:1.0},
+  {name:"Current Hot n spicy",opening:0.0,purchases:0.0,sales:0.0,price:40.0,reorder:1.0},
+  {name:"Current potato chips",opening:0.0,purchases:0.0,sales:0.0,price:40.0,reorder:0},
+  {name:"Current naga chilli",opening:0.0,purchases:0.0,sales:0.0,price:40.0,reorder:0},
+  {name:"Current achari sticks",opening:0.0,purchases:0.0,sales:0.0,price:40.0,reorder:0},
+  {name:"Meat ball",opening:10.0,purchases:10.0,sales:1.0,price:180.0,reorder:1.0},
+  {name:"French fries",opening:1.0,purchases:0,sales:0,price:680.0,reorder:1.0},
+  {name:"Paneer 500gm",opening:1.0,purchases:0,sales:0,price:390.0,reorder:1.0},
+  {name:"Sausage 350",opening:6.0,purchases:0,sales:1.0,price:350.0,reorder:1.0},
+  {name:"Sausage 450",opening:4.4,purchases:0,sales:0,price:450.0,reorder:1.0},
+  {name:"Milk",opening:2.0,purchases:0,sales:0,price:50.0,reorder:1.0},
+  {name:"Curd",opening:1.0,purchases:0,sales:0,price:60.0,reorder:1.0},
+  {name:"Chicken wings",opening:1.0,purchases:0,sales:0,price:400.0,reorder:2.0},
+  {name:"Whole chicken",opening:1.0,purchases:0,sales:0,price:750.0,reorder:1.0},
+  {name:"Buldak",opening:4.0,purchases:0,sales:1.0,price:190.0,reorder:2.0},
+  {name:"Egg",opening:6.0,purchases:0,sales:6.0,price:17.0,reorder:4.0},
+  {name:"Refined Oil 1/2ltr",opening:3.0,purchases:0,sales:0,price:0,reorder:1.0},
+  {name:"Mustard oil 1/2ltr",opening:2.0,purchases:0,sales:0,price:0,reorder:1.0},
+  {name:"Papad",opening:2.5,purchases:0,sales:0,price:200.0,reorder:1.0},
+  {name:"Peach iced tea",opening:1.0,purchases:0,sales:0,price:660.0,reorder:1.0},
+  {name:"Coffee",opening:2.0,purchases:0,sales:0,price:50.0,reorder:1.0},
+  {name:"Maida",opening:1.5,purchases:0,sales:0,price:0,reorder:1.0},
+  {name:"Besan",opening:3.5,purchases:0,sales:0,price:0,reorder:1.0},
+  {name:"Cornflour",opening:3.5,purchases:0,sales:0,price:70.0,reorder:1.0},
+  {name:"Peanut",opening:1.5,purchases:0,sales:0,price:120.0,reorder:1.0},
+  {name:"Bhuja",opening:0.0,purchases:0,sales:0,price:0,reorder:1.0},
+  {name:"Shikhar",opening:10.0,purchases:0,sales:0,price:260.0,reorder:1.0},
+  {name:"Surya",opening:6.0,purchases:0,sales:0,price:350.0,reorder:1.0},
+  {name:"Khukuri",opening:3.0,purchases:0,sales:0,price:120.0,reorder:1.0}
+],
   cats(){return[...new Set(this.menu.map(i=>i.cat))];},
   parseItems(items){if(!items)return[];if(Array.isArray(items))return items;if(typeof items==='string'){try{return JSON.parse(items);}catch{return[];}}return[];}
 };
@@ -1029,10 +1195,135 @@ function aCloseForm(){document.getElementById('formOverlay').classList.remove('o
 async function aSaveItem(){const name=document.getElementById('fdName').value.trim();const price=parseInt(document.getElementById('fdPrice').value,10);const catSel=document.getElementById('fdCat').value.trim();const catCustom=document.getElementById('fdCatCustom').value.trim();const cat=catCustom||catSel;if(!name){showToast('❌ Item name required','error');return;}if(!price||price<1){showToast('❌ Valid price required','error');return;}if(!cat){showToast('❌ Category required','error');return;}const btn=document.getElementById('fdSaveBtn');btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');const data={name,price,cat,emoji:'',photo:null};try{if(aEditingId){if(aEditingId.startsWith('__builtin__')){const builtinId=aEditingId.replace('__builtin__','');data.id=builtinId;data._overridesBuiltin=true;const existing=_customItems.find(i=>i.id===builtinId&&i._overridesBuiltin);if(existing)await GV.updateMenuItem(existing.id,data);else await GV.addMenuItem(data);showToast('✅ Item updated!','success');}else{await GV.updateMenuItem(aEditingId,data);showToast('✅ Item updated!','success');}}else{await GV.addMenuItem(data);showToast('✅ Item added!','success');}setSync('ok');aCloseForm();aRender();aPopulateCatFilter();}catch(err){setSync('err');showToast('❌ '+(err.message||'Save failed'),'error');}finally{btn.disabled=false;btn.textContent='💾 Save item';}}
 function aRestoreBuiltin(id,name){showModal(`Restore "${name}" to default?`,'Remove your changes and restore original.',()=>{const existing=_customItems.find(i=>i.id===id&&i._overridesBuiltin);if(existing)GV.deleteMenuItem(existing.id).then(()=>{showToast('↩️ Restored','success');aRender();aPopulateCatFilter();});});}
 function aConfirmDelete(itemId,name){const isBuiltin=itemId.startsWith('__builtin__');showModal(`Delete "${name}"?`,isBuiltin?'This item will be hidden from menu.':'Permanently remove from menu.',()=>{if(isBuiltin){const builtinId=itemId.replace('__builtin__','');const item=GV._builtIn.find(i=>i.id===builtinId);if(!item)return;GV.addMenuItem({id:builtinId,name:item.name,price:item.price,cat:item.cat,emoji:'',photo:null,_deleted:true,_overridesBuiltin:true}).then(()=>{showToast('🗑️ Item hidden','success');aRender();aPopulateCatFilter();});}else{GV.deleteMenuItem(itemId).then(()=>{showToast('🗑️ Deleted','success');aRender();aPopulateCatFilter();});}});}
-function oSetTab(tab,btn){document.querySelectorAll('.office-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('oMenuSection').style.display=tab==='menu'?'block':'none';document.getElementById('oCatSection').style.display=tab==='categories'?'flex':'none';document.getElementById('oStaffSection').style.display=tab==='staff'?'flex':'none';document.getElementById('oQrSection').style.display=tab==='paymentqr'?'flex':'none';document.getElementById('oCredSection').style.display=tab==='credentials'?'flex':'none';document.getElementById('oAllSection').style.display=tab==='all'?'block':'none';if(tab==='staff')oRenderStaff();if(tab==='categories')oCatRender();if(tab==='credentials')oInitCredSection();if(tab==='paymentqr')oInitQr();}
+function oSetTab(tab,btn){document.querySelectorAll('.office-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('oMenuSection').style.display=tab==='menu'?'block':'none';document.getElementById('oCatSection').style.display=tab==='categories'?'flex':'none';document.getElementById('oStaffSection').style.display=tab==='staff'?'flex':'none';document.getElementById('oQrSection').style.display=tab==='paymentqr'?'flex':'none';document.getElementById('oInvSection').style.display=tab==='inventory'?'flex':'none';document.getElementById('oCredSection').style.display=tab==='credentials'?'flex':'none';document.getElementById('oAllSection').style.display=tab==='all'?'block':'none';if(tab==='staff')oRenderStaff();if(tab==='categories')oCatRender();if(tab==='credentials')oInitCredSection();if(tab==='paymentqr')oInitQr();if(tab==='inventory')invInit();}
 function oInitCredSection(){_refreshCredUI();['credAdminUser','credAdminCurrentPass','credAdminNewPass','credAdminConfPass','credManagerUser','credManagerCurrentPass','credManagerNewPass','credManagerConfPass'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['credAdminErr','credAdminOk','credManagerErr','credManagerOk'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='';});}
 function toggleCredEye(inputId,btn){const input=document.getElementById(inputId);if(!input)return;if(input.type==='password'){input.type='text';btn.textContent='🙈';}else{input.type='password';btn.textContent='👁️';}}
 async function saveCredentials(accountId){const prefix=accountId==='admin'?'credAdmin':'credManager';const errEl=document.getElementById(prefix+'Err');const okEl=document.getElementById(prefix+'Ok');const btn=document.getElementById(prefix+'SaveBtn');errEl.textContent='';okEl.textContent='';const newUser=document.getElementById(prefix+'User').value.trim().toLowerCase();const currentPass=document.getElementById(prefix+'CurrentPass').value;const newPass=document.getElementById(prefix+'NewPass').value;const confPass=document.getElementById(prefix+'ConfPass').value;const cred=OFFICE_CREDS.find(c=>c.id===accountId);if(!cred){errEl.textContent='❌ Account not found.';return;}if(!currentPass){errEl.textContent='❌ Enter your current password to verify.';return;}if(currentPass!==cred.pass){errEl.textContent='❌ Current password is incorrect.';return;}const finalUser=newUser||cred.user;if(newUser){const conflict=OFFICE_CREDS.find(c=>c.id!==accountId&&c.user===newUser);if(conflict){errEl.textContent='❌ That username is already used by another admin account.';return;}}let finalPass=cred.pass;if(newPass||confPass){if(newPass.length<6){errEl.textContent='❌ New password must be at least 6 characters.';return;}if(newPass!==confPass){errEl.textContent='❌ New passwords do not match.';return;}finalPass=newPass;}if(finalUser===cred.user&&finalPass===cred.pass){errEl.textContent='ℹ️ No changes detected.';return;}btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');try{await _saveAdminCred(accountId,finalUser,finalPass);setSync('ok');okEl.textContent='✅ Credentials updated successfully!';['CurrentPass','NewPass','ConfPass'].forEach(s=>{const el=document.getElementById(prefix+s);if(el)el.value='';});document.querySelectorAll('.cred-eye').forEach(b=>b.textContent='👁️');document.querySelectorAll('.cred-input').forEach(el=>{if(el.type==='text'&&el.closest('.cred-input-wrap'))el.type='password';});_refreshCredUI();showToast('🔐 Credentials updated!','success');setTimeout(()=>{if(okEl)okEl.textContent='';},4000);}catch(e){setSync('err');errEl.textContent='❌ Save failed: '+e.message+'. Make sure the gv_admin_creds table exists in Supabase.';}finally{btn.disabled=false;btn.textContent='🔐 Update '+(accountId==='admin'?'Admin':'Manager')+' Credentials';}}
+
+/* ═══ INVENTORY ═══ */
+let _invLowOnly=false, _invQuickCtx=null, _invSeeding=false;
+function invInit(){_invLowOnly=false;const b=document.getElementById('invLowBtn');if(b)b.classList.remove('active');document.getElementById('invSearch').value='';invMaybeSeed();invRender();}
+async function invMaybeSeed(){
+  // First run only: if the inventory table is empty, load the client's Excel items.
+  if(_invSeeding)return;
+  if(GV.getInventory().length>0)return;
+  if(!GV._invSeed||!GV._invSeed.length)return;
+  _invSeeding=true;
+  try{
+    setSync('saving');
+    const rows=GV._invSeed.map((it,idx)=>({
+      id:'INV-SEED-'+String(idx+1).padStart(3,'0'),
+      name:it.name,opening:it.opening,purchases:it.purchases,sales:it.sales,
+      price:it.price,reorder:it.reorder,createdAt:new Date(Date.now()+idx).toISOString()
+    }));
+    const {error}=await _supa.from('gv_inventory').insert(rows);
+    if(error)throw error;
+    // local copy updates via realtime, but set now too for instant view
+    rows.forEach(r=>{if(!_inventory.find(x=>x.id===r.id))_inventory.push(r);});
+    setSync('ok');showToast('📦 Inventory loaded ('+rows.length+' items)','success');invRender();
+  }catch(e){setSync('err');showToast('❌ Seed failed: '+e.message,'error');}
+  finally{_invSeeding=false;}
+}
+function invClosing(it){return (Number(it.opening)||0)+(Number(it.purchases)||0)-(Number(it.sales)||0);}
+function invValue(it){return invClosing(it)*(Number(it.price)||0);}
+function invIsLow(it){const r=Number(it.reorder)||0;return r>0 && invClosing(it)<=r;}
+function invToggleLow(btn){_invLowOnly=!_invLowOnly;btn.classList.toggle('active',_invLowOnly);invRender();}
+function invFmt(n){const v=Number(n)||0;return Number.isInteger(v)?v.toString():v.toFixed(2).replace(/\.?0+$/,'');}
+function invRender(){
+  const q=(document.getElementById('invSearch').value||'').toLowerCase().trim();
+  let items=GV.getInventory().slice().sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  const totalItems=items.length;
+  const lowCount=items.filter(invIsLow).length;
+  const totalVal=items.reduce((s,it)=>s+invValue(it),0);
+  document.getElementById('invStats').innerHTML=
+    '<div class="inv-stat"><div class="inv-stat-val">'+totalItems+'</div><div class="inv-stat-lbl">Items</div></div>'+
+    '<div class="inv-stat"><div class="inv-stat-val" style="color:'+(lowCount?'var(--redsoft)':'var(--moss2)')+'">'+lowCount+'</div><div class="inv-stat-lbl">Low Stock</div></div>'+
+    '<div class="inv-stat"><div class="inv-stat-val" style="color:var(--amber2);font-size:13px;">Rs.'+Math.round(totalVal).toLocaleString()+'</div><div class="inv-stat-lbl">Total Value</div></div>';
+  if(_invLowOnly)items=items.filter(invIsLow);
+  if(q)items=items.filter(it=>(it.name||'').toLowerCase().includes(q));
+  const list=document.getElementById('invList');
+  if(!items.length){list.innerHTML='<div class="empty-state"><span class="empty-icon">📦</span><div style="font-size:14px;font-weight:800;">'+(q||_invLowOnly?'No matching items':'No inventory yet')+'</div><div style="font-size:12px;margin-top:4px;">'+(q||_invLowOnly?'Try clearing the filter':'Tap “Add stock item” to begin')+'</div></div>';return;}
+  list.innerHTML=items.map(it=>{
+    const closing=invClosing(it),low=invIsLow(it),neg=closing<0;
+    return '<div class="inv-card'+(low?' low':'')+'">'+
+      '<div class="inv-card-top"><div class="inv-name">'+it.name+(low?'<span class="inv-low-tag">⚠️ Low</span>':'')+'</div>'+
+      '<div class="inv-val"><div class="inv-val-num">Rs.'+Math.round(invValue(it)).toLocaleString()+'</div><div class="inv-val-lbl">Value</div></div></div>'+
+      '<div class="inv-grid">'+
+        '<div class="inv-cell"><div class="inv-cell-lbl">Open</div><div class="inv-cell-val">'+invFmt(it.opening)+'</div></div>'+
+        '<div class="inv-cell"><div class="inv-cell-lbl">Buy</div><div class="inv-cell-val">'+invFmt(it.purchases)+'</div></div>'+
+        '<div class="inv-cell"><div class="inv-cell-lbl">Sold</div><div class="inv-cell-val">'+invFmt(it.sales)+'</div></div>'+
+        '<div class="inv-cell closing'+(neg?' neg':'')+'"><div class="inv-cell-lbl">Stock</div><div class="inv-cell-val">'+invFmt(closing)+'</div></div>'+
+        '<div class="inv-cell"><div class="inv-cell-lbl">Price</div><div class="inv-cell-val" style="font-size:11px;">'+invFmt(it.price)+'</div></div>'+
+      '</div>'+
+      '<div class="inv-card-acts">'+
+        '<button class="inv-act inv-buy" onclick="invQuick(\''+it.id+'\',\'purchase\')">＋ Purchase</button>'+
+        '<button class="inv-act inv-sell" onclick="invQuick(\''+it.id+'\',\'sale\')">－ Sale</button>'+
+        '<button class="inv-act inv-edit" onclick="invOpenForm(\''+it.id+'\')">✏️</button>'+
+        '<button class="inv-act inv-del" onclick="invConfirmDel(\''+it.id+'\')">🗑️</button>'+
+      '</div></div>';
+  }).join('');
+}
+function invOpenForm(id){
+  const it=id?GV.getInventory().find(x=>x.id===id):null;
+  document.getElementById('invFdTitle').textContent=it?'Edit Stock Item':'Add Stock Item';
+  document.getElementById('invId').value=it?it.id:'';
+  document.getElementById('invName').value=it?it.name:'';
+  document.getElementById('invOpening').value=it?(it.opening??''):'';
+  document.getElementById('invPrice').value=it?(it.price??''):'';
+  document.getElementById('invPurchases').value=it?(it.purchases??''):'';
+  document.getElementById('invSales').value=it?(it.sales??''):'';
+  document.getElementById('invReorder').value=it?(it.reorder??''):'';
+  document.getElementById('invFormOverlay').classList.add('open');
+  document.getElementById('invFormDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function invCloseForm(){document.getElementById('invFormOverlay').classList.remove('open');document.getElementById('invFormDrawer').classList.remove('open');document.body.style.overflow='';}
+async function invSave(){
+  const id=document.getElementById('invId').value;
+  const name=document.getElementById('invName').value.trim();
+  if(!name){showToast('❌ Item name required','error');return;}
+  const num=id=>{const v=parseFloat(document.getElementById(id).value);return isNaN(v)?0:v;};
+  const data={name,opening:num('invOpening'),purchases:num('invPurchases'),sales:num('invSales'),price:num('invPrice'),reorder:num('invReorder')};
+  const btn=document.getElementById('invSaveBtn');btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');
+  try{
+    if(id)await GV.updateInventory(id,data);else await GV.addInventory(data);
+    setSync('ok');showToast(id?'✅ Item updated!':'✅ Item added!','success');invCloseForm();invRender();
+  }catch(e){setSync('err');showToast('❌ '+(e.message||'Save failed'),'error');}
+  finally{btn.disabled=false;btn.textContent='💾 Save item';}
+}
+function invConfirmDel(id){const it=GV.getInventory().find(x=>x.id===id);if(!it)return;showModal('Delete "'+it.name+'"?','Remove this item from inventory permanently.',()=>{setSync('saving');GV.deleteInventory(id).then(()=>{setSync('ok');showToast('🗑️ Deleted','success');invRender();}).catch(e=>{setSync('err');showToast('❌ '+e.message,'error');});});}
+function invQuick(id,mode){
+  const it=GV.getInventory().find(x=>x.id===id);if(!it)return;
+  _invQuickCtx={id,mode};
+  document.getElementById('invQuickTitle').textContent=mode==='purchase'?'Add Purchase':'Record Sale';
+  document.getElementById('invQuickSub').textContent=it.name+' · current stock '+invFmt(invClosing(it));
+  const btn=document.getElementById('invQuickBtn');
+  btn.textContent=mode==='purchase'?'＋ Add to stock':'－ Remove from stock';
+  if(mode==='purchase'){btn.style.background='rgba(95,168,122,.2)';btn.style.color='var(--moss2)';btn.style.borderColor='rgba(95,168,122,.3)';}
+  else{btn.style.background='rgba(232,160,68,.2)';btn.style.color='var(--amber2)';btn.style.borderColor='rgba(232,160,68,.3)';}
+  document.getElementById('invQuickInput').value='';
+  document.getElementById('invQuickErr').textContent='';
+  document.getElementById('invQuickOv').classList.add('open');
+  setTimeout(()=>document.getElementById('invQuickInput').focus(),120);
+}
+function invCloseQuick(){document.getElementById('invQuickOv').classList.remove('open');_invQuickCtx=null;}
+async function invQuickSave(){
+  if(!_invQuickCtx)return;
+  const qty=parseFloat(document.getElementById('invQuickInput').value);
+  const err=document.getElementById('invQuickErr');
+  if(isNaN(qty)||qty<=0){err.textContent='Enter a quantity greater than 0.';return;}
+  const it=GV.getInventory().find(x=>x.id===_invQuickCtx.id);if(!it){invCloseQuick();return;}
+  const data=_invQuickCtx.mode==='purchase'
+    ? {purchases:(Number(it.purchases)||0)+qty}
+    : {sales:(Number(it.sales)||0)+qty};
+  const btn=document.getElementById('invQuickBtn');btn.disabled=true;setSync('saving');
+  try{
+    await GV.updateInventory(it.id,data);
+    setSync('ok');showToast(_invQuickCtx.mode==='purchase'?'📦 +'+invFmt(qty)+' purchased':'🛒 '+invFmt(qty)+' sold','success');
+    invCloseQuick();invRender();
+  }catch(e){setSync('err');err.textContent='Failed: '+e.message;}
+  finally{btn.disabled=false;}
+}
 
 /* PAYMENT QR UPLOAD */
 let _pendingQr=null;
