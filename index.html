@@ -399,7 +399,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .staff-acts{display:flex;gap:6px;flex-shrink:0;}
 
 /* ═══ INVENTORY ═══ */
-.inv-toolbar{display:flex;gap:8px;align-items:center;padding:14px 16px 10px;flex-wrap:wrap;}
+.inv-toolbar{display:flex;gap:8px;align-items:center;padding:12px 16px 10px;flex-wrap:wrap;}
 .inv-search{flex:1;min-width:140px;position:relative;}
 .inv-search input{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:9px 14px 9px 36px;color:var(--text);font-family:inherit;font-size:13px;outline:none;}
 .inv-search input:focus{border-color:var(--admin2);}
@@ -409,7 +409,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .inv-stat-val{font-size:16px;font-weight:800;line-height:1;margin-bottom:3px;font-family:'Space Mono',monospace;}
 .inv-stat-lbl{font-size:9px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
 .inv-list{padding:0 16px 120px;display:flex;flex-direction:column;gap:9px;}
-.inv-card{background:var(--card);border:1.5px solid var(--border);border-radius:15px;padding:13px 14px;}
+.inv-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:14px 15px;}
 .inv-card.low{border-color:rgba(229,72,77,.5);background:linear-gradient(160deg,rgba(229,72,77,.07),var(--card));}
 .inv-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}
 .inv-name{font-size:15px;font-weight:800;color:var(--text2);display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
@@ -418,7 +418,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .inv-val-num{font-size:16px;font-weight:800;color:var(--amber2);font-family:'Space Mono',monospace;line-height:1;}
 .inv-val-lbl{font-size:9px;color:var(--muted2);font-weight:700;text-transform:uppercase;margin-top:2px;}
 .inv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;}
-.inv-cell{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:7px 4px;text-align:center;}
+.inv-cell{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 4px;text-align:center;}
 .inv-cell-lbl{font-size:8.5px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px;}
 .inv-cell-val{font-size:14px;font-weight:800;font-family:'Space Mono',monospace;}
 .inv-cell.closing .inv-cell-val{color:var(--moss2);}
@@ -437,6 +437,11 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .inv-quick-sub{font-size:12px;color:var(--muted2);text-align:center;margin-bottom:18px;}
 .inv-quick-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:14px;color:var(--text);font-family:'Space Mono',monospace;font-size:22px;font-weight:700;text-align:center;outline:none;margin-bottom:16px;}
 .inv-quick-input:focus{border-color:var(--admin2);}
+
+/* Inventory form drawer: size to content — removes the big empty gap */
+#invFormDrawer{max-height:88vh;}
+#invFormDrawer .fd-body{flex:0 1 auto;padding-top:14px;padding-bottom:6px;}
+#invFormDrawer .fd-field{margin-bottom:13px;}
 
 @media(max-width:380px){
   .menu-grid{grid-template-columns:1fr;}
