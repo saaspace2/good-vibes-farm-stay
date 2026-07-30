@@ -707,33 +707,18 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <div class="inv-list" id="invList"></div>
   </div>
   <div id="oQrSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
-    <div style="padding:16px 0 6px;"><span class="a-sec-title">💳 Payment QR Code — Dynamic Amount</span></div>
-    <div style="font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:16px;padding:13px 15px;background:rgba(232,160,68,.06);border:1px solid rgba(232,160,68,.2);border-radius:13px;">📱 Take a clear, flat photo of each printed FonePay/eSewa QR standee (not angled). We decode the real merchant data from it — nothing is typed in manually — then generate a fresh QR per bill with the exact total already filled in, so the customer just scans and confirms.</div>
-    <div id="qrTerminal_nabil" style="background:var(--card);border:1.5px solid var(--border);border-radius:17px;padding:20px;text-align:center;margin-bottom:16px;">
-      <div style="font-weight:800;font-size:14px;margin-bottom:12px;">🏦 Nabil Bank QR</div>
-      <div class="qrPreviewWrap" style="margin-bottom:14px;">
-        <div class="qrEmpty" style="padding:24px 20px;color:var(--muted2);"><div style="font-size:40px;margin-bottom:8px;opacity:.6;">📱</div><div style="font-weight:700;font-size:13px;">No QR configured yet</div></div>
-        <img class="qrPreview" style="display:none;width:160px;height:160px;object-fit:contain;background:#fff;border-radius:12px;padding:8px;" alt="Nabil Payment QR">
-        <div class="qrDecodedInfo" style="display:none;font-size:11.5px;color:var(--moss2);margin-top:8px;"></div>
+    <div style="padding:16px 0 6px;"><span class="a-sec-title">💳 Payment QR Code</span></div>
+    <div style="font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:16px;padding:13px 15px;background:rgba(232,160,68,.06);border:1px solid rgba(232,160,68,.2);border-radius:13px;">📱 Upload your FonePay / eSewa QR once. It prints on every customer bill across all devices. Use a clear, flat screenshot or scan — not an angled photo — so it scans reliably on thermal paper.</div>
+    <div style="background:var(--card);border:1.5px solid var(--border);border-radius:17px;padding:20px;text-align:center;">
+      <div id="qrPreviewWrap" style="margin-bottom:16px;">
+        <div id="qrEmpty" style="padding:36px 20px;color:var(--muted2);"><div style="font-size:48px;margin-bottom:10px;opacity:.6;">📱</div><div style="font-weight:700;">No QR uploaded yet</div></div>
+        <img id="qrPreview" style="display:none;width:200px;height:200px;object-fit:contain;background:#fff;border-radius:12px;padding:8px;" alt="Payment QR">
       </div>
-      <input type="file" class="qrFileInput" accept="image/*" style="display:none;" onchange="oQrFileChosen(event,'nabil')">
-      <button class="add-item-btn" style="width:100%;justify-content:center;margin-bottom:9px;" onclick="this.parentElement.querySelector('.qrFileInput').click()">📤 Choose photo of QR standee</button>
-      <button class="cred-save-btn qrSaveBtn" style="display:none;" onclick="oSaveQr('nabil')">💾 Save (dynamic QR shows on all bills)</button>
-      <button class="print-btn qrRemoveBtn" style="display:none;margin-top:8px;border-color:rgba(229,72,77,.3);color:var(--redsoft);" onclick="oRemoveQr('nabil')">🗑️ Remove</button>
-      <div class="qrMsg" style="font-size:11px;margin-top:10px;min-height:16px;"></div>
-    </div>
-    <div id="qrTerminal_esewa" style="background:var(--card);border:1.5px solid var(--border);border-radius:17px;padding:20px;text-align:center;">
-      <div style="font-weight:800;font-size:14px;margin-bottom:12px;">💚 eSewa QR</div>
-      <div class="qrPreviewWrap" style="margin-bottom:14px;">
-        <div class="qrEmpty" style="padding:24px 20px;color:var(--muted2);"><div style="font-size:40px;margin-bottom:8px;opacity:.6;">📱</div><div style="font-weight:700;font-size:13px;">No QR configured yet</div></div>
-        <img class="qrPreview" style="display:none;width:160px;height:160px;object-fit:contain;background:#fff;border-radius:12px;padding:8px;" alt="eSewa Payment QR">
-        <div class="qrDecodedInfo" style="display:none;font-size:11.5px;color:var(--moss2);margin-top:8px;"></div>
-      </div>
-      <input type="file" class="qrFileInput" accept="image/*" style="display:none;" onchange="oQrFileChosen(event,'esewa')">
-      <button class="add-item-btn" style="width:100%;justify-content:center;margin-bottom:9px;" onclick="this.parentElement.querySelector('.qrFileInput').click()">📤 Choose photo of QR standee</button>
-      <button class="cred-save-btn qrSaveBtn" style="display:none;" onclick="oSaveQr('esewa')">💾 Save (dynamic QR shows on all bills)</button>
-      <button class="print-btn qrRemoveBtn" style="display:none;margin-top:8px;border-color:rgba(229,72,77,.3);color:var(--redsoft);" onclick="oRemoveQr('esewa')">🗑️ Remove</button>
-      <div class="qrMsg" style="font-size:11px;margin-top:10px;min-height:16px;"></div>
+      <input type="file" id="qrFileInput" accept="image/*" style="display:none;" onchange="oQrFileChosen(event)">
+      <button class="add-item-btn" style="width:100%;justify-content:center;margin-bottom:9px;" onclick="document.getElementById('qrFileInput').click()">📤 Choose QR image</button>
+      <button class="cred-save-btn" id="qrSaveBtn" style="display:none;" onclick="oSaveQr()">💾 Save QR (shows on all bills)</button>
+      <button class="print-btn" id="qrRemoveBtn" style="display:none;margin-top:8px;border-color:rgba(229,72,77,.3);color:var(--redsoft);" onclick="oRemoveQr()">🗑️ Remove QR</button>
+      <div id="qrMsg" style="font-size:11px;margin-top:10px;min-height:16px;"></div>
     </div>
   </div>
   <div id="oCredSection" style="display:none;flex:1;overflow-y:auto;">
@@ -871,119 +856,10 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" onerror="loadQrFallback()"></script>
 <script>
-/* If the primary CDN for the QR-generation library fails (no internet, blocked host, etc.),
-   try a couple of well-known mirrors before giving up. Keeps the "Payment QR" feature working
-   even when cdn.jsdelivr.net specifically is unreachable at the venue. */
-let _qrFallbackTried = 0;
-function loadQrFallback(){
-  const mirrors = [
-    'https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js',
-    'https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js'
-  ];
-  if(_qrFallbackTried >= mirrors.length) return; // all mirrors failed, oQrLibReady() will report it
-  const s = document.createElement('script');
-  s.src = mirrors[_qrFallbackTried];
-  _qrFallbackTried++;
-  s.onerror = loadQrFallback;
-  document.head.appendChild(s);
-}
-/* True once the QR-generation library is actually available in the browser. */
-function oQrLibReady(){ return typeof QRCode !== 'undefined'; }
-</script>
-<script>
-/* ═══ FONEPAY / PAYMENT QR — dynamic amount, admin-configured in Office → Payment QR ═══
-   FONEPAY_BASES holds the RAW EMVCo merchant-QR string decoded from each bank's printed
-   standee (no amount baked in). At bill time we clone that string, flip it to "dynamic"
-   (field 01 = 12), insert field 54 = amount, recompute the CRC (field 63), and render a
-   fresh QR — so the customer's banking app shows the exact bill total automatically. */
-let FONEPAY_BASES = { nabil: null, esewa: null }; // {label, raw} per terminal, loaded from Supabase
-const FONEPAY_TERMINAL = "222020016290484"; // fallback text label only, used if nothing configured
-
-/* ---- EMVCo TLV + CRC-16/CCITT-FFFF helpers (standard NQR/UPI QR spec) ---- */
-function crc16ccitt(str){
-  let crc = 0xFFFF;
-  for(let i=0;i<str.length;i++){
-    crc ^= (str.charCodeAt(i) << 8);
-    for(let b=0;b<8;b++){
-      crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) & 0xFFFF : (crc << 1) & 0xFFFF;
-    }
-  }
-  return crc.toString(16).toUpperCase().padStart(4,'0');
-}
-function parseEmvTlv(data){
-  const fields=[]; let i=0;
-  while(i < data.length){
-    const tag=data.substr(i,2);
-    const len=parseInt(data.substr(i+2,2),10);
-    if(isNaN(len)) break;
-    const value=data.substr(i+4,len);
-    fields.push({tag,value});
-    i += 4+len;
-  }
-  return fields;
-}
-function tlv(tag,value){ return tag + String(value.length).padStart(2,'0') + value; }
-/* Build a dynamic (amount-locked) EMV QR string from a static base string + a Rs amount. */
-function buildDynamicEmv(baseStr, amount){
-  const fields = parseEmvTlv(baseStr);
-  let out=[]; let inserted54=false;
-  for(const f of fields){
-    if(f.tag==='63') continue;           // drop old CRC, we recompute
-    if(f.tag==='54') continue;           // drop any pre-existing amount
-    if(f.tag==='01'){ out.push(tlv('01','12')); continue; } // 12 = dynamic
-    out.push(tlv(f.tag,f.value));
-    if(f.tag==='53' && !inserted54){      // amount goes right after currency code
-      out.push(tlv('54', String(amount)));
-      inserted54=true;
-    }
-  }
-  let payload = out.join('') + '6304';
-  return payload + crc16ccitt(payload);
-}
-/* Decode a QR code from an uploaded photo (client-side, no data leaves the browser). */
-function decodeQrFromFile(file){
-  return new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=()=>{
-      const img=new Image();
-      img.onload=()=>{
-        const canvas=document.createElement('canvas');
-        canvas.width=img.width; canvas.height=img.height;
-        const ctx=canvas.getContext('2d');
-        ctx.drawImage(img,0,0);
-        const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
-        const code=window.jsQR(imgData.data,canvas.width,canvas.height);
-        if(code && code.data) resolve(code.data);
-        else reject(new Error('No QR code detected — try a clearer, flatter, well-lit photo.'));
-      };
-      img.onerror=()=>reject(new Error('Could not load that image.'));
-      img.src=reader.result;
-    };
-    reader.onerror=()=>reject(new Error('Could not read that file.'));
-    reader.readAsDataURL(file);
-  });
-}
-/* Render an EMV QR string to a PNG data URL. */
-async function genQrDataUrl(text, size){
-  return await QRCode.toDataURL(text, { width: size||220, margin:1 });
-}
-/* Build the on-bill QR block (one image per configured terminal) for a given amount. */
-async function buildQrBlockHtml(amount, imgStyle, capStyle){
-  const entries = Object.entries(FONEPAY_BASES).filter(([,v])=>v && v.raw);
-  if(!entries.length){
-    return `<div style="text-align:center;${capStyle||''}">📱 Pay via FonePay QR · Terminal ${FONEPAY_TERMINAL}<br>Amount: Rs.${Number(amount||0).toLocaleString()}</div>`;
-  }
-  const imgs = await Promise.all(entries.map(async ([key,v])=>{
-    const dynStr = buildDynamicEmv(v.raw, Math.round(amount||0));
-    const dataUrl = await genQrDataUrl(dynStr, 220);
-    const label = v.label || key;
-    return `<div style="display:inline-block;text-align:center;margin:0 6px;"><img src="${dataUrl}" style="${imgStyle||''}"><div style="${capStyle||''}">${label}</div></div>`;
-  }));
-  return `<div style="text-align:center;">${imgs.join('')}<div style="${capStyle||''}">📱 Scan · Amount pre-filled: Rs.${Number(amount||0).toLocaleString()}</div></div>`;
-}
+/* ═══ FONEPAY / PAYMENT QR — now uploaded by admin in Office → Payment QR ═══ */
+let FONEPAY_QR = ""; // loaded from Supabase on startup
+const FONEPAY_TERMINAL = "222020016290484";
 
 /* ═══ SUPABASE CONFIG (unchanged — your project) ═══ */
 const SUPA_URL = 'https://eadczazfjdvzgunltsiv.supabase.co';
@@ -1010,15 +886,7 @@ async function _loadAdminCreds(){
     if(error){ console.warn('gv_admin_creds not found, using defaults.'); return; }
     if(data && data.length){
       data.forEach(row=>{
-        if(row.id==='payment_qr'){
-          if(row.password){
-            try{
-              const parsed = JSON.parse(row.password);
-              if(parsed && typeof parsed==='object') FONEPAY_BASES = { nabil:parsed.nabil||null, esewa:parsed.esewa||null };
-            }catch(e){ /* old-format (plain image) row from before this update — ignored, admin will re-upload */ }
-          }
-          return;
-        }
+        if(row.id==='payment_qr'){ if(row.password) FONEPAY_QR = row.password; return; }
         const idx = OFFICE_CREDS.findIndex(c=>c.id===row.id);
         if(idx>=0) OFFICE_CREDS[idx] = {id:row.id, user:row.username, pass:row.password};
         else OFFICE_CREDS.push({id:row.id, user:row.username, pass:row.password});
@@ -1306,14 +1174,14 @@ function cOpenTableBill(tableNum){cSelectedTable=String(tableNum);const tableOrd
 function cCloseBill(){cSelectedTable=null;document.getElementById('billPanel').style.display='none';document.getElementById('cOrdersTab').style.display='block';document.getElementById('discPct').value='0';document.getElementById('discAmt').value='0';document.getElementById('taxSel').value='0';cRenderOrders();}
 function cGetTableOrders(){return GV.getOrders().filter(o=>o.table===cSelectedTable&&o.status!=='paid');}
 function cGetTotals(){const tp=Number(document.getElementById('taxSel').value);const subtotal=cGetTableOrders().reduce((s,o)=>s+(o.total||0),0);const discPctVal=Math.max(0,Math.min(100,Number(document.getElementById('discPct').value)||0));const discAmtVal=Math.max(0,Number(document.getElementById('discAmt').value)||0);const discFromPct=Math.round(subtotal*discPctVal/100);const discTotal=Math.min(subtotal,discFromPct+discAmtVal);const afterDisc=subtotal-discTotal;const tax=Math.round(afterDisc*tp/100);return{taxPct:tp,tax,subtotal,discPct:discPctVal,discAmt:discAmtVal,discFromPct,discTotal,afterDisc,grand:afterDisc+tax};}
-async function cUpdateBill(){if(!cSelectedTable)return;const tableOrders=cGetTableOrders();if(!tableOrders.length){cCloseBill();return;}const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();const now=new Date();let itemsHtml='';tableOrders.forEach((o,idx)=>{const items=GV.parseItems(o.items);if(tableOrders.length>1)itemsHtml+=`<div class="r-section-hdr">Round ${idx+1}</div>`;itemsHtml+=items.map(i=>`<div class="r-row"><span>${i.name} ×${i.qty}</span><span>Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('');});const qrInner=await buildQrBlockHtml(grand,'width:120px;height:120px;border-radius:8px;background:#fff;padding:6px;object-fit:contain;','font-size:10px;color:var(--muted2);margin-top:5px;');const qrHtml=`<div class="r-dash"></div>${qrInner}`;document.getElementById('billReceipt').innerHTML=`<div class="r-center"><div class="r-name">GOOD VIBES</div><div class="r-name" style="font-size:13px;letter-spacing:2px;">FARM STAY</div><div class="r-sub">Dharan-5, Sunsari, Nepal</div><div class="r-sub">@goodvibesfarmstay</div></div><div class="r-dash"></div><div class="r-row"><span class="r-lbl">Table</span><span style="font-weight:800">${cSelectedTable}</span></div><div class="r-row"><span class="r-lbl">Date</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r-row"><span class="r-lbl">Time</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="r-row"><span class="r-lbl">Orders</span><span>${tableOrders.length} round${tableOrders.length!==1?'s':''}</span></div><div class="r-dash"></div><div class="r-row" style="font-size:11px;font-weight:800;color:var(--muted2);"><span>ITEM</span><span>AMOUNT</span></div><div class="r-dash"></div>${itemsHtml}<div class="r-dash"></div><div class="r-row"><span>Subtotal</span><span>Rs.${subtotal.toLocaleString()}</span></div>${discTotal>0?`<div class="r-row" style="color:var(--moss2);font-weight:700;"><span>Discount${discPct>0?' ('+discPct+'%)':''}${discAmt>0?(discPct>0?' + ':'')+' Rs.'+discAmt.toLocaleString():''}</span><span>− Rs.${discTotal.toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r-row"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}<div class="r-dash"></div><div class="r-row rtotal"><span>GRAND TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>${qrHtml}<div class="r-dash"></div><div style="text-align:center;padding-top:6px;font-size:12px;color:var(--muted2);">Thank you! Please visit again 🌿</div>`;}
+function cUpdateBill(){if(!cSelectedTable)return;const tableOrders=cGetTableOrders();if(!tableOrders.length){cCloseBill();return;}const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();const now=new Date();let itemsHtml='';tableOrders.forEach((o,idx)=>{const items=GV.parseItems(o.items);if(tableOrders.length>1)itemsHtml+=`<div class="r-section-hdr">Round ${idx+1}</div>`;itemsHtml+=items.map(i=>`<div class="r-row"><span>${i.name} ×${i.qty}</span><span>Rs.${(i.price*i.qty).toLocaleString()}</span></div>`).join('');});const qrHtml=FONEPAY_QR?`<div class="r-dash"></div><div class="r-qr-box"><img src="${FONEPAY_QR}" alt="FonePay QR"><div class="r-qr-cap">📱 Scan to pay via FonePay · Rs.${grand.toLocaleString()}</div></div>`:`<div class="r-dash"></div><div class="r-qr-cap" style="text-align:center;">📱 Pay via FonePay QR · Terminal ${FONEPAY_TERMINAL}</div>`;document.getElementById('billReceipt').innerHTML=`<div class="r-center"><div class="r-name">GOOD VIBES</div><div class="r-name" style="font-size:13px;letter-spacing:2px;">FARM STAY</div><div class="r-sub">Dharan-5, Sunsari, Nepal</div><div class="r-sub">@goodvibesfarmstay</div></div><div class="r-dash"></div><div class="r-row"><span class="r-lbl">Table</span><span style="font-weight:800">${cSelectedTable}</span></div><div class="r-row"><span class="r-lbl">Date</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r-row"><span class="r-lbl">Time</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="r-row"><span class="r-lbl">Orders</span><span>${tableOrders.length} round${tableOrders.length!==1?'s':''}</span></div><div class="r-dash"></div><div class="r-row" style="font-size:11px;font-weight:800;color:var(--muted2);"><span>ITEM</span><span>AMOUNT</span></div><div class="r-dash"></div>${itemsHtml}<div class="r-dash"></div><div class="r-row"><span>Subtotal</span><span>Rs.${subtotal.toLocaleString()}</span></div>${discTotal>0?`<div class="r-row" style="color:var(--moss2);font-weight:700;"><span>Discount${discPct>0?' ('+discPct+'%)':''}${discAmt>0?(discPct>0?' + ':'')+' Rs.'+discAmt.toLocaleString():''}</span><span>− Rs.${discTotal.toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r-row"><span>Tax (${taxPct}%)</span><span>Rs.${tax.toLocaleString()}</span></div>`:''}<div class="r-dash"></div><div class="r-row rtotal"><span>GRAND TOTAL</span><span>Rs.${grand.toLocaleString()}</span></div>${qrHtml}<div class="r-dash"></div><div style="text-align:center;padding-top:6px;font-size:12px;color:var(--muted2);">Thank you! Please visit again 🌿</div>`;}
 async function cMarkPaid(){if(!cSelectedTable)return;const tableOrders=cGetTableOrders();if(!tableOrders.length)return;const _ct=cGetTotals();const confirmed=await new Promise(resolve=>{showModal('⚠️ Confirm Payment',`Table ${cSelectedTable} · Grand Total: Rs.${_ct.grand.toLocaleString()}\nMark as PAID and print receipt?`,()=>resolve(true));const cb=document.getElementById('modalConfirm');cb.textContent='🖨️ Print & Confirm';cb.style.background='rgba(79,180,119,.2)';cb.style.color='var(--moss2)';cb.style.borderColor='rgba(79,180,119,.4)';document.querySelector('#modalOv .modal-cancel').onclick=()=>{closeModal();resolve(false);};});const _cb=document.getElementById('modalConfirm');_cb.textContent='Delete';_cb.style.background='';_cb.style.color='';_cb.style.borderColor='';if(!confirmed)return;const pb=document.getElementById('payBtn');pb.disabled=true;pb.textContent='⏳ Processing…';setSync('saving');try{const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();const pm=document.getElementById('paySel').value;const allItems=tableOrders.flatMap(o=>GV.parseItems(o.items));const rcpt=await GV.saveReceipt({tableNum:cSelectedTable,table:cSelectedTable,items:allItems,orderIds:tableOrders.map(o=>o.id),subtotal,taxPct,tax,grand,discPct,discAmt,discTotal,afterDisc,payMethod:pm,rounds:tableOrders.length,orderTime:tableOrders[0].time});await GV.markTablePaid(cSelectedTable);setSync('ok');cDoPrint(rcpt);pb.textContent='✅ Paid!';setTimeout(()=>cCloseBill(),1600);}catch(err){setSync('err');showToast('❌ Payment failed: '+err.message,'error');pb.disabled=false;pb.textContent='💳 Mark paid & print';}}
-async function cPrintBill(){if(!cSelectedTable)return;const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();const tableOrders=cGetTableOrders();const allItems=tableOrders.flatMap(o=>GV.parseItems(o.items));const w=window.open('','_blank','width=420,height=640');w.document.write(await cReceiptHTML(cSelectedTable,allItems,subtotal,taxPct,tax,grand,'PREVIEW',new Date(),tableOrders.length,discPct,discAmt,discTotal));w.document.close();}
+function cPrintBill(){if(!cSelectedTable)return;const{taxPct,tax,subtotal,discPct,discAmt,discTotal,afterDisc,grand}=cGetTotals();const tableOrders=cGetTableOrders();const allItems=tableOrders.flatMap(o=>GV.parseItems(o.items));const w=window.open('','_blank','width=420,height=640');w.document.write(cReceiptHTML(cSelectedTable,allItems,subtotal,taxPct,tax,grand,'PREVIEW',new Date(),tableOrders.length,discPct,discAmt,discTotal));w.document.close();}
 function cRenderReceipts(){const list=GV.getReceipts();document.getElementById('cRcptCount').textContent=`${list.length} receipt${list.length!==1?'s':''}`;const el=document.getElementById('rList');if(!list.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">🧾</span><div style="font-size:14px;font-weight:800;">No receipts yet</div></div>';return;}const pi={cash:'💵',card:'💳',qr:'📱'};el.innerHTML=list.map(r=>`<div class="rr-card"><div style="flex:1;min-width:0;"><div class="rr-no">${r.receiptNo}</div><div class="rr-meta">Table ${r.table} · ${pi[r.payMethod]||'💵'} ${r.payMethod} · ${new Date(r.savedAt).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div></div><div><div class="rr-amt">Rs.${(r.grand||0).toLocaleString()}</div><div class="rr-btns"><button class="rr-btn rr-print" onclick="cReprintReceipt('${r.receiptNo}')">🖨️ Print</button><button class="rr-btn rr-del" onclick="cConfirmDelReceipt('${r.receiptNo}')">🗑️ Del</button></div></div></div>`).join('');}
 function cReprintReceipt(no){const r=GV.getReceipts().find(r=>r.receiptNo===no);if(r)cDoPrint(r);}
 function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>{const ids=Array.isArray(r.orderIds)?r.orderIds:(typeof r.orderIds==='string'?JSON.parse(r.orderIds||'[]'):[]);return ids.includes(oid)||r.orderId===oid;});if(r)cDoPrint(r);else showToast('No saved receipt for this order','error');}
-async function cDoPrint(r){const items=GV.parseItems(r.items);const now=new Date(r.savedAt);const w=window.open('','_blank','width=420,height=640');w.document.write(await cReceiptHTML(r.table,items,r.subtotal,r.taxPct,r.tax,r.grand,r.receiptNo,now,r.rounds||1,r.discPct||0,r.discAmt||0,r.discTotal||0));w.document.close();}
-async function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds,discPct,discAmt,discTotal){const W=cPaper===80?'72mm':'54mm';const base=cPaper===80?12:11;const qrBlock=await buildQrBlockHtml(grand||0,`width:${cPaper===80?'46mm':'40mm'};height:auto;`,`font-size:${base-2}px;margin-top:3px;`);return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>@page{size:${W} auto;margin:0;}*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;width:${W};padding:4mm 2mm;font-size:${base}px;line-height:1.35;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:${base+3}px;}.xl{font-size:${base+6}px;letter-spacing:2px;}.d{border-top:1px dashed #000;margin:5px 0;}.s{border-top:2px solid #000;margin:5px 0;}.r{display:flex;justify-content:space-between;padding:1px 0;gap:4px;}.r span:last-child{white-space:nowrap;}.sub{font-size:${base-2}px;}@media print{button{display:none!important;}}</style></head><body><div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b">FARM STAY</div><div class="sub" style="margin-top:2px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div><div class="d"></div><div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div><div class="r"><span>Table:</span><span class="b">${table}</span></div>${rounds>1?`<div class="r"><span>Rounds:</span><span>${rounds}</span></div>`:''}<div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${items.map(i=>`<div class="r"><span>${i.name} x${i.qty}</span><span>Rs.${((i.price||0)*(i.qty||1)).toLocaleString()}</span></div>`).join('')}<div class="d"></div><div class="r"><span>Subtotal</span><span>Rs.${(subtotal||0).toLocaleString()}</span></div>${(discTotal||0)>0?`<div class="r"><span>Discount${discPct>0?' ('+discPct+'%)':''}</span><span>-Rs.${Number(discTotal).toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${(tax||0).toLocaleString()}</span></div>`:''}<div class="s"></div><div class="r b lg"><span>TOTAL</span><span>Rs.${(grand||0).toLocaleString()}</span></div><div class="s"></div>${qrBlock}<div class="d"></div><div class="c"><div class="b">Thank You!</div><div class="sub" style="margin-top:2px;">Please visit again 🌿</div></div><`+`script>window.onload=()=>{window.print();setTimeout(()=>window.close(),400);}<`+`/script></body></html>`;}
+function cDoPrint(r){const items=GV.parseItems(r.items);const now=new Date(r.savedAt);const w=window.open('','_blank','width=420,height=640');w.document.write(cReceiptHTML(r.table,items,r.subtotal,r.taxPct,r.tax,r.grand,r.receiptNo,now,r.rounds||1,r.discPct||0,r.discAmt||0,r.discTotal||0));w.document.close();}
+function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds,discPct,discAmt,discTotal){const W=cPaper===80?'72mm':'54mm';const base=cPaper===80?12:11;const qrBlock=FONEPAY_QR?`<div style="text-align:center;margin-top:8px;"><img src="${FONEPAY_QR}" style="width:${cPaper===80?'46mm':'40mm'};height:auto;"/><div style="font-size:${base-2}px;margin-top:3px;">Scan to pay · FonePay</div><div style="font-size:${base-2}px;">Amount: Rs.${(grand||0).toLocaleString()}</div></div>`:`<div style="text-align:center;margin-top:8px;font-size:${base-1}px;">— Pay via FonePay QR —<br>Terminal ${FONEPAY_TERMINAL}<br>Amount: Rs.${(grand||0).toLocaleString()}</div>`;return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>@page{size:${W} auto;margin:0;}*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;width:${W};padding:4mm 2mm;font-size:${base}px;line-height:1.35;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:${base+3}px;}.xl{font-size:${base+6}px;letter-spacing:2px;}.d{border-top:1px dashed #000;margin:5px 0;}.s{border-top:2px solid #000;margin:5px 0;}.r{display:flex;justify-content:space-between;padding:1px 0;gap:4px;}.r span:last-child{white-space:nowrap;}.sub{font-size:${base-2}px;}@media print{button{display:none!important;}}</style></head><body><div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b">FARM STAY</div><div class="sub" style="margin-top:2px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div><div class="d"></div><div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div><div class="r"><span>Table:</span><span class="b">${table}</span></div>${rounds>1?`<div class="r"><span>Rounds:</span><span>${rounds}</span></div>`:''}<div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${items.map(i=>`<div class="r"><span>${i.name} x${i.qty}</span><span>Rs.${((i.price||0)*(i.qty||1)).toLocaleString()}</span></div>`).join('')}<div class="d"></div><div class="r"><span>Subtotal</span><span>Rs.${(subtotal||0).toLocaleString()}</span></div>${(discTotal||0)>0?`<div class="r"><span>Discount${discPct>0?' ('+discPct+'%)':''}</span><span>-Rs.${Number(discTotal).toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${(tax||0).toLocaleString()}</span></div>`:''}<div class="s"></div><div class="r b lg"><span>TOTAL</span><span>Rs.${(grand||0).toLocaleString()}</span></div><div class="s"></div>${qrBlock}<div class="d"></div><div class="c"><div class="b">Thank You!</div><div class="sub" style="margin-top:2px;">Please visit again 🌿</div></div><`+`script>window.onload=()=>{window.print();setTimeout(()=>window.close(),400);}<`+`/script></body></html>`;}
 function cExportDay(){const receipts=GV.getReceipts();const todayISO=new Date().toISOString().slice(0,10);const today=new Date().toLocaleDateString('en-GB');const todayRcpts=receipts.filter(r=>r.savedAt&&r.savedAt.slice(0,10)===todayISO);const totalRevenue=todayRcpts.reduce((s,r)=>s+(r.grand||0),0);const pmBreak={cash:0,card:0,qr:0};todayRcpts.forEach(r=>{const pm=r.payMethod||'cash';pmBreak[pm]=(pmBreak[pm]||0)+(r.grand||0);});const itemBreak={};todayRcpts.forEach(r=>{GV.parseItems(r.items).forEach(i=>{const k=i.name;if(!itemBreak[k])itemBreak[k]={qty:0,total:0};itemBreak[k].qty+=(i.qty||1);itemBreak[k].total+=(i.price||0)*(i.qty||1);});});const topItems=Object.entries(itemBreak).sort((a,b)=>b[1].total-a[1].total).slice(0,10);const w=window.open('','_blank','width=820,height=900');w.document.write(`<!DOCTYPE html><html><head><title>Daily Report ${today}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:28px;max-width:780px;margin:0 auto;font-size:12px;}h1{font-size:22px;letter-spacing:3px;text-align:center;margin-bottom:4px;}.date{text-align:center;color:#777;margin-bottom:20px;}.d{border-top:1px dashed #bbb;margin:14px 0;}.s{border-top:2px solid #000;margin:14px 0;}.r{display:flex;justify-content:space-between;padding:3px 0;}table{width:100%;border-collapse:collapse;margin-top:4px;}th{font-size:10px;font-weight:bold;padding:5px 8px;background:#f0f0f0;border:1px solid #ddd;text-align:left;}th.r{text-align:right;}td{font-size:11px;padding:5px 8px;border:1px solid #ddd;}td.r{text-align:right;}tr:nth-child(even){background:#fafafa;}.sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;}.sum-box{border:1px solid #ddd;border-radius:4px;padding:10px;text-align:center;}.sum-val{font-size:18px;font-weight:bold;margin-bottom:2px;}.sum-lbl{font-size:9px;color:#777;text-transform:uppercase;}@media print{button{display:none!important;}}</style></head><body><h1>GOOD VIBES FARM STAY</h1><div style="font-size:14px;letter-spacing:2px;text-align:center;font-weight:normal;margin-bottom:4px;">DAILY SALES REPORT</div><div class="date">Date: ${today} · Generated: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div><div class="s"></div><div class="sum-grid"><div class="sum-box"><div class="sum-val">Rs.${totalRevenue.toLocaleString()}</div><div class="sum-lbl">Total Revenue</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.length}</div><div class="sum-lbl">Tables Served</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.reduce((s,r)=>s+(r.rounds||1),0)}</div><div class="sum-lbl">Total Orders</div></div></div><div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Payment Methods</div><div class="r"><span>💵 Cash</span><span><b>Rs.${(pmBreak.cash||0).toLocaleString()}</b></span></div><div class="r"><span>📱 FonePay QR</span><span><b>Rs.${(pmBreak.qr||0).toLocaleString()}</b></span></div><div class="r"><span>💳 Card / UPI</span><span><b>Rs.${(pmBreak.card||0).toLocaleString()}</b></span></div>${topItems.length?`<div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Top Selling Items</div><table><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Revenue</th></tr>${topItems.map(([name,d],i)=>`<tr><td>${i+1}</td><td>${name}</td><td class="r">${d.qty}</td><td class="r">Rs.${d.total.toLocaleString()}</td></tr>`).join('')}</table>`:''}<div class="s"></div><div style="text-align:center;font-size:10px;color:#999;margin-top:10px;">Good Vibes Farm Stay · Dharan-5, Sunsari, Nepal</div><div style="text-align:center;margin-top:18px;"><button onclick="window.print()" style="padding:10px 28px;background:#8257C4;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">🖨️ Print / Save PDF</button></div></body></html>`);w.document.close();}
 function cConfirmDelOrder(id,table){showModal(`Delete Order — Table ${table}?`,'Permanently remove this order.',()=>GV.deleteOrder(id));}
 function cConfirmDeleteTable(tableNum,count){showModal(`Clear all orders for Table ${tableNum}?`,`Delete all ${count} order(s) for this table.`,()=>{GV.getOrders().filter(o=>o.table===String(tableNum)).forEach(o=>GV.deleteOrder(o.id));});}
@@ -1462,94 +1330,12 @@ async function invQuickSave(){
   finally{btn.disabled=false;}
 }
 
-/* PAYMENT QR — decode real merchant QR photo → store base string (no image, no amount) */
-let _pendingQr={nabil:null,esewa:null}; // {raw, label} awaiting save, per terminal
-const BANK_LABELS={nabil:'Nabil Bank',esewa:'eSewa'};
-function _qrTermEls(term){
-  const wrap=document.getElementById('qrTerminal_'+term);
-  return {
-    wrap,
-    empty:wrap.querySelector('.qrEmpty'),
-    img:wrap.querySelector('.qrPreview'),
-    info:wrap.querySelector('.qrDecodedInfo'),
-    saveBtn:wrap.querySelector('.qrSaveBtn'),
-    removeBtn:wrap.querySelector('.qrRemoveBtn'),
-    msg:wrap.querySelector('.qrMsg'),
-    fileInput:wrap.querySelector('.qrFileInput'),
-  };
-}
-function oInitQr(){
-  ['nabil','esewa'].forEach(async term=>{
-    _pendingQr[term]=null;
-    const els=_qrTermEls(term);
-    els.msg.textContent=''; els.saveBtn.style.display='none';
-    const saved=FONEPAY_BASES[term];
-    if(saved && saved.raw){
-      els.empty.style.display='none'; els.removeBtn.style.display='block';
-      els.info.style.display='block';
-      els.info.textContent='✅ Configured · '+(saved.label||BANK_LABELS[term]);
-      try{
-        if(!oQrLibReady()) throw new Error('QR preview library did not load — check your internet connection and reload the page.');
-        els.img.src=await genQrDataUrl(saved.raw,160); els.img.style.display='inline-block';
-      }catch(e){ els.msg.style.color='var(--redsoft)'; els.msg.textContent='❌ '+e.message; }
-    }else{
-      els.img.style.display='none'; els.info.style.display='none'; els.empty.style.display='block'; els.removeBtn.style.display='none';
-    }
-  });
-}
-async function oQrFileChosen(e,term){
-  const file=e.target.files[0]; if(!file) return;
-  const els=_qrTermEls(term);
-  els.msg.style.color='var(--muted2)'; els.msg.textContent='🔎 Reading QR from photo…';
-  if(!file.type.startsWith('image/')){ els.msg.style.color='var(--redsoft)'; els.msg.textContent='❌ Please choose an image file.'; return; }
-  try{
-    const raw=await decodeQrFromFile(file);
-    const fields=parseEmvTlv(raw);
-    const nameField=fields.find(f=>f.tag==='59');
-    const isEmv = fields.some(f=>f.tag==='00') && fields.some(f=>f.tag==='63');
-    if(!isEmv){ throw new Error('That QR doesn\'t look like a FonePay/eSewa merchant payment QR.'); }
-    if(!oQrLibReady()){ throw new Error('QR preview library did not load — check your internet connection and reload the page, then try again.'); }
-    _pendingQr[term]={raw, label:BANK_LABELS[term]+(nameField?' · '+nameField.value:'')};
-    els.img.src=await genQrDataUrl(raw,160); els.img.style.display='inline-block';
-    els.empty.style.display='none';
-    els.info.style.display='block'; els.info.textContent='Decoded: '+(nameField?nameField.value:'merchant QR')+' — tap Save to activate.';
-    els.saveBtn.style.display='block';
-    els.msg.style.color='var(--muted2)'; els.msg.textContent='Preview ready — tap Save to use on all bills.';
-  }catch(err){
-    els.msg.style.color='var(--redsoft)'; els.msg.textContent='❌ '+err.message;
-  }
-}
-async function _persistFonepayBases(){
-  const payload=JSON.stringify({nabil:FONEPAY_BASES.nabil, esewa:FONEPAY_BASES.esewa});
-  const {error}=await _supa.from('gv_admin_creds').upsert({id:'payment_qr',username:'payment_qr',password:payload},{onConflict:'id'});
-  if(error) throw error;
-}
-async function oSaveQr(term){
-  const pending=_pendingQr[term]; if(!pending) return;
-  const els=_qrTermEls(term);
-  els.saveBtn.disabled=true; els.saveBtn.textContent='⏳ Saving…'; setSync('saving');
-  try{
-    const prevBases={...FONEPAY_BASES};
-    FONEPAY_BASES[term]=pending;
-    await _persistFonepayBases();
-    _pendingQr[term]=null; setSync('ok');
-    els.msg.style.color='var(--moss2)'; els.msg.textContent='✅ Saved! Dynamic QR now prints on every bill.';
-    els.saveBtn.style.display='none'; els.removeBtn.style.display='block';
-    showToast('💳 '+BANK_LABELS[term]+' QR saved!','success');
-  }catch(e){
-    setSync('err'); els.msg.style.color='var(--redsoft)'; els.msg.textContent='❌ Save failed: '+e.message;
-  }finally{ els.saveBtn.disabled=false; els.saveBtn.textContent='💾 Save (dynamic QR shows on all bills)'; }
-}
-function oRemoveQr(term){
-  showModal('Remove '+BANK_LABELS[term]+' QR?','This terminal will stop showing on bills until you configure it again.',async()=>{
-    setSync('saving');
-    try{
-      FONEPAY_BASES[term]=null;
-      await _persistFonepayBases();
-      setSync('ok'); showToast('🗑️ '+BANK_LABELS[term]+' QR removed','success'); oInitQr();
-    }catch(e){ setSync('err'); showToast('❌ '+e.message,'error'); }
-  });
-}
+/* PAYMENT QR UPLOAD */
+let _pendingQr=null;
+function oInitQr(){_pendingQr=null;document.getElementById('qrMsg').textContent='';document.getElementById('qrSaveBtn').style.display='none';const img=document.getElementById('qrPreview'),empty=document.getElementById('qrEmpty'),rm=document.getElementById('qrRemoveBtn');if(FONEPAY_QR){img.src=FONEPAY_QR;img.style.display='inline-block';empty.style.display='none';rm.style.display='block';}else{img.style.display='none';empty.style.display='block';rm.style.display='none';}}
+function oQrFileChosen(e){const file=e.target.files[0];if(!file)return;const msg=document.getElementById('qrMsg');if(!file.type.startsWith('image/')){msg.style.color='var(--redsoft)';msg.textContent='❌ Please choose an image file.';return;}if(file.size>900*1024){msg.style.color='var(--redsoft)';msg.textContent='❌ Image too large (max ~900KB). Use a smaller screenshot.';return;}const reader=new FileReader();reader.onload=()=>{_pendingQr=reader.result;const img=document.getElementById('qrPreview');img.src=_pendingQr;img.style.display='inline-block';document.getElementById('qrEmpty').style.display='none';document.getElementById('qrSaveBtn').style.display='block';msg.style.color='var(--muted2)';msg.textContent='Preview ready — tap Save to use on all bills.';};reader.readAsDataURL(file);}
+async function oSaveQr(){if(!_pendingQr)return;const btn=document.getElementById('qrSaveBtn'),msg=document.getElementById('qrMsg');btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');try{const {error}=await _supa.from('gv_admin_creds').upsert({id:'payment_qr',username:'payment_qr',password:_pendingQr},{onConflict:'id'});if(error)throw error;FONEPAY_QR=_pendingQr;_pendingQr=null;setSync('ok');msg.style.color='var(--moss2)';msg.textContent='✅ Saved! This QR now prints on every bill.';document.getElementById('qrSaveBtn').style.display='none';document.getElementById('qrRemoveBtn').style.display='block';showToast('💳 Payment QR saved!','success');}catch(e){setSync('err');msg.style.color='var(--redsoft)';msg.textContent='❌ Save failed: '+e.message;}finally{btn.disabled=false;btn.textContent='💾 Save QR (shows on all bills)';}}
+function oRemoveQr(){showModal('Remove payment QR?','Bills will show a text FonePay note instead until you upload a new one.',async()=>{setSync('saving');try{await _supa.from('gv_admin_creds').upsert({id:'payment_qr',username:'payment_qr',password:''},{onConflict:'id'});FONEPAY_QR='';setSync('ok');showToast('🗑️ QR removed','success');oInitQr();}catch(e){setSync('err');showToast('❌ '+e.message,'error');}});}
 
 /* CATEGORY MANAGER */
 let _renameCatOld=null;
