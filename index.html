@@ -1368,7 +1368,7 @@ self.addEventListener('fetch',e=>{
   if(url.includes('supabase.co')||url.includes('supabase.in')||url.includes('/rest/')||url.includes('/realtime/')||url.includes('/auth/')){e.respondWith(fetch(e.request));return;}
   e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(CACHE).then(ca=>ca.put(e.request,c));return r;}).catch(()=>caches.match(e.request)));
 });`;
-    const swBlob=new Blob([swCode],{type:'text/javascript'})
+    const swBlob=new Blob([swCode],{type:'text/javascript'});
     navigator.serviceWorker.register(URL.createObjectURL(swBlob),{scope:'./'}).catch(()=>{});
   }
 })();
