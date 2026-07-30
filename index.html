@@ -872,7 +872,27 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" onerror="loadQrFallback()"></script>
+<script>
+/* If the primary CDN for the QR-generation library fails (no internet, blocked host, etc.),
+   try a couple of well-known mirrors before giving up. Keeps the "Payment QR" feature working
+   even when cdn.jsdelivr.net specifically is unreachable at the venue. */
+let _qrFallbackTried = 0;
+function loadQrFallback(){
+  const mirrors = [
+    'https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js',
+    'https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js'
+  ];
+  if(_qrFallbackTried >= mirrors.length) return; // all mirrors failed, oQrLibReady() will report it
+  const s = document.createElement('script');
+  s.src = mirrors[_qrFallbackTried];
+  _qrFallbackTried++;
+  s.onerror = loadQrFallback;
+  document.head.appendChild(s);
+}
+/* True once the QR-generation library is actually available in the browser. */
+function oQrLibReady(){ return typeof QRCode !== 'undefined'; }
+</script>
 <script>
 /* ═══ FONEPAY / PAYMENT QR — dynamic amount, admin-configured in Office → Payment QR ═══
    FONEPAY_BASES holds the RAW EMVCo merchant-QR string decoded from each bank's printed
@@ -1468,7 +1488,10 @@ function oInitQr(){
       els.empty.style.display='none'; els.removeBtn.style.display='block';
       els.info.style.display='block';
       els.info.textContent='✅ Configured · '+(saved.label||BANK_LABELS[term]);
-      try{ els.img.src=await genQrDataUrl(saved.raw,160); els.img.style.display='inline-block'; }catch(e){}
+      try{
+        if(!oQrLibReady()) throw new Error('QR preview library did not load — check your internet connection and reload the page.');
+        els.img.src=await genQrDataUrl(saved.raw,160); els.img.style.display='inline-block';
+      }catch(e){ els.msg.style.color='var(--redsoft)'; els.msg.textContent='❌ '+e.message; }
     }else{
       els.img.style.display='none'; els.info.style.display='none'; els.empty.style.display='block'; els.removeBtn.style.display='none';
     }
@@ -1485,6 +1508,7 @@ async function oQrFileChosen(e,term){
     const nameField=fields.find(f=>f.tag==='59');
     const isEmv = fields.some(f=>f.tag==='00') && fields.some(f=>f.tag==='63');
     if(!isEmv){ throw new Error('That QR doesn\'t look like a FonePay/eSewa merchant payment QR.'); }
+    if(!oQrLibReady()){ throw new Error('QR preview library did not load — check your internet connection and reload the page, then try again.'); }
     _pendingQr[term]={raw, label:BANK_LABELS[term]+(nameField?' · '+nameField.value:'')};
     els.img.src=await genQrDataUrl(raw,160); els.img.style.display='inline-block';
     els.empty.style.display='none';
