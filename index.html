@@ -17,17 +17,17 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{
-  --forest:#1E4D3B;--forest2:#2C6B4E;--moss:#3C8A5D;--moss2:#4FA871;
-  --amber:#D98A2B;--amber2:#C4762A;--clay:#B85C3A;
-  --cream:#FFFFFF;--paper:#FBF7EE;
-  --red:#D64545;--redsoft:#C23B3B;
-  --bg:#F7F4EC;--bg2:#FFFFFF;
-  --card:#FFFFFF;--card2:#F4F0E6;--border:rgba(30,60,45,0.10);--border2:rgba(30,60,45,0.16);
-  --text:#243B31;--text2:#16281F;--muted:rgba(36,59,49,0.5);--muted2:rgba(36,59,49,0.68);
-  --indigo:#4A5FD9;--indigo2:#3A4BC0;
-  --cooking:#2E7DC0;--ready:#2E9C5C;
-  --admin:#7444BD;--admin2:#6033A3;
-  --shadow:0 2px 16px rgba(30,60,45,.08);--shadow-lg:0 10px 34px rgba(30,60,45,.14);
+  --forest:#14352A;--forest2:#1E4D3B;--moss:#5FA87A;--moss2:#7BC496;
+  --amber:#E8A044;--amber2:#F2B865;--clay:#C4623A;
+  --cream:#F5EFE2;--paper:#FBF7EE;
+  --red:#E5484D;--redsoft:#F26D6D;
+  --bg:#0E1613;--bg2:#121E19;
+  --card:#182620;--card2:#1F3128;--border:rgba(245,239,226,0.09);--border2:rgba(245,239,226,0.14);
+  --text:#EDE7D9;--text2:#F5EFE2;--muted:rgba(237,231,217,0.45);--muted2:rgba(237,231,217,0.65);
+  --indigo:#5B6EE1;--indigo2:#8A9BF0;
+  --cooking:#5B9BD5;--ready:#4FB477;
+  --admin:#8257C4;--admin2:#A98BE0;
+  --shadow:0 4px 24px rgba(0,0,0,.35);--shadow-lg:0 12px 40px rgba(0,0,0,.5);
 }
 html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
 .screen{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;}
@@ -35,7 +35,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .font-display{font-family:'Fraunces',serif;}
 .font-mono{font-family:'Space Mono',monospace;}
 #homeScreen,#loginScreen{align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden;
-  background:radial-gradient(circle at 20% 15%,rgba(60,138,93,.14) 0%,transparent 45%),radial-gradient(circle at 85% 85%,rgba(217,138,43,.14) 0%,transparent 50%),var(--bg);}
+  background:radial-gradient(circle at 20% 15%,#1a3d2e 0%,transparent 45%),radial-gradient(circle at 85% 85%,#2a1f12 0%,transparent 50%),var(--bg);}
 #homeScreen::before,#loginScreen::before{content:'';position:fixed;width:520px;height:520px;border-radius:50%;filter:blur(90px);opacity:.16;background:var(--moss);top:-140px;left:-120px;z-index:0;animation:drift 14s ease-in-out infinite alternate;}
 #homeScreen::after,#loginScreen::after{content:'';position:fixed;width:420px;height:420px;border-radius:50%;filter:blur(90px);opacity:.14;background:var(--amber);bottom:-100px;right:-90px;z-index:0;animation:drift 16s ease-in-out infinite alternate-reverse;}
 @keyframes drift{from{transform:translate(0,0) scale(1);}to{transform:translate(40px,30px) scale(1.15);}}
@@ -65,9 +65,9 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 @keyframes riseIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
 .topbar{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-shrink:0;padding-top:max(14px,env(safe-area-inset-top));}
 .topbar-w{background:linear-gradient(135deg,var(--forest),var(--forest2));box-shadow:var(--shadow);}
-.topbar-k{background:linear-gradient(135deg,#B0522E,#C4623A);box-shadow:var(--shadow);}
-.topbar-c{background:linear-gradient(135deg,var(--amber2),var(--amber));box-shadow:var(--shadow);}
-.topbar-a{background:linear-gradient(135deg,var(--admin2),var(--admin));box-shadow:var(--shadow);}
+.topbar-k{background:linear-gradient(135deg,#2a1512,#3a1e18);box-shadow:var(--shadow);}
+.topbar-c{background:linear-gradient(135deg,#3a2a0e,#4a3512);box-shadow:var(--shadow);}
+.topbar-a{background:linear-gradient(135deg,#2d1a4d,#3d2563);box-shadow:var(--shadow);}
 .topbar-left{display:flex;align-items:center;gap:11px;}
 .back-btn{background:rgba(255,255,255,.12);border:none;color:rgba(255,255,255,.85);width:38px;height:38px;border-radius:12px;cursor:pointer;font-size:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
 .back-btn:hover,.back-btn:active{background:rgba(255,255,255,.22);}
@@ -161,11 +161,11 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .k-filters{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;}
 .k-filters::-webkit-scrollbar{display:none;}
 .k-filt{flex-shrink:0;padding:7px 15px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--muted2);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;}
-.k-filt[data-f="active"].active{background:var(--forest);border-color:var(--forest);color:#fff;}
-.k-filt[data-f="pending"].active{background:rgba(217,138,43,.16);border-color:var(--amber);color:var(--amber2);}
-.k-filt[data-f="cooking"].active{background:rgba(46,125,192,.14);border-color:var(--cooking);color:var(--cooking);}
-.k-filt[data-f="ready"].active{background:rgba(46,156,92,.14);border-color:var(--ready);color:var(--ready);}
-.k-filt[data-f="paid"].active,.k-filt[data-f="all"].active{background:#eceae2;border-color:#a8a396;color:#5c584e;}
+.k-filt[data-f="active"].active{background:#2b3a33;border-color:var(--moss);color:var(--cream);}
+.k-filt[data-f="pending"].active{background:#4a3512;border-color:var(--amber);color:var(--amber2);}
+.k-filt[data-f="cooking"].active{background:#1e3a5f;border-color:var(--cooking);color:#8fbde8;}
+.k-filt[data-f="ready"].active{background:#14432d;border-color:var(--ready);color:var(--moss2);}
+.k-filt[data-f="paid"].active,.k-filt[data-f="all"].active{background:#2a2a2a;border-color:#7a7a7a;color:#b0b0b0;}
 .k-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px;padding:0 16px 32px;}
 .k-card{background:var(--card);border:2px solid var(--border);border-radius:19px;overflow:hidden;animation:kslide .32s cubic-bezier(.2,.7,.3,1);}
 @keyframes kslide{from{opacity:0;transform:translateY(12px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
@@ -180,13 +180,13 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .k-tnum span{font-family:'Outfit';font-weight:600;font-size:13px;color:var(--muted2);}
 .k-badge{padding:4px 12px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;}
 .k-badge.pending{background:rgba(232,160,68,.16);color:var(--amber2);border:1px solid rgba(232,160,68,.3);}
-.k-badge.cooking{background:rgba(46,125,192,.14);color:var(--cooking);border:1px solid rgba(46,125,192,.3);}
+.k-badge.cooking{background:rgba(91,155,213,.16);color:#8fbde8;border:1px solid rgba(91,155,213,.3);}
 .k-badge.ready{background:rgba(79,180,119,.16);color:var(--moss2);border:1px solid rgba(79,180,119,.3);}
-.k-badge.paid,.k-badge.served{background:#eceae2;color:#6b6656;border:1px solid rgba(107,102,86,.25);}
+.k-badge.paid,.k-badge.served{background:rgba(122,122,122,.16);color:#b0b0b0;border:1px solid rgba(122,122,122,.2);}
 .k-time{font-size:10.5px;color:var(--muted2);margin-top:3px;font-family:'Space Mono',monospace;}
 .late-warn{font-size:10px;color:var(--redsoft);font-weight:800;}
 .k-items{padding:12px 15px;}
-.k-item-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);}
+.k-item-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
 .k-item-row:last-child{border-bottom:none;}
 .ki-name{font-size:12.5px;font-weight:700;}
 .ki-qty{font-size:16px;font-weight:800;color:var(--text2);font-family:'Space Mono',monospace;}
@@ -196,7 +196,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .k-cook{background:rgba(91,155,213,.16);color:#8fbde8;border:1px solid rgba(91,155,213,.3);}
 .k-ready{background:rgba(79,180,119,.16);color:var(--moss2);border:1px solid rgba(79,180,119,.3);}
 .k-served{background:rgba(169,139,224,.16);color:var(--admin2);border:1px solid rgba(169,139,224,.25);}
-.k-print{background:var(--card2);color:var(--muted2);border:1px solid var(--border);}
+.k-print{background:rgba(255,255,255,.05);color:var(--muted2);border:1px solid var(--border);}
 .k-del{background:rgba(229,72,77,.1);color:var(--redsoft);border:1px solid rgba(229,72,77,.3);}
 .k-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted2);}
 .k-empty-icon{font-size:60px;display:block;margin-bottom:12px;opacity:.7;}
@@ -224,11 +224,11 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .ctb-grand{font-size:21px;font-weight:800;color:var(--amber2);font-family:'Space Mono',monospace;}
 .ctb-order-count{font-size:11px;color:var(--muted2);margin-top:2px;}
 .ctb-orders-list{padding:0 16px 11px;}
-.ctb-order-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);}
+.ctb-order-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
 .ctb-order-row:last-child{border-bottom:none;}
 .ctb-order-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px;}
 .ctb-order-badge.pending{background:rgba(232,160,68,.16);color:var(--amber2);}
-.ctb-order-badge.cooking{background:rgba(46,125,192,.14);color:var(--cooking);}
+.ctb-order-badge.cooking{background:rgba(91,155,213,.16);color:#8fbde8;}
 .ctb-order-badge.ready{background:rgba(79,180,119,.16);color:var(--moss2);}
 .ctb-order-badge.served{background:rgba(169,139,224,.16);color:var(--admin2);}
 .ctb-order-items{font-size:11px;color:var(--muted2);margin-top:3px;}
@@ -248,7 +248,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .c-order-items{padding:0 15px 10px;font-size:12px;color:var(--muted2);}
 .c-order-acts{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:6px;}
 .coa-btn{flex:1;padding:9px 7px;border-radius:11px;border:none;cursor:pointer;font-family:'Outfit';font-size:12.5px;font-weight:800;}
-.coa-reprint{background:var(--card2);color:var(--muted2);border:1px solid var(--border);}
+.coa-reprint{background:rgba(255,255,255,.05);color:var(--muted2);border:1px solid var(--border);}
 .coa-del{background:rgba(229,72,77,.1);color:var(--redsoft);border:1px solid rgba(229,72,77,.3);}
 #billPanel{display:none;}
 .bill-back{display:flex;align-items:center;gap:11px;padding:15px 16px 12px;}
@@ -259,7 +259,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .r-center{text-align:center;margin-bottom:15px;}
 .r-name{font-size:17px;font-weight:700;letter-spacing:2px;font-family:'Fraunces',serif;}
 .r-sub{font-size:10px;color:var(--muted2);margin-top:3px;}
-.r-dash{border-top:1px dashed rgba(36,59,49,.25);margin:10px 0;}
+.r-dash{border-top:1px dashed rgba(255,255,255,.16);margin:10px 0;}
 .r-row{display:flex;justify-content:space-between;padding:2px 0;font-size:13px;}
 .r-row.rtotal{font-size:18px;font-weight:700;color:var(--amber2);}
 .r-lbl{color:var(--muted2);font-size:11px;}
@@ -302,7 +302,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .a-menu-list{display:flex;flex-direction:column;gap:9px;padding:0 16px;}
 .a-item-card{background:var(--card);border:1.5px solid var(--border);border-radius:15px;display:flex;align-items:center;gap:13px;padding:11px 13px;}
 .a-item-card.custom-item{border-color:rgba(169,139,224,.3);}
-.a-item-thumb{width:52px;height:52px;border-radius:12px;flex-shrink:0;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:var(--muted2);}
+.a-item-thumb{width:52px;height:52px;border-radius:12px;flex-shrink:0;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:var(--muted2);}
 .a-item-info{flex:1;min-width:0;}
 .a-item-name{font-size:13.5px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .a-item-meta{font-size:11px;color:var(--muted2);margin-top:2px;}
@@ -313,7 +313,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .a-act-btn:active{transform:scale(.9);}
 .a-edit-btn{background:rgba(91,110,225,.2);color:var(--indigo2);}
 .a-del-btn{background:rgba(229,72,77,.1);color:var(--redsoft);}
-.a-built-in-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:var(--card2);color:var(--muted2);border:1px solid var(--border);display:inline-block;margin-top:4px;}
+.a-built-in-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.07);color:var(--muted2);border:1px solid var(--border);display:inline-block;margin-top:4px;}
 .cat-mgr-row{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--card);border:1.5px solid var(--border);border-radius:14px;margin-bottom:9px;}
 .cat-mgr-name{flex:1;font-size:14px;font-weight:800;color:var(--text);}
 .cat-mgr-rename{background:rgba(91,110,225,.2);color:var(--indigo2);border:1px solid rgba(91,110,225,.3);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
@@ -361,7 +361,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .fd-foot{padding:15px 20px calc(15px + env(safe-area-inset-bottom));border-top:1px solid var(--border);display:flex;gap:10px;}
 .fd-save-btn{flex:1;padding:14px;background:linear-gradient(135deg,var(--admin),#6d3fb0);border:none;border-radius:14px;color:var(--cream);font-family:'Outfit';font-size:14px;font-weight:800;cursor:pointer;}
 .fd-save-btn:disabled{opacity:.45;cursor:not-allowed;}
-.fd-cancel-btn{padding:14px 22px;background:var(--card2);border:1px solid var(--border);border-radius:14px;color:var(--muted2);font-family:'Outfit';font-size:14px;font-weight:700;cursor:pointer;}
+.fd-cancel-btn{padding:14px 22px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px;color:var(--muted2);font-family:'Outfit';font-size:14px;font-weight:700;cursor:pointer;}
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.74);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px);padding:20px;}
 .modal-ov.open{display:flex;animation:fadeIn .2s ease;}
 .modal-box{background:var(--card2);border:1px solid var(--border2);border-radius:22px;padding:28px 24px;width:100%;max-width:340px;text-align:center;animation:riseIn .28s cubic-bezier(.2,.7,.3,1);}
@@ -369,7 +369,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .modal-sub{font-size:12.5px;color:var(--muted2);margin-bottom:20px;line-height:1.55;white-space:pre-line;}
 .modal-btns{display:flex;gap:10px;}
 .modal-btn{flex:1;padding:12px;border-radius:13px;border:none;cursor:pointer;font-family:'Outfit';font-size:13px;font-weight:800;}
-.modal-cancel{background:var(--card2);color:var(--muted2);}
+.modal-cancel{background:rgba(255,255,255,.07);color:var(--muted2);}
 .modal-confirm{background:rgba(229,72,77,.2);color:var(--redsoft);border:1px solid rgba(229,72,77,.4);}
 .empty-state{text-align:center;padding:48px 20px;color:var(--muted2);}
 .empty-icon{font-size:52px;display:block;margin-bottom:12px;opacity:.7;}
@@ -511,10 +511,10 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <div class="home-brand">Good <em>Vibes</em></div>
     <div class="home-tagline"><span class="leaf">🌿</span> Farm Stay · Dharan-5</div>
     <div class="role-grid">
-      <div class="role-card" onclick="goWaiter()"><div class="role-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 13.2c2.3.4 4 2.4 4.5 4.8"/></svg></div><div class="role-name">Waiter</div><div class="role-desc">Take orders & send to kitchen</div><button class="role-pill pill-w">Enter</button></div>
-      <div class="role-card" onclick="goKitchen()"><div class="role-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M9 20h6M10 20v-6M14 20v-6M6.5 8.5C5 8.5 4 7.3 4 6c0-1.5 1.3-2.7 2.8-2.5C7.2 2.3 8.5 1.5 10 1.5c1 0 1.8.4 2.4 1 .5-.3 1-.5 1.6-.5 1.7 0 3 1.3 3 3 0 .3 0 .5-.1.8 1.2.3 2.1 1.4 2.1 2.7 0 1.5-1.2 2.7-2.7 2.7H6.5Z"/><path d="M6.8 8.5 7 14h10l.2-5.5"/></svg></div><div class="role-name">Kitchen</div><div class="role-desc">View & manage live orders</div><button class="role-pill pill-k">Enter</button></div>
-      <div class="role-card" onclick="goCashier()"><div class="role-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg></div><div class="role-name">Cashier</div><div class="role-desc">Generate bills & receipts</div><button class="role-pill pill-c">Enter</button></div>
-      <div class="role-card" onclick="goAdmin()"><div class="role-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M4 21V6l7-3 7 3v15"/><path d="M4 21h16"/><path d="M9 9h1M9 13h1M14 9h1M14 13h1"/><path d="M10 21v-4h4v4"/></svg></div><div class="role-name">Office</div><div class="role-desc">Menu, staff & settings</div><button class="role-pill pill-a">Enter</button></div>
+      <div class="role-card" onclick="goWaiter()"><div class="role-icon">🛎️</div><div class="role-name">Waiter</div><div class="role-desc">Take orders & send to kitchen</div><button class="role-pill pill-w">Enter</button></div>
+      <div class="role-card" onclick="goKitchen()"><div class="role-icon">👨‍🍳</div><div class="role-name">Kitchen</div><div class="role-desc">View & manage live orders</div><button class="role-pill pill-k">Enter</button></div>
+      <div class="role-card" onclick="goCashier()"><div class="role-icon">💰</div><div class="role-name">Cashier</div><div class="role-desc">Generate bills & receipts</div><button class="role-pill pill-c">Enter</button></div>
+      <div class="role-card" onclick="goAdmin()"><div class="role-icon">🍽️</div><div class="role-name">Office</div><div class="role-desc">Menu, staff & settings</div><button class="role-pill pill-a">Enter</button></div>
     </div>
     <div class="home-footer">© 2025 Good Vibes Farm Stay · @goodvibesfarmstay<br><span class="logout-link" onclick="doLogout()">🚪 Log out</span></div>
   </div>
@@ -529,7 +529,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <div style="display:flex;align-items:center;gap:8px;">
       <div id="wTableBadge" style="display:none;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);color:var(--cream);padding:6px 14px;border-radius:20px;font-size:14px;font-weight:800;letter-spacing:.3px;"></div>
       <button id="wCartBtn" class="icon-btn" onclick="openCart()" style="display:none;background:var(--amber);color:var(--forest);border-color:var(--amber);position:relative;">
-        <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="9" cy="20" r="1.3" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.3" fill="currentColor" stroke="none"/><path d="M3 4h2l2.2 11.2A2 2 0 0 0 9.2 17H18a2 2 0 0 0 2-1.6L21.5 8H6"/></svg> Cart <span id="wCartCount" style="display:none;position:absolute;top:-8px;right:-8px;width:20px;height:20px;background:var(--red);color:#fff;border-radius:50%;font-size:10px;font-weight:900;align-items:center;justify-content:center;"></span>
+        🛒 Cart <span id="wCartCount" style="display:none;position:absolute;top:-8px;right:-8px;width:20px;height:20px;background:var(--red);color:#fff;border-radius:50%;font-size:10px;font-weight:900;align-items:center;justify-content:center;"></span>
       </button>
     </div>
   </div>
@@ -539,7 +539,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
       <div class="table-grid" id="tableGrid"></div>
     </div>
     <div id="menuView" style="display:none;">
-      <div class="search-wrap"><span class="search-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20 15.2 15.2"/></svg></span><input class="search-input" id="searchInput" placeholder="Search menu&hellip;" oninput="wRenderMenu()"></div>
+      <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" placeholder="Search menu&hellip;" oninput="wRenderMenu()"></div>
       <div class="cat-pills" id="catPills"></div>
       <div class="menu-grid" id="menuGrid"></div>
     </div>
@@ -559,7 +559,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   <div class="drawer-body" id="drawerBody"></div>
   <div class="drawer-foot">
     <div class="total-row"><span class="total-lbl">Total</span><span class="total-amt" id="drawerTotal">Rs. 0</span></div>
-    <button class="send-btn" id="sendBtn" onclick="sendOrder()"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M9 20h6M10 20v-6M14 20v-6M6.5 8.5C5 8.5 4 7.3 4 6c0-1.5 1.3-2.7 2.8-2.5C7.2 2.3 8.5 1.5 10 1.5c1 0 1.8.4 2.4 1 .5-.3 1-.5 1.6-.5 1.7 0 3 1.3 3 3 0 .3 0 .5-.1.8 1.2.3 2.1 1.4 2.1 2.7 0 1.5-1.2 2.7-2.7 2.7H6.5Z"/><path d="M6.8 8.5 7 14h10l.2-5.5"/></svg> Send to kitchen</button>
+    <button class="send-btn" id="sendBtn" onclick="sendOrder()">🍳 Send to kitchen</button>
   </div>
 </div>
 
@@ -568,19 +568,19 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <div class="topbar-left"><button class="back-btn" onclick="backHome()">&larr;</button><div class="tb-title">👨‍🍳 Kitchen</div></div>
     <div style="display:flex;align-items:center;gap:7px;">
       <div class="live-badge">LIVE</div>
-      <button class="icon-btn sound-on" id="soundBtn" onclick="toggleSound()"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M6 8a6 6 0 1 1 12 0c0 4 1.5 5.5 2 6H4c.5-.5 2-2 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg> Sound</button>
-      <button class="icon-btn danger" onclick="kConfirmClearPaid()"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M4 7h16"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M10 11v6M14 11v6"/></svg> Clear paid</button>
+      <button class="icon-btn sound-on" id="soundBtn" onclick="toggleSound()">🔔 Sound</button>
+      <button class="icon-btn danger" onclick="kConfirmClearPaid()">🗑️ Clear paid</button>
     </div>
   </div>
   <div class="k-scroll">
     <div class="k-stats" id="kStats"></div>
     <div class="k-filters">
-      <button class="k-filt active" data-f="active" onclick="kSetFilter('active',this)">('<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M12 22c4 0 7-2.5 7-7 0-3-2-4-2-4s0 2-1.5 3c.5-2 0-5-3-7 0 2-1 3.5-2.5 4.5C8.5 12.5 8 13.5 8 15c-1 0-2-1-2-2 0 5 2 9 6 9Z"/></svg>',) Active</button>
-      <button class="k-filt" data-f="pending" onclick="kSetFilter('pending',this)">('<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',) Pending</button>
-      <button class="k-filt" data-f="cooking" onclick="kSetFilter('cooking',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M9 20h6M10 20v-6M14 20v-6M6.5 8.5C5 8.5 4 7.3 4 6c0-1.5 1.3-2.7 2.8-2.5C7.2 2.3 8.5 1.5 10 1.5c1 0 1.8.4 2.4 1 .5-.3 1-.5 1.6-.5 1.7 0 3 1.3 3 3 0 .3 0 .5-.1.8 1.2.3 2.1 1.4 2.1 2.7 0 1.5-1.2 2.7-2.7 2.7H6.5Z"/><path d="M6.8 8.5 7 14h10l.2-5.5"/></svg> Cooking</button>
-      <button class="k-filt" data-f="ready" onclick="kSetFilter('ready',this)">('<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>',) Ready</button>
-      <button class="k-filt" data-f="paid" onclick="kSetFilter('paid',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg> Done</button>
-      <button class="k-filt" data-f="all" onclick="kSetFilter('all',this)">('<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3.5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3.5" cy="18" r="1" fill="currentColor" stroke="none"/></svg>',) All</button>
+      <button class="k-filt active" data-f="active" onclick="kSetFilter('active',this)">🔥 Active</button>
+      <button class="k-filt" data-f="pending" onclick="kSetFilter('pending',this)">⏳ Pending</button>
+      <button class="k-filt" data-f="cooking" onclick="kSetFilter('cooking',this)">👨‍🍳 Cooking</button>
+      <button class="k-filt" data-f="ready" onclick="kSetFilter('ready',this)">✅ Ready</button>
+      <button class="k-filt" data-f="paid" onclick="kSetFilter('paid',this)">💰 Done</button>
+      <button class="k-filt" data-f="all" onclick="kSetFilter('all',this)">📋 All</button>
     </div>
     <div class="k-grid" id="kGrid"></div>
   </div>
@@ -594,7 +594,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
         <button class="c-tab active" onclick="cShowTab('orders',this)">Orders</button>
         <button class="c-tab" onclick="cShowTab('receipts',this)">Receipts</button>
       </div>
-      <button class="icon-btn" onclick="cExportDay()" style="background:rgba(232,160,68,.14);border-color:rgba(232,160,68,.3);color:var(--amber2);font-size:13px;padding:7px 11px;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M12 3v13"/><path d="M7 12l5 5 5-5"/><path d="M4 20h16"/></svg> Export</button>
+      <button class="icon-btn" onclick="cExportDay()" style="background:rgba(232,160,68,.14);border-color:rgba(232,160,68,.3);color:var(--amber2);font-size:13px;padding:7px 11px;">📥 Export</button>
     </div>
   </div>
   <div class="c-scroll">
@@ -667,17 +667,17 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     </div>
   </div>
   <div class="office-tab-bar">
-    <button class="office-tab active" onclick="oSetTab('menu',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M6 3v18M6 3c0 3-2 3-2 6s2 3 2 3M18 3v18M18 8h-3a2 2 0 0 1 0-4h3v4Z"/></svg> Menu</button>
-    <button class="office-tab" onclick="oSetTab('categories',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M3 11.5V5a2 2 0 0 1 2-2h6.5a2 2 0 0 1 1.4.6l8 8a2 2 0 0 1 0 2.8l-6.6 6.6a2 2 0 0 1-2.8 0l-8-8a2 2 0 0 1-.5-1.5Z"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/></svg> Categories</button>
-    <button class="office-tab" onclick="oSetTab('staff',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 13.2c2.3.4 4 2.4 4.5 4.8"/></svg> Staff</button>
-    <button class="office-tab" onclick="oSetTab('inventory',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M21 8.5 12 3 3 8.5v7L12 21l9-5.5v-7Z"/><path d="M3 8.5 12 14l9-5.5"/><path d="M12 14v7"/></svg> Inventory</button>
-    <button class="office-tab" onclick="oSetTab('paymentqr',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg> Payment QR</button>
-    <button class="office-tab" onclick="oSetTab('credentials',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5 19 4"/><path d="M15.5 8 18 10.5M18 5 20.5 7.5"/></svg> Admin Login</button>
-    <button class="office-tab" onclick="oSetTab('all',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg> All Portals</button>
+    <button class="office-tab active" onclick="oSetTab('menu',this)">🍽️ Menu</button>
+    <button class="office-tab" onclick="oSetTab('categories',this)">🏷️ Categories</button>
+    <button class="office-tab" onclick="oSetTab('staff',this)">👥 Staff</button>
+    <button class="office-tab" onclick="oSetTab('inventory',this)">📦 Inventory</button>
+    <button class="office-tab" onclick="oSetTab('paymentqr',this)">💳 Payment QR</button>
+    <button class="office-tab" onclick="oSetTab('credentials',this)">🔑 Admin Login</button>
+    <button class="office-tab" onclick="oSetTab('all',this)">📊 All Portals</button>
   </div>
   <div class="a-scroll" id="oMenuSection">
-    <div class="a-section-hdr"><span class="a-sec-title">All Menu Items</span><button class="add-item-btn" onclick="aOpenForm()"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M12 5v14M5 12h14"/></svg> Add item</button></div>
-    <div class="a-search-wrap"><span class="a-search-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20 15.2 15.2"/></svg></span><input class="a-search-input" id="aSearchInput" placeholder="Search items&hellip;" oninput="aRender()"></div>
+    <div class="a-section-hdr"><span class="a-sec-title">All Menu Items</span><button class="add-item-btn" onclick="aOpenForm()">＋ Add item</button></div>
+    <div class="a-search-wrap"><span class="a-search-icon">🔍</span><input class="a-search-input" id="aSearchInput" placeholder="Search items&hellip;" oninput="aRender()"></div>
     <div class="a-cat-filter" id="aCatFilter"></div>
     <div class="a-menu-list" id="aMenuList"></div>
     <div style="height:100px;"></div>
@@ -690,14 +690,14 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   <div id="oStaffSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0 13px;">
       <span class="a-sec-title">Staff Members</span>
-      <button class="add-item-btn" onclick="oOpenAddStaff()"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M12 5v14M5 12h14"/></svg> Add waiter</button>
+      <button class="add-item-btn" onclick="oOpenAddStaff()">＋ Add waiter</button>
     </div>
     <div id="staffList"></div>
   </div>
   <div id="oInvSection" style="display:none;flex:1;overflow-y:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 4px;">
       <span class="a-sec-title">📦 Inventory</span>
-      <button class="add-item-btn" onclick="invOpenForm()"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M12 5v14M5 12h14"/></svg> Add stock item</button>
+      <button class="add-item-btn" onclick="invOpenForm()">＋ Add stock item</button>
     </div>
     <div class="inv-toolbar">
       <div class="inv-search"><span class="ic">🔍</span><input id="invSearch" placeholder="Search stock…" oninput="invRender()"></div>
@@ -729,9 +729,9 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
         <div class="cred-card-hdr"><div class="cred-card-icon admin">👑</div><div><div class="cred-card-title">Admin Account</div><div class="cred-card-sub" id="credAdminCurrentUser">Username: admin</div></div><span class="cred-badge active">Active</span></div>
         <div class="cred-fields">
           <div class="cred-field"><label class="cred-label">New Username</label><input class="cred-input" id="credAdminUser" placeholder="New username" autocomplete="off"></div>
-          <div class="cred-field"><label class="cred-label">Current Password (to verify)</label><div class="cred-input-wrap"><input class="cred-input" id="credAdminCurrentPass" type="password" placeholder="Enter current password"><button class="cred-eye" onclick="toggleCredEye('credAdminCurrentPass',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-          <div class="cred-field"><label class="cred-label">New Password</label><div class="cred-input-wrap"><input class="cred-input" id="credAdminNewPass" type="password" placeholder="Min 6 characters"><button class="cred-eye" onclick="toggleCredEye('credAdminNewPass',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-          <div class="cred-field"><label class="cred-label">Confirm New Password</label><div class="cred-input-wrap"><input class="cred-input" id="credAdminConfPass" type="password" placeholder="Re-enter new password"><button class="cred-eye" onclick="toggleCredEye('credAdminConfPass',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+          <div class="cred-field"><label class="cred-label">Current Password (to verify)</label><div class="cred-input-wrap"><input class="cred-input" id="credAdminCurrentPass" type="password" placeholder="Enter current password"><button class="cred-eye" onclick="toggleCredEye('credAdminCurrentPass',this)">👁️</button></div></div>
+          <div class="cred-field"><label class="cred-label">New Password</label><div class="cred-input-wrap"><input class="cred-input" id="credAdminNewPass" type="password" placeholder="Min 6 characters"><button class="cred-eye" onclick="toggleCredEye('credAdminNewPass',this)">👁️</button></div></div>
+          <div class="cred-field"><label class="cred-label">Confirm New Password</label><div class="cred-input-wrap"><input class="cred-input" id="credAdminConfPass" type="password" placeholder="Re-enter new password"><button class="cred-eye" onclick="toggleCredEye('credAdminConfPass',this)">👁️</button></div></div>
           <div class="cred-err" id="credAdminErr"></div><div class="cred-ok" id="credAdminOk"></div>
           <button class="cred-save-btn" id="credAdminSaveBtn" onclick="saveCredentials('admin')">🔐 Update admin credentials</button>
         </div>
@@ -740,9 +740,9 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
         <div class="cred-card-hdr"><div class="cred-card-icon manager">🏢</div><div><div class="cred-card-title">Manager Account</div><div class="cred-card-sub" id="credManagerCurrentUser">Username: manager</div></div><span class="cred-badge active">Active</span></div>
         <div class="cred-fields">
           <div class="cred-field"><label class="cred-label">New Username</label><input class="cred-input" id="credManagerUser" placeholder="New username" autocomplete="off"></div>
-          <div class="cred-field"><label class="cred-label">Current Password (to verify)</label><div class="cred-input-wrap"><input class="cred-input" id="credManagerCurrentPass" type="password" placeholder="Enter current password"><button class="cred-eye" onclick="toggleCredEye('credManagerCurrentPass',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-          <div class="cred-field"><label class="cred-label">New Password</label><div class="cred-input-wrap"><input class="cred-input" id="credManagerNewPass" type="password" placeholder="Min 6 characters"><button class="cred-eye" onclick="toggleCredEye('credManagerNewPass',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-          <div class="cred-field"><label class="cred-label">Confirm New Password</label><div class="cred-input-wrap"><input class="cred-input" id="credManagerConfPass" type="password" placeholder="Re-enter new password"><button class="cred-eye" onclick="toggleCredEye('credManagerConfPass',this)"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+          <div class="cred-field"><label class="cred-label">Current Password (to verify)</label><div class="cred-input-wrap"><input class="cred-input" id="credManagerCurrentPass" type="password" placeholder="Enter current password"><button class="cred-eye" onclick="toggleCredEye('credManagerCurrentPass',this)">👁️</button></div></div>
+          <div class="cred-field"><label class="cred-label">New Password</label><div class="cred-input-wrap"><input class="cred-input" id="credManagerNewPass" type="password" placeholder="Min 6 characters"><button class="cred-eye" onclick="toggleCredEye('credManagerNewPass',this)">👁️</button></div></div>
+          <div class="cred-field"><label class="cred-label">Confirm New Password</label><div class="cred-input-wrap"><input class="cred-input" id="credManagerConfPass" type="password" placeholder="Re-enter new password"><button class="cred-eye" onclick="toggleCredEye('credManagerConfPass',this)">👁️</button></div></div>
           <div class="cred-err" id="credManagerErr"></div><div class="cred-ok" id="credManagerOk"></div>
           <button class="cred-save-btn" id="credManagerSaveBtn" onclick="saveCredentials('manager')">🔐 Update manager credentials</button>
         </div>
@@ -753,9 +753,9 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   <div id="oAllSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
     <div style="padding:16px 0 16px;"><span class="a-sec-title">All Portals</span></div>
     <div class="role-grid" style="max-width:100%;margin:0;">
-      <div class="role-card" onclick="goWaiter()"><div class="role-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 13.2c2.3.4 4 2.4 4.5 4.8"/></svg></div><div class="role-name">Waiter</div><div class="role-desc">Take orders & send to kitchen</div><button class="role-pill pill-w">Enter</button></div>
-      <div class="role-card" onclick="goKitchen()"><div class="role-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M9 20h6M10 20v-6M14 20v-6M6.5 8.5C5 8.5 4 7.3 4 6c0-1.5 1.3-2.7 2.8-2.5C7.2 2.3 8.5 1.5 10 1.5c1 0 1.8.4 2.4 1 .5-.3 1-.5 1.6-.5 1.7 0 3 1.3 3 3 0 .3 0 .5-.1.8 1.2.3 2.1 1.4 2.1 2.7 0 1.5-1.2 2.7-2.7 2.7H6.5Z"/><path d="M6.8 8.5 7 14h10l.2-5.5"/></svg></div><div class="role-name">Kitchen</div><div class="role-desc">View & manage live orders</div><button class="role-pill pill-k">Enter</button></div>
-      <div class="role-card" onclick="goCashier()"><div class="role-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg></div><div class="role-name">Cashier</div><div class="role-desc">Generate bills & receipts</div><button class="role-pill pill-c">Enter</button></div>
+      <div class="role-card" onclick="goWaiter()"><div class="role-icon">🛎️</div><div class="role-name">Waiter</div><div class="role-desc">Take orders & send to kitchen</div><button class="role-pill pill-w">Enter</button></div>
+      <div class="role-card" onclick="goKitchen()"><div class="role-icon">👨‍🍳</div><div class="role-name">Kitchen</div><div class="role-desc">View & manage live orders</div><button class="role-pill pill-k">Enter</button></div>
+      <div class="role-card" onclick="goCashier()"><div class="role-icon">💰</div><div class="role-name">Cashier</div><div class="role-desc">Generate bills & receipts</div><button class="role-pill pill-c">Enter</button></div>
     </div>
   </div>
 </div>
@@ -1149,7 +1149,7 @@ function wUpdateCartUI(){const count=Object.values(wCart).reduce((s,v)=>s+v,0);d
 function wRenderDrawer(){const items=wCartItems();document.getElementById('drawerTitle').textContent='Order — Table '+wTable;document.getElementById('drawerTotal').textContent='Rs. '+wCartTotal().toLocaleString();const body=document.getElementById('drawerBody');if(!items.length){body.innerHTML='<p style="text-align:center;color:var(--muted2);padding:22px;">Cart is empty</p>';return;}body.innerHTML=items.map(i=>`<div class="cart-row"><div><div class="ci-name">${i.emoji||'🍽️'} ${i.name}</div><div class="ci-meta">×${i.qty} · Rs.${i.price} each</div></div><div class="ci-price">Rs. ${(i.price*i.qty).toLocaleString()}</div></div>`).join('');}
 function openCart(){wRenderDrawer();document.getElementById('drawerOverlay').classList.add('open');document.getElementById('cartDrawer').classList.add('open');}
 function closeCart(){document.getElementById('drawerOverlay').classList.remove('open');document.getElementById('cartDrawer').classList.remove('open');}
-async function sendOrder(){const items=wCartItems();if(!items.length)return;const btn=document.getElementById('sendBtn');const original=btn.innerHTML;btn.disabled=true;btn.textContent='Sending…';try{await GV.addOrder({table:wTable,items,total:wCartTotal(),sentBy:_currentUser||'Office',sentByRole:_currentRole||'office'});wCart={};wUpdateCartUI();closeCart();wRenderMenu();showToast('✅ Order sent to kitchen!','success');}catch(err){console.error('SEND ORDER ERROR:',err);showToast('❌ '+(err.message||err.details||err.hint||'Failed to send'),'error');}finally{btn.disabled=false;btn.innerHTML=original;}}
+async function sendOrder(){const items=wCartItems();if(!items.length)return;const btn=document.getElementById('sendBtn');btn.disabled=true;btn.textContent='⏳ Sending…';try{await GV.addOrder({table:wTable,items,total:wCartTotal(),sentBy:_currentUser||'Office',sentByRole:_currentRole||'office'});wCart={};wUpdateCartUI();closeCart();wRenderMenu();showToast('✅ Order sent to kitchen!','success');}catch(err){console.error('SEND ORDER ERROR:',err);showToast('❌ '+(err.message||err.details||err.hint||'Failed to send'),'error');}finally{btn.disabled=false;btn.textContent='🍳 Send to kitchen';}}
 
 /* KITCHEN */
 let kFilter='active',kSoundOn=true;
@@ -1202,7 +1202,7 @@ function aRestoreBuiltin(id,name){showModal(`Restore "${name}" to default?`,'Rem
 function aConfirmDelete(itemId,name){const isBuiltin=itemId.startsWith('__builtin__');showModal(`Delete "${name}"?`,isBuiltin?'This item will be hidden from menu.':'Permanently remove from menu.',()=>{if(isBuiltin){const builtinId=itemId.replace('__builtin__','');const item=GV._builtIn.find(i=>i.id===builtinId);if(!item)return;GV.addMenuItem({id:builtinId,name:item.name,price:item.price,cat:item.cat,emoji:'',photo:null,_deleted:true,_overridesBuiltin:true}).then(()=>{showToast('🗑️ Item hidden','success');aRender();aPopulateCatFilter();});}else{GV.deleteMenuItem(itemId).then(()=>{showToast('🗑️ Deleted','success');aRender();aPopulateCatFilter();});}});}
 function oSetTab(tab,btn){document.querySelectorAll('.office-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('oMenuSection').style.display=tab==='menu'?'block':'none';document.getElementById('oCatSection').style.display=tab==='categories'?'flex':'none';document.getElementById('oStaffSection').style.display=tab==='staff'?'flex':'none';document.getElementById('oQrSection').style.display=tab==='paymentqr'?'flex':'none';document.getElementById('oInvSection').style.display=tab==='inventory'?'flex':'none';document.getElementById('oCredSection').style.display=tab==='credentials'?'flex':'none';document.getElementById('oAllSection').style.display=tab==='all'?'block':'none';if(tab==='staff')oRenderStaff();if(tab==='categories')oCatRender();if(tab==='credentials')oInitCredSection();if(tab==='paymentqr')oInitQr();if(tab==='inventory')invInit();}
 function oInitCredSection(){_refreshCredUI();['credAdminUser','credAdminCurrentPass','credAdminNewPass','credAdminConfPass','credManagerUser','credManagerCurrentPass','credManagerNewPass','credManagerConfPass'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['credAdminErr','credAdminOk','credManagerErr','credManagerOk'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='';});}
-function toggleCredEye(inputId,btn){const input=document.getElementById(inputId);if(!input)return;if(input.type==='password'){input.type='text';btn.innerHTML='<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M3 3l18 18"/><path d="M10.6 5.2A10.4 10.4 0 0 1 12 5c6.5 0 10 7 10 7a15.6 15.6 0 0 1-3.2 4.1M6.6 6.6A15.7 15.7 0 0 0 2 12s3.5 7 10 7a10.4 10.4 0 0 0 3.4-.6"/><path d="M9.5 9.8A3 3 0 0 0 12 15a3 3 0 0 0 2.2-.9"/></svg>';}else{input.type='password';btn.innerHTML='<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';}}
+function toggleCredEye(inputId,btn){const input=document.getElementById(inputId);if(!input)return;if(input.type==='password'){input.type='text';btn.textContent='🙈';}else{input.type='password';btn.textContent='👁️';}}
 async function saveCredentials(accountId){const prefix=accountId==='admin'?'credAdmin':'credManager';const errEl=document.getElementById(prefix+'Err');const okEl=document.getElementById(prefix+'Ok');const btn=document.getElementById(prefix+'SaveBtn');errEl.textContent='';okEl.textContent='';const newUser=document.getElementById(prefix+'User').value.trim().toLowerCase();const currentPass=document.getElementById(prefix+'CurrentPass').value;const newPass=document.getElementById(prefix+'NewPass').value;const confPass=document.getElementById(prefix+'ConfPass').value;const cred=OFFICE_CREDS.find(c=>c.id===accountId);if(!cred){errEl.textContent='❌ Account not found.';return;}if(!currentPass){errEl.textContent='❌ Enter your current password to verify.';return;}if(currentPass!==cred.pass){errEl.textContent='❌ Current password is incorrect.';return;}const finalUser=newUser||cred.user;if(newUser){const conflict=OFFICE_CREDS.find(c=>c.id!==accountId&&c.user===newUser);if(conflict){errEl.textContent='❌ That username is already used by another admin account.';return;}}let finalPass=cred.pass;if(newPass||confPass){if(newPass.length<6){errEl.textContent='❌ New password must be at least 6 characters.';return;}if(newPass!==confPass){errEl.textContent='❌ New passwords do not match.';return;}finalPass=newPass;}if(finalUser===cred.user&&finalPass===cred.pass){errEl.textContent='ℹ️ No changes detected.';return;}btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');try{await _saveAdminCred(accountId,finalUser,finalPass);setSync('ok');okEl.textContent='✅ Credentials updated successfully!';['CurrentPass','NewPass','ConfPass'].forEach(s=>{const el=document.getElementById(prefix+s);if(el)el.value='';});document.querySelectorAll('.cred-eye').forEach(b=>b.textContent='👁️');document.querySelectorAll('.cred-input').forEach(el=>{if(el.type==='text'&&el.closest('.cred-input-wrap'))el.type='password';});_refreshCredUI();showToast('🔐 Credentials updated!','success');setTimeout(()=>{if(okEl)okEl.textContent='';},4000);}catch(e){setSync('err');errEl.textContent='❌ Save failed: '+e.message+'. Make sure the gv_admin_creds table exists in Supabase.';}finally{btn.disabled=false;btn.textContent='🔐 Update '+(accountId==='admin'?'Admin':'Manager')+' Credentials';}}
 
 /* ═══ INVENTORY ═══ */
