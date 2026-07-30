@@ -707,18 +707,33 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <div class="inv-list" id="invList"></div>
   </div>
   <div id="oQrSection" style="display:none;flex:1;overflow-y:auto;padding:0 16px 100px;">
-    <div style="padding:16px 0 6px;"><span class="a-sec-title">💳 Payment QR Code</span></div>
-    <div style="font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:16px;padding:13px 15px;background:rgba(232,160,68,.06);border:1px solid rgba(232,160,68,.2);border-radius:13px;">📱 Upload your FonePay / eSewa QR once. It prints on every customer bill across all devices. Use a clear, flat screenshot or scan — not an angled photo — so it scans reliably on thermal paper.</div>
-    <div style="background:var(--card);border:1.5px solid var(--border);border-radius:17px;padding:20px;text-align:center;">
-      <div id="qrPreviewWrap" style="margin-bottom:16px;">
-        <div id="qrEmpty" style="padding:36px 20px;color:var(--muted2);"><div style="font-size:48px;margin-bottom:10px;opacity:.6;">📱</div><div style="font-weight:700;">No QR uploaded yet</div></div>
-        <img id="qrPreview" style="display:none;width:200px;height:200px;object-fit:contain;background:#fff;border-radius:12px;padding:8px;" alt="Payment QR">
+    <div style="padding:16px 0 6px;"><span class="a-sec-title">💳 Payment QR Code — Dynamic Amount</span></div>
+    <div style="font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:16px;padding:13px 15px;background:rgba(232,160,68,.06);border:1px solid rgba(232,160,68,.2);border-radius:13px;">📱 Take a clear, flat photo of each printed FonePay/eSewa QR standee (not angled). We decode the real merchant data from it — nothing is typed in manually — then generate a fresh QR per bill with the exact total already filled in, so the customer just scans and confirms.</div>
+    <div id="qrTerminal_nabil" style="background:var(--card);border:1.5px solid var(--border);border-radius:17px;padding:20px;text-align:center;margin-bottom:16px;">
+      <div style="font-weight:800;font-size:14px;margin-bottom:12px;">🏦 Nabil Bank QR</div>
+      <div class="qrPreviewWrap" style="margin-bottom:14px;">
+        <div class="qrEmpty" style="padding:24px 20px;color:var(--muted2);"><div style="font-size:40px;margin-bottom:8px;opacity:.6;">📱</div><div style="font-weight:700;font-size:13px;">No QR configured yet</div></div>
+        <img class="qrPreview" style="display:none;width:160px;height:160px;object-fit:contain;background:#fff;border-radius:12px;padding:8px;" alt="Nabil Payment QR">
+        <div class="qrDecodedInfo" style="display:none;font-size:11.5px;color:var(--moss2);margin-top:8px;"></div>
       </div>
-      <input type="file" id="qrFileInput" accept="image/*" style="display:none;" onchange="oQrFileChosen(event)">
-      <button class="add-item-btn" style="width:100%;justify-content:center;margin-bottom:9px;" onclick="document.getElementById('qrFileInput').click()">📤 Choose QR image</button>
-      <button class="cred-save-btn" id="qrSaveBtn" style="display:none;" onclick="oSaveQr()">💾 Save QR (shows on all bills)</button>
-      <button class="print-btn" id="qrRemoveBtn" style="display:none;margin-top:8px;border-color:rgba(229,72,77,.3);color:var(--redsoft);" onclick="oRemoveQr()">🗑️ Remove QR</button>
-      <div id="qrMsg" style="font-size:11px;margin-top:10px;min-height:16px;"></div>
+      <input type="file" class="qrFileInput" accept="image/*" style="display:none;" onchange="oQrFileChosen(event,'nabil')">
+      <button class="add-item-btn" style="width:100%;justify-content:center;margin-bottom:9px;" onclick="this.parentElement.querySelector('.qrFileInput').click()">📤 Choose photo of QR standee</button>
+      <button class="cred-save-btn qrSaveBtn" style="display:none;" onclick="oSaveQr('nabil')">💾 Save (dynamic QR shows on all bills)</button>
+      <button class="print-btn qrRemoveBtn" style="display:none;margin-top:8px;border-color:rgba(229,72,77,.3);color:var(--redsoft);" onclick="oRemoveQr('nabil')">🗑️ Remove</button>
+      <div class="qrMsg" style="font-size:11px;margin-top:10px;min-height:16px;"></div>
+    </div>
+    <div id="qrTerminal_esewa" style="background:var(--card);border:1.5px solid var(--border);border-radius:17px;padding:20px;text-align:center;">
+      <div style="font-weight:800;font-size:14px;margin-bottom:12px;">💚 eSewa QR</div>
+      <div class="qrPreviewWrap" style="margin-bottom:14px;">
+        <div class="qrEmpty" style="padding:24px 20px;color:var(--muted2);"><div style="font-size:40px;margin-bottom:8px;opacity:.6;">📱</div><div style="font-weight:700;font-size:13px;">No QR configured yet</div></div>
+        <img class="qrPreview" style="display:none;width:160px;height:160px;object-fit:contain;background:#fff;border-radius:12px;padding:8px;" alt="eSewa Payment QR">
+        <div class="qrDecodedInfo" style="display:none;font-size:11.5px;color:var(--moss2);margin-top:8px;"></div>
+      </div>
+      <input type="file" class="qrFileInput" accept="image/*" style="display:none;" onchange="oQrFileChosen(event,'esewa')">
+      <button class="add-item-btn" style="width:100%;justify-content:center;margin-bottom:9px;" onclick="this.parentElement.querySelector('.qrFileInput').click()">📤 Choose photo of QR standee</button>
+      <button class="cred-save-btn qrSaveBtn" style="display:none;" onclick="oSaveQr('esewa')">💾 Save (dynamic QR shows on all bills)</button>
+      <button class="print-btn qrRemoveBtn" style="display:none;margin-top:8px;border-color:rgba(229,72,77,.3);color:var(--redsoft);" onclick="oRemoveQr('esewa')">🗑️ Remove</button>
+      <div class="qrMsg" style="font-size:11px;margin-top:10px;min-height:16px;"></div>
     </div>
   </div>
   <div id="oCredSection" style="display:none;flex:1;overflow-y:auto;">
@@ -856,10 +871,99 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script>
-/* ═══ FONEPAY / PAYMENT QR — now uploaded by admin in Office → Payment QR ═══ */
-let FONEPAY_QR = ""; // loaded from Supabase on startup
-const FONEPAY_TERMINAL = "222020016290484";
+/* ═══ FONEPAY / PAYMENT QR — dynamic amount, admin-configured in Office → Payment QR ═══
+   FONEPAY_BASES holds the RAW EMVCo merchant-QR string decoded from each bank's printed
+   standee (no amount baked in). At bill time we clone that string, flip it to "dynamic"
+   (field 01 = 12), insert field 54 = amount, recompute the CRC (field 63), and render a
+   fresh QR — so the customer's banking app shows the exact bill total automatically. */
+let FONEPAY_BASES = { nabil: null, esewa: null }; // {label, raw} per terminal, loaded from Supabase
+const FONEPAY_TERMINAL = "222020016290484"; // fallback text label only, used if nothing configured
+
+/* ---- EMVCo TLV + CRC-16/CCITT-FFFF helpers (standard NQR/UPI QR spec) ---- */
+function crc16ccitt(str){
+  let crc = 0xFFFF;
+  for(let i=0;i<str.length;i++){
+    crc ^= (str.charCodeAt(i) << 8);
+    for(let b=0;b<8;b++){
+      crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) & 0xFFFF : (crc << 1) & 0xFFFF;
+    }
+  }
+  return crc.toString(16).toUpperCase().padStart(4,'0');
+}
+function parseEmvTlv(data){
+  const fields=[]; let i=0;
+  while(i < data.length){
+    const tag=data.substr(i,2);
+    const len=parseInt(data.substr(i+2,2),10);
+    if(isNaN(len)) break;
+    const value=data.substr(i+4,len);
+    fields.push({tag,value});
+    i += 4+len;
+  }
+  return fields;
+}
+function tlv(tag,value){ return tag + String(value.length).padStart(2,'0') + value; }
+/* Build a dynamic (amount-locked) EMV QR string from a static base string + a Rs amount. */
+function buildDynamicEmv(baseStr, amount){
+  const fields = parseEmvTlv(baseStr);
+  let out=[]; let inserted54=false;
+  for(const f of fields){
+    if(f.tag==='63') continue;           // drop old CRC, we recompute
+    if(f.tag==='54') continue;           // drop any pre-existing amount
+    if(f.tag==='01'){ out.push(tlv('01','12')); continue; } // 12 = dynamic
+    out.push(tlv(f.tag,f.value));
+    if(f.tag==='53' && !inserted54){      // amount goes right after currency code
+      out.push(tlv('54', String(amount)));
+      inserted54=true;
+    }
+  }
+  let payload = out.join('') + '6304';
+  return payload + crc16ccitt(payload);
+}
+/* Decode a QR code from an uploaded photo (client-side, no data leaves the browser). */
+function decodeQrFromFile(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        canvas.width=img.width; canvas.height=img.height;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0);
+        const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+        const code=window.jsQR(imgData.data,canvas.width,canvas.height);
+        if(code && code.data) resolve(code.data);
+        else reject(new Error('No QR code detected — try a clearer, flatter, well-lit photo.'));
+      };
+      img.onerror=()=>reject(new Error('Could not load that image.'));
+      img.src=reader.result;
+    };
+    reader.onerror=()=>reject(new Error('Could not read that file.'));
+    reader.readAsDataURL(file);
+  });
+}
+/* Render an EMV QR string to a PNG data URL. */
+async function genQrDataUrl(text, size){
+  return await QRCode.toDataURL(text, { width: size||220, margin:1 });
+}
+/* Build the on-bill QR block (one image per configured terminal) for a given amount. */
+async function buildQrBlockHtml(amount, imgStyle, capStyle){
+  const entries = Object.entries(FONEPAY_BASES).filter(([,v])=>v && v.raw);
+  if(!entries.length){
+    return `<div style="text-align:center;${capStyle||''}">📱 Pay via FonePay QR · Terminal ${FONEPAY_TERMINAL}<br>Amount: Rs.${Number(amount||0).toLocaleString()}</div>`;
+  }
+  const imgs = await Promise.all(entries.map(async ([key,v])=>{
+    const dynStr = buildDynamicEmv(v.raw, Math.round(amount||0));
+    const dataUrl = await genQrDataUrl(dynStr, 220);
+    const label = v.label || key;
+    return `<div style="display:inline-block;text-align:center;margin:0 6px;"><img src="${dataUrl}" style="${imgStyle||''}"><div style="${capStyle||''}">${label}</div></div>`;
+  }));
+  return `<div style="text-align:center;">${imgs.join('')}<div style="${capStyle||''}">📱 Scan · Amount pre-filled: Rs.${Number(amount||0).toLocaleString()}</div></div>`;
+}
 
 /* ═══ SUPABASE CONFIG (unchanged — your project) ═══ */
 const SUPA_URL = 'https://eadczazfjdvzgunltsiv.supabase.co';
@@ -886,7 +990,15 @@ async function _loadAdminCreds(){
     if(error){ console.warn('gv_admin_creds not found, using defaults.'); return; }
     if(data && data.length){
       data.forEach(row=>{
-        if(row.id==='payment_qr'){ if(row.password) FONEPAY_QR = row.password; return; }
+        if(row.id==='payment_qr'){
+          if(row.password){
+            try{
+              const parsed = JSON.parse(row.password);
+              if(parsed && typeof parsed==='object') FONEPAY_BASES = { nabil:parsed.nabil||null, esewa:parsed.esewa||null };
+            }catch(e){ /* old-format (plain image) row from before this update — ignored, admin will re-upload */ }
+          }
+          return;
+        }
         const idx = OFFICE_CREDS.findIndex(c=>c.id===row.id);
         if(idx>=0) OFFICE_CREDS[idx] = {id:row.id, user:row.username, pass:row.password};
         else OFFICE_CREDS.push({id:row.id, user:row.username, pass:row.password});
@@ -1330,12 +1442,90 @@ async function invQuickSave(){
   finally{btn.disabled=false;}
 }
 
-/* PAYMENT QR UPLOAD */
-let _pendingQr=null;
-function oInitQr(){_pendingQr=null;document.getElementById('qrMsg').textContent='';document.getElementById('qrSaveBtn').style.display='none';const img=document.getElementById('qrPreview'),empty=document.getElementById('qrEmpty'),rm=document.getElementById('qrRemoveBtn');if(FONEPAY_QR){img.src=FONEPAY_QR;img.style.display='inline-block';empty.style.display='none';rm.style.display='block';}else{img.style.display='none';empty.style.display='block';rm.style.display='none';}}
-function oQrFileChosen(e){const file=e.target.files[0];if(!file)return;const msg=document.getElementById('qrMsg');if(!file.type.startsWith('image/')){msg.style.color='var(--redsoft)';msg.textContent='❌ Please choose an image file.';return;}if(file.size>900*1024){msg.style.color='var(--redsoft)';msg.textContent='❌ Image too large (max ~900KB). Use a smaller screenshot.';return;}const reader=new FileReader();reader.onload=()=>{_pendingQr=reader.result;const img=document.getElementById('qrPreview');img.src=_pendingQr;img.style.display='inline-block';document.getElementById('qrEmpty').style.display='none';document.getElementById('qrSaveBtn').style.display='block';msg.style.color='var(--muted2)';msg.textContent='Preview ready — tap Save to use on all bills.';};reader.readAsDataURL(file);}
-async function oSaveQr(){if(!_pendingQr)return;const btn=document.getElementById('qrSaveBtn'),msg=document.getElementById('qrMsg');btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');try{const {error}=await _supa.from('gv_admin_creds').upsert({id:'payment_qr',username:'payment_qr',password:_pendingQr},{onConflict:'id'});if(error)throw error;FONEPAY_QR=_pendingQr;_pendingQr=null;setSync('ok');msg.style.color='var(--moss2)';msg.textContent='✅ Saved! This QR now prints on every bill.';document.getElementById('qrSaveBtn').style.display='none';document.getElementById('qrRemoveBtn').style.display='block';showToast('💳 Payment QR saved!','success');}catch(e){setSync('err');msg.style.color='var(--redsoft)';msg.textContent='❌ Save failed: '+e.message;}finally{btn.disabled=false;btn.textContent='💾 Save QR (shows on all bills)';}}
-function oRemoveQr(){showModal('Remove payment QR?','Bills will show a text FonePay note instead until you upload a new one.',async()=>{setSync('saving');try{await _supa.from('gv_admin_creds').upsert({id:'payment_qr',username:'payment_qr',password:''},{onConflict:'id'});FONEPAY_QR='';setSync('ok');showToast('🗑️ QR removed','success');oInitQr();}catch(e){setSync('err');showToast('❌ '+e.message,'error');}});}
+/* PAYMENT QR — decode real merchant QR photo → store base string (no image, no amount) */
+let _pendingQr={nabil:null,esewa:null}; // {raw, label} awaiting save, per terminal
+const BANK_LABELS={nabil:'Nabil Bank',esewa:'eSewa'};
+function _qrTermEls(term){
+  const wrap=document.getElementById('qrTerminal_'+term);
+  return {
+    wrap,
+    empty:wrap.querySelector('.qrEmpty'),
+    img:wrap.querySelector('.qrPreview'),
+    info:wrap.querySelector('.qrDecodedInfo'),
+    saveBtn:wrap.querySelector('.qrSaveBtn'),
+    removeBtn:wrap.querySelector('.qrRemoveBtn'),
+    msg:wrap.querySelector('.qrMsg'),
+    fileInput:wrap.querySelector('.qrFileInput'),
+  };
+}
+function oInitQr(){
+  ['nabil','esewa'].forEach(async term=>{
+    _pendingQr[term]=null;
+    const els=_qrTermEls(term);
+    els.msg.textContent=''; els.saveBtn.style.display='none';
+    const saved=FONEPAY_BASES[term];
+    if(saved && saved.raw){
+      els.empty.style.display='none'; els.removeBtn.style.display='block';
+      els.info.style.display='block';
+      els.info.textContent='✅ Configured · '+(saved.label||BANK_LABELS[term]);
+      try{ els.img.src=await genQrDataUrl(saved.raw,160); els.img.style.display='inline-block'; }catch(e){}
+    }else{
+      els.img.style.display='none'; els.info.style.display='none'; els.empty.style.display='block'; els.removeBtn.style.display='none';
+    }
+  });
+}
+async function oQrFileChosen(e,term){
+  const file=e.target.files[0]; if(!file) return;
+  const els=_qrTermEls(term);
+  els.msg.style.color='var(--muted2)'; els.msg.textContent='🔎 Reading QR from photo…';
+  if(!file.type.startsWith('image/')){ els.msg.style.color='var(--redsoft)'; els.msg.textContent='❌ Please choose an image file.'; return; }
+  try{
+    const raw=await decodeQrFromFile(file);
+    const fields=parseEmvTlv(raw);
+    const nameField=fields.find(f=>f.tag==='59');
+    const isEmv = fields.some(f=>f.tag==='00') && fields.some(f=>f.tag==='63');
+    if(!isEmv){ throw new Error('That QR doesn\'t look like a FonePay/eSewa merchant payment QR.'); }
+    _pendingQr[term]={raw, label:BANK_LABELS[term]+(nameField?' · '+nameField.value:'')};
+    els.img.src=await genQrDataUrl(raw,160); els.img.style.display='inline-block';
+    els.empty.style.display='none';
+    els.info.style.display='block'; els.info.textContent='Decoded: '+(nameField?nameField.value:'merchant QR')+' — tap Save to activate.';
+    els.saveBtn.style.display='block';
+    els.msg.style.color='var(--muted2)'; els.msg.textContent='Preview ready — tap Save to use on all bills.';
+  }catch(err){
+    els.msg.style.color='var(--redsoft)'; els.msg.textContent='❌ '+err.message;
+  }
+}
+async function _persistFonepayBases(){
+  const payload=JSON.stringify({nabil:FONEPAY_BASES.nabil, esewa:FONEPAY_BASES.esewa});
+  const {error}=await _supa.from('gv_admin_creds').upsert({id:'payment_qr',username:'payment_qr',password:payload},{onConflict:'id'});
+  if(error) throw error;
+}
+async function oSaveQr(term){
+  const pending=_pendingQr[term]; if(!pending) return;
+  const els=_qrTermEls(term);
+  els.saveBtn.disabled=true; els.saveBtn.textContent='⏳ Saving…'; setSync('saving');
+  try{
+    const prevBases={...FONEPAY_BASES};
+    FONEPAY_BASES[term]=pending;
+    await _persistFonepayBases();
+    _pendingQr[term]=null; setSync('ok');
+    els.msg.style.color='var(--moss2)'; els.msg.textContent='✅ Saved! Dynamic QR now prints on every bill.';
+    els.saveBtn.style.display='none'; els.removeBtn.style.display='block';
+    showToast('💳 '+BANK_LABELS[term]+' QR saved!','success');
+  }catch(e){
+    setSync('err'); els.msg.style.color='var(--redsoft)'; els.msg.textContent='❌ Save failed: '+e.message;
+  }finally{ els.saveBtn.disabled=false; els.saveBtn.textContent='💾 Save (dynamic QR shows on all bills)'; }
+}
+function oRemoveQr(term){
+  showModal('Remove '+BANK_LABELS[term]+' QR?','This terminal will stop showing on bills until you configure it again.',async()=>{
+    setSync('saving');
+    try{
+      FONEPAY_BASES[term]=null;
+      await _persistFonepayBases();
+      setSync('ok'); showToast('🗑️ '+BANK_LABELS[term]+' QR removed','success'); oInitQr();
+    }catch(e){ setSync('err'); showToast('❌ '+e.message,'error'); }
+  });
+}
 
 /* CATEGORY MANAGER */
 let _renameCatOld=null;
