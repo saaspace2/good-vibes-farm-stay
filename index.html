@@ -420,7 +420,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .inv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;}
 .inv-cell{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 4px;text-align:center;}
 .inv-cell-lbl{font-size:8.5px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px;}
-.inv-cell-val{font-size:14px;font-weight:800;font-family:'Space Mono',monospace;}
+.inv-cell-val{font-size:12.5px;font-weight:800;font-family:'Space Mono',monospace;letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .inv-cell.closing .inv-cell-val{color:var(--moss2);}
 .inv-cell.closing.neg .inv-cell-val{color:var(--redsoft);}
 .inv-card-acts{display:flex;gap:6px;}
@@ -815,15 +815,15 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <input type="hidden" id="invId">
     <div class="fd-field"><label class="fd-label">Item Name *</label><input class="fd-input" id="invName" placeholder="e.g. Gorkha small" maxlength="60"></div>
     <div style="display:flex;gap:10px;">
-      <div class="fd-field" style="flex:1;"><label class="fd-label">Opening Stock</label><input class="fd-input" id="invOpening" type="number" step="any" placeholder="0"></div>
-      <div class="fd-field" style="flex:1;"><label class="fd-label">Price (Rs.)</label><input class="fd-input" id="invPrice" type="number" step="any" placeholder="0"></div>
+      <div class="fd-field" style="flex:1;"><label class="fd-label">Opening Stock</label><input class="fd-input" id="invOpening" type="number" step="0.001" inputmode="decimal" placeholder="0.000"></div>
+      <div class="fd-field" style="flex:1;"><label class="fd-label">Price (Rs.)</label><input class="fd-input" id="invPrice" type="number" step="0.01" inputmode="decimal" placeholder="0"></div>
     </div>
     <div style="display:flex;gap:10px;">
-      <div class="fd-field" style="flex:1;"><label class="fd-label">Purchases</label><input class="fd-input" id="invPurchases" type="number" step="any" placeholder="0"></div>
-      <div class="fd-field" style="flex:1;"><label class="fd-label">Sales</label><input class="fd-input" id="invSales" type="number" step="any" placeholder="0"></div>
+      <div class="fd-field" style="flex:1;"><label class="fd-label">Purchases</label><input class="fd-input" id="invPurchases" type="number" step="0.001" inputmode="decimal" placeholder="0.000"></div>
+      <div class="fd-field" style="flex:1;"><label class="fd-label">Sales</label><input class="fd-input" id="invSales" type="number" step="0.001" inputmode="decimal" placeholder="0.000"></div>
     </div>
-    <div class="fd-field"><label class="fd-label">Reorder Level (low-stock alert)</label><input class="fd-input" id="invReorder" type="number" step="any" placeholder="e.g. 5"></div>
-    <div style="font-size:11px;color:var(--muted2);line-height:1.5;padding:10px 12px;background:rgba(95,168,122,.06);border:1px solid rgba(95,168,122,.2);border-radius:11px;">💡 Closing stock = Opening + Purchases − Sales. Total value = Closing × Price. Both are calculated automatically.</div>
+    <div class="fd-field"><label class="fd-label">Reorder Level (low-stock alert)</label><input class="fd-input" id="invReorder" type="number" step="0.001" inputmode="decimal" placeholder="e.g. 5"></div>
+    <div style="font-size:11px;color:var(--muted2);line-height:1.5;padding:10px 12px;background:rgba(95,168,122,.06);border:1px solid rgba(95,168,122,.2);border-radius:11px;">⚖️ <b style="color:var(--moss2);">Weights take 3 decimals</b> — 3 kg 175 g = <b>3.175</b> · 500 g = <b>0.5</b> · 250 g = <b>0.25</b> · 50 g = <b>0.05</b><br>💡 Closing stock = Opening + Purchases − Sales. Total value = Closing × Price. Both are calculated automatically.</div>
   </div>
   <div class="fd-foot">
     <button class="fd-cancel-btn" onclick="invCloseForm()">Cancel</button>
@@ -835,7 +835,8 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   <div class="inv-quick-box">
     <div class="inv-quick-title" id="invQuickTitle">Add Purchase</div>
     <div class="inv-quick-sub" id="invQuickSub"></div>
-    <input class="inv-quick-input" id="invQuickInput" type="number" step="any" placeholder="0" onkeydown="if(event.key==='Enter')invQuickSave()">
+    <input class="inv-quick-input" id="invQuickInput" type="number" step="0.001" inputmode="decimal" placeholder="0.000" onkeydown="if(event.key==='Enter')invQuickSave()">
+    <div style="font-size:10.5px;color:var(--muted2);text-align:center;margin:-10px 0 14px;">3 kg 175 g = 3.175 · 500 g = 0.5</div>
     <div class="modal-btns">
       <button class="modal-btn modal-cancel" onclick="invCloseQuick()">Cancel</button>
       <button class="modal-btn" id="invQuickBtn" style="background:rgba(95,168,122,.2);color:var(--moss2);border:1px solid rgba(95,168,122,.3);" onclick="invQuickSave()">Add</button>
@@ -1252,7 +1253,125 @@ function cReprintReceipt(no){const r=GV.getReceipts().find(r=>r.receiptNo===no);
 function cReprintByOrderId(oid){const r=GV.getReceipts().find(r=>{const ids=Array.isArray(r.orderIds)?r.orderIds:(typeof r.orderIds==='string'?JSON.parse(r.orderIds||'[]'):[]);return ids.includes(oid)||r.orderId===oid;});if(r)cDoPrint(r);else showToast('No saved receipt for this order','error');}
 function cDoPrint(r){const items=GV.parseItems(r.items);const now=new Date(r.savedAt);const w=window.open('','_blank','width=420,height=640');w.document.write(cReceiptHTML(r.table,items,r.subtotal,r.taxPct,r.tax,r.grand,r.receiptNo,now,r.rounds||1,r.discPct||0,r.discAmt||0,r.discTotal||0));w.document.close();}
 function cReceiptHTML(table,items,subtotal,taxPct,tax,grand,rcNo,now,rounds,discPct,discAmt,discTotal){const W=cPaper===80?'72mm':'54mm';const base=cPaper===80?12:11;const _dynQrPrint=getFonepayQrDataUrl(grand,420);const qrBlock=_dynQrPrint?`<div style="text-align:center;margin-top:8px;"><img src="${_dynQrPrint}" style="width:${cPaper===80?'46mm':'40mm'};height:auto;background:#fff;"/><div style="font-size:${base-2}px;margin-top:3px;">Scan to pay · FonePay</div><div style="font-size:${base-2}px;font-weight:bold;">Amount: Rs.${(grand||0).toLocaleString()} (auto-filled)</div></div>`:FONEPAY_QR?`<div style="text-align:center;margin-top:8px;"><img src="${FONEPAY_QR}" style="width:${cPaper===80?'46mm':'40mm'};height:auto;"/><div style="font-size:${base-2}px;margin-top:3px;">Scan to pay · FonePay</div><div style="font-size:${base-2}px;">Amount: Rs.${(grand||0).toLocaleString()}</div></div>`:`<div style="text-align:center;margin-top:8px;font-size:${base-1}px;">— Pay via FonePay QR —<br>Terminal ${FONEPAY_TERMINAL}<br>Amount: Rs.${(grand||0).toLocaleString()}</div>`;return`<!DOCTYPE html><html><head><title>${rcNo}</title><style>@page{size:${W} auto;margin:0;}*{margin:0;padding:0;box-sizing:border-box;}html,body{width:${W};height:auto;}body{font-family:'Courier New',monospace;width:${W};padding:4mm 2mm 0;font-size:${base}px;line-height:1.35;}.c{text-align:center;}.b{font-weight:bold;}.lg{font-size:${base+3}px;}.xl{font-size:${base+6}px;letter-spacing:2px;}.d{border-top:1px dashed #000;margin:5px 0;}.s{border-top:2px solid #000;margin:5px 0;}.r{display:flex;justify-content:space-between;padding:1px 0;gap:4px;}.r span:last-child{white-space:nowrap;}.sub{font-size:${base-2}px;}@media print{button{display:none!important;}}</style></head><body><div class="c"><div class="xl b">GOOD VIBES</div><div class="lg b">FARM STAY</div><div class="sub" style="margin-top:2px;">Dharan-5, Sunsari, Nepal</div><div class="sub">@goodvibesfarmstay</div></div><div class="d"></div><div class="r sub"><span>Receipt:</span><span class="b">${rcNo}</span></div><div class="r"><span>Table:</span><span class="b">${table}</span></div>${rounds>1?`<div class="r"><span>Rounds:</span><span>${rounds}</span></div>`:''}<div class="r"><span>Date:</span><span>${now.toLocaleDateString('en-GB')}</span></div><div class="r"><span>Time:</span><span>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="d"></div>${items.map(i=>`<div class="r"><span>${i.name} x${i.qty}</span><span>Rs.${((i.price||0)*(i.qty||1)).toLocaleString()}</span></div>`).join('')}<div class="d"></div><div class="r"><span>Subtotal</span><span>Rs.${(subtotal||0).toLocaleString()}</span></div>${(discTotal||0)>0?`<div class="r"><span>Discount${discPct>0?' ('+discPct+'%)':''}</span><span>-Rs.${Number(discTotal).toLocaleString()}</span></div>`:''}${taxPct>0?`<div class="r"><span>Tax (${taxPct}%)</span><span>Rs.${(tax||0).toLocaleString()}</span></div>`:''}<div class="s"></div><div class="r b lg"><span>TOTAL</span><span>Rs.${(grand||0).toLocaleString()}</span></div><div class="s"></div>${qrBlock}<div class="d"></div><div class="c"><div class="b">Thank You!</div><div class="sub" style="margin-top:2px;">Please visit again 🌿</div></div><`+`script>window.onload=()=>{window.print();setTimeout(()=>window.close(),400);}<`+`/script></body></html>`;}
-function cExportDay(){const receipts=GV.getReceipts();const todayISO=new Date().toISOString().slice(0,10);const today=new Date().toLocaleDateString('en-GB');const todayRcpts=receipts.filter(r=>r.savedAt&&r.savedAt.slice(0,10)===todayISO);const totalRevenue=todayRcpts.reduce((s,r)=>s+(r.grand||0),0);const pmBreak={cash:0,card:0,qr:0};todayRcpts.forEach(r=>{const pm=r.payMethod||'cash';pmBreak[pm]=(pmBreak[pm]||0)+(r.grand||0);});const itemBreak={};todayRcpts.forEach(r=>{GV.parseItems(r.items).forEach(i=>{const k=i.name;if(!itemBreak[k])itemBreak[k]={qty:0,total:0};itemBreak[k].qty+=(i.qty||1);itemBreak[k].total+=(i.price||0)*(i.qty||1);});});const topItems=Object.entries(itemBreak).sort((a,b)=>b[1].total-a[1].total).slice(0,10);const w=window.open('','_blank','width=820,height=900');w.document.write(`<!DOCTYPE html><html><head><title>Daily Report ${today}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Courier New',monospace;padding:28px;max-width:780px;margin:0 auto;font-size:12px;}h1{font-size:22px;letter-spacing:3px;text-align:center;margin-bottom:4px;}.date{text-align:center;color:#777;margin-bottom:20px;}.d{border-top:1px dashed #bbb;margin:14px 0;}.s{border-top:2px solid #000;margin:14px 0;}.r{display:flex;justify-content:space-between;padding:3px 0;}table{width:100%;border-collapse:collapse;margin-top:4px;}th{font-size:10px;font-weight:bold;padding:5px 8px;background:#f0f0f0;border:1px solid #ddd;text-align:left;}th.r{text-align:right;}td{font-size:11px;padding:5px 8px;border:1px solid #ddd;}td.r{text-align:right;}tr:nth-child(even){background:#fafafa;}.sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;}.sum-box{border:1px solid #ddd;border-radius:4px;padding:10px;text-align:center;}.sum-val{font-size:18px;font-weight:bold;margin-bottom:2px;}.sum-lbl{font-size:9px;color:#777;text-transform:uppercase;}@media print{button{display:none!important;}}</style></head><body><h1>GOOD VIBES FARM STAY</h1><div style="font-size:14px;letter-spacing:2px;text-align:center;font-weight:normal;margin-bottom:4px;">DAILY SALES REPORT</div><div class="date">Date: ${today} · Generated: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div><div class="s"></div><div class="sum-grid"><div class="sum-box"><div class="sum-val">Rs.${totalRevenue.toLocaleString()}</div><div class="sum-lbl">Total Revenue</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.length}</div><div class="sum-lbl">Tables Served</div></div><div class="sum-box"><div class="sum-val">${todayRcpts.reduce((s,r)=>s+(r.rounds||1),0)}</div><div class="sum-lbl">Total Orders</div></div></div><div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Payment Methods</div><div class="r"><span>💵 Cash</span><span><b>Rs.${(pmBreak.cash||0).toLocaleString()}</b></span></div><div class="r"><span>📱 FonePay QR</span><span><b>Rs.${(pmBreak.qr||0).toLocaleString()}</b></span></div><div class="r"><span>💳 Card / UPI</span><span><b>Rs.${(pmBreak.card||0).toLocaleString()}</b></span></div>${topItems.length?`<div class="d"></div><div style="font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;">Top Selling Items</div><table><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Revenue</th></tr>${topItems.map(([name,d],i)=>`<tr><td>${i+1}</td><td>${name}</td><td class="r">${d.qty}</td><td class="r">Rs.${d.total.toLocaleString()}</td></tr>`).join('')}</table>`:''}<div class="s"></div><div style="text-align:center;font-size:10px;color:#999;margin-top:10px;">Good Vibes Farm Stay · Dharan-5, Sunsari, Nepal</div><div style="text-align:center;margin-top:18px;"><button onclick="window.print()" style="padding:10px 28px;background:#8257C4;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">🖨️ Print / Save PDF</button></div></body></html>`);w.document.close();}
+/* ═══ SALES REPORT / EXPORT ═══
+   Fixed: (1) uses LOCAL (Nepal) dates, not UTC — late-night sales after
+   midnight used to fall outside "today". (2) renders inside the app in an
+   iframe instead of window.open(), which mobile browsers & the installed
+   PWA silently block — that was the "nothing happens" bug.
+   (3) refetches receipts from Supabase first, so a dropped realtime
+   connection can't leave the report empty. */
+function _dayKey(d){const x=new Date(d);if(isNaN(x))return '';return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');}
+let _expPeriod='today';
+function cExportDay(){_expPeriod='today';cShowReport();}
+function cSetExpPeriod(p){_expPeriod=p;cShowReport();}
+async function cShowReport(){
+  let ov=document.getElementById('reportOv');
+  if(!ov){
+    ov=document.createElement('div');
+    ov.id='reportOv';
+    ov.style.cssText='position:fixed;inset:0;z-index:900;background:var(--bg);display:flex;flex-direction:column;';
+    ov.innerHTML='<div style="padding:max(12px,env(safe-area-inset-top)) 14px 11px;background:linear-gradient(135deg,#3a2a0e,#4a3512);flex-shrink:0;">'+
+      '<div style="display:flex;align-items:center;gap:9px;margin-bottom:10px;">'+
+        '<button onclick="cCloseReport()" style="background:rgba(255,255,255,.12);border:none;color:#fff;width:36px;height:36px;border-radius:11px;font-size:18px;cursor:pointer;flex-shrink:0;">&larr;</button>'+
+        '<div style="font-family:Fraunces,serif;font-weight:700;font-size:17px;color:var(--cream);flex:1;">📊 Sales Report</div>'+
+        '<button onclick="cDownloadCsv()" style="background:rgba(255,255,255,.12);border:none;color:var(--cream);padding:8px 12px;border-radius:11px;font-family:Outfit;font-size:12px;font-weight:800;cursor:pointer;">📄 CSV</button>'+
+        '<button onclick="cPrintReport()" style="background:var(--amber);border:none;color:var(--forest);padding:8px 13px;border-radius:11px;font-family:Outfit;font-size:12px;font-weight:800;cursor:pointer;">🖨️ Print</button>'+
+      '</div><div id="expTabs" style="display:flex;gap:6px;"></div></div>'+
+      '<iframe id="reportFrame" style="flex:1;width:100%;border:none;background:#fff;"></iframe>';
+    document.body.appendChild(ov);
+  }
+  ov.style.display='flex';
+  document.body.style.overflow='hidden';
+  const tabs=[['today','Today'],['yesterday','Yesterday'],['week','7 days'],['month','This month'],['all','All time']];
+  document.getElementById('expTabs').innerHTML=tabs.map(function(t){
+    const on=_expPeriod===t[0];
+    return '<button onclick="cSetExpPeriod(\''+t[0]+'\')" style="flex:1;padding:7px 3px;border-radius:9px;border:1.5px solid '+(on?'var(--amber)':'rgba(255,255,255,.18)')+';background:'+(on?'var(--amber)':'transparent')+';color:'+(on?'var(--forest)':'rgba(255,255,255,.6)')+';font-family:Outfit;font-size:11px;font-weight:800;cursor:pointer;">'+t[1]+'</button>';
+  }).join('');
+  const fr=document.getElementById('reportFrame');
+  fr.srcdoc='<body style="font-family:sans-serif;padding:30px;color:#888;text-align:center;">Loading…</body>';
+  try{const res=await _supa.from('gv_receipts').select('*');if(!res.error&&res.data)_rcpts=res.data;}catch(e){console.warn('report refresh failed',e);}
+  fr.srcdoc=cBuildReportHTML(_expPeriod);
+}
+function cCloseReport(){const ov=document.getElementById('reportOv');if(ov)ov.style.display='none';document.body.style.overflow='';}
+function cPrintReport(){const fr=document.getElementById('reportFrame');if(!fr)return;try{fr.contentWindow.focus();fr.contentWindow.print();}catch(e){showToast('❌ Printing blocked by browser','error');}}
+function cReportData(period){
+  const all=GV.getReceipts()||[];
+  const now=new Date();
+  const yDate=new Date(now.getTime()-86400000);
+  const weekCut=new Date(now.getTime()-6*86400000);weekCut.setHours(0,0,0,0);
+  const monthCut=new Date(now.getFullYear(),now.getMonth(),1);
+  let list,label;
+  if(period==='yesterday'){list=all.filter(r=>_dayKey(r.savedAt)===_dayKey(yDate));label='Yesterday — '+yDate.toLocaleDateString('en-GB');}
+  else if(period==='week'){list=all.filter(r=>new Date(r.savedAt)>=weekCut);label='Last 7 days — '+weekCut.toLocaleDateString('en-GB')+' to '+now.toLocaleDateString('en-GB');}
+  else if(period==='month'){list=all.filter(r=>new Date(r.savedAt)>=monthCut);label=now.toLocaleDateString('en-GB',{month:'long',year:'numeric'});}
+  else if(period==='all'){list=all.slice();label='All time';}
+  else{list=all.filter(r=>_dayKey(r.savedAt)===_dayKey(now));label='Today — '+now.toLocaleDateString('en-GB');}
+  list=list.slice().sort((a,b)=>new Date(a.savedAt)-new Date(b.savedAt));
+  const num=v=>Number(v)||0;
+  const revenue=list.reduce((s,r)=>s+num(r.grand),0);
+  const gross=list.reduce((s,r)=>s+num(r.subtotal),0);
+  const disc=list.reduce((s,r)=>s+num(r.discTotal),0);
+  const taxT=list.reduce((s,r)=>s+num(r.tax),0);
+  const rounds=list.reduce((s,r)=>s+(num(r.rounds)||1),0);
+  const pm={cash:0,qr:0,card:0};
+  list.forEach(r=>{const k=r.payMethod||'cash';pm[k]=(pm[k]||0)+num(r.grand);});
+  const ib={};
+  list.forEach(r=>GV.parseItems(r.items).forEach(i=>{const k=i.name||'—';if(!ib[k])ib[k]={qty:0,total:0};ib[k].qty+=(num(i.qty)||1);ib[k].total+=num(i.price)*(num(i.qty)||1);}));
+  const items=Object.entries(ib).sort((a,b)=>b[1].total-a[1].total);
+  return {list,label,revenue,gross,disc,taxT,rounds,pm,items,totalInDb:all.length};
+}
+function cBuildReportHTML(period){
+  const d=cReportData(period);
+  const money=n=>'Rs.'+Math.round(Number(n)||0).toLocaleString();
+  const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const css='*{margin:0;padding:0;box-sizing:border-box;}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;padding:22px 18px 60px;max-width:820px;margin:0 auto;font-size:12.5px;color:#111;}h1{font-size:20px;letter-spacing:2px;text-align:center;}.sub{text-align:center;font-size:13px;letter-spacing:2px;margin-top:2px;}.date{text-align:center;color:#777;margin:6px 0 16px;font-size:11.5px;}.s{border-top:2px solid #000;margin:14px 0;}.d{border-top:1px dashed #bbb;margin:14px 0;}.r{display:flex;justify-content:space-between;padding:3px 0;}.h{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:6px;}table{width:100%;border-collapse:collapse;margin-top:4px;}th{font-size:10px;padding:6px 8px;background:#f0f0f0;border:1px solid #ddd;text-align:left;}th.n,td.n{text-align:right;}td{font-size:11.5px;padding:6px 8px;border:1px solid #ddd;}tr:nth-child(even) td{background:#fafafa;}.g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:8px;}.b{border:1px solid #ddd;border-radius:5px;padding:11px 8px;text-align:center;}.bv{font-size:17px;font-weight:800;margin-bottom:2px;}.bl{font-size:9px;color:#777;text-transform:uppercase;letter-spacing:.5px;}.empty{text-align:center;padding:40px 16px;color:#888;}.empty b{display:block;font-size:15px;color:#333;margin-bottom:6px;}@media print{@page{margin:12mm;}body{padding:0;}}';
+  const head='<!DOCTYPE html><html><head><meta charset="utf-8"><title>Sales Report</title><style>'+css+'</style></head><body>'+
+    '<h1>GOOD VIBES FARM STAY</h1><div class="sub">SALES REPORT</div>'+
+    '<div class="date">'+esc(d.label)+' · Generated '+new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})+'</div><div class="s"></div>';
+  if(!d.list.length){
+    return head+'<div class="empty"><b>No paid bills in this period</b>'+
+      (d.totalInDb?'There are '+d.totalInDb+' receipt(s) saved in total — try the <b style="display:inline">All time</b> or <b style="display:inline">7 days</b> tab above.':'No receipts have been saved yet. A receipt is created when the cashier taps “Mark paid &amp; print”.')+
+      '</div></body></html>';
+  }
+  const rows=d.list.map(r=>'<tr><td>'+new Date(r.savedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+'</td><td>'+esc(r.receiptNo||'—')+'</td><td>'+esc(r.table)+'</td><td class="n">'+(Number(r.rounds)||1)+'</td><td>'+esc(r.payMethod||'cash')+'</td><td class="n">'+money(r.grand)+'</td></tr>').join('');
+  const itemRows=d.items.map((e,i)=>'<tr><td class="n">'+(i+1)+'</td><td>'+esc(e[0])+'</td><td class="n">'+e[1].qty+'</td><td class="n">'+money(e[1].total)+'</td></tr>').join('');
+  return head+
+    '<div class="g"><div class="b"><div class="bv">'+money(d.revenue)+'</div><div class="bl">Net Revenue</div></div>'+
+    '<div class="b"><div class="bv">'+d.list.length+'</div><div class="bl">Bills / Tables</div></div>'+
+    '<div class="b"><div class="bv">'+d.rounds+'</div><div class="bl">Order Rounds</div></div></div>'+
+    '<div class="d"></div><div class="h">Totals</div>'+
+    '<div class="r"><span>Gross sales (subtotal)</span><b>'+money(d.gross)+'</b></div>'+
+    '<div class="r"><span>Discounts given</span><b>− '+money(d.disc)+'</b></div>'+
+    '<div class="r"><span>Tax collected</span><b>'+money(d.taxT)+'</b></div>'+
+    '<div class="s"></div><div class="r" style="font-size:15px;"><b>NET REVENUE</b><b>'+money(d.revenue)+'</b></div><div class="s"></div>'+
+    '<div class="h">Payment Methods</div>'+
+    '<div class="r"><span>💵 Cash</span><b>'+money(d.pm.cash)+'</b></div>'+
+    '<div class="r"><span>📱 FonePay QR</span><b>'+money(d.pm.qr)+'</b></div>'+
+    '<div class="r"><span>💳 Card / UPI</span><b>'+money(d.pm.card)+'</b></div>'+
+    '<div class="d"></div><div class="h">Items Sold ('+d.items.length+')</div>'+
+    '<table><tr><th class="n">#</th><th>Item</th><th class="n">Qty</th><th class="n">Revenue</th></tr>'+itemRows+'</table>'+
+    '<div class="d"></div><div class="h">Bills ('+d.list.length+')</div>'+
+    '<table><tr><th>Time</th><th>Receipt</th><th>Table</th><th class="n">Rounds</th><th>Pay</th><th class="n">Total</th></tr>'+rows+'</table>'+
+    '<div class="s"></div><div style="text-align:center;font-size:10px;color:#999;">Good Vibes Farm Stay · Dharan-5, Sunsari, Nepal</div></body></html>';
+}
+function cDownloadCsv(){
+  const d=cReportData(_expPeriod);
+  if(!d.list.length){showToast('Nothing to export for this period','error');return;}
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  let csv='Good Vibes Farm Stay - Sales Report,'+q(d.label)+'\n\n';
+  csv+='Receipt No,Date,Time,Table,Rounds,Payment,Subtotal,Discount,Tax,Grand Total\n';
+  d.list.forEach(r=>{const t=new Date(r.savedAt);csv+=[q(r.receiptNo||''),q(t.toLocaleDateString('en-GB')),q(t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})),q(r.table),(Number(r.rounds)||1),q(r.payMethod||'cash'),(Number(r.subtotal)||0),(Number(r.discTotal)||0),(Number(r.tax)||0),(Number(r.grand)||0)].join(',')+'\n';});
+  csv+='\nTOTAL,,,,,,'+d.gross+','+d.disc+','+d.taxT+','+d.revenue+'\n';
+  csv+='\nItem,Qty Sold,Revenue\n';
+  d.items.forEach(e=>{csv+=q(e[0])+','+e[1].qty+','+e[1].total+'\n';});
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='good-vibes-sales-'+_expPeriod+'-'+_dayKey(new Date())+'.csv';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+  showToast('📄 CSV downloaded','success');
+}
 function cConfirmDelOrder(id,table){showModal(`Delete Order — Table ${table}?`,'Permanently remove this order.',()=>GV.deleteOrder(id));}
 function cConfirmDeleteTable(tableNum,count){showModal(`Clear all orders for Table ${tableNum}?`,`Delete all ${count} order(s) for this table.`,()=>{GV.getOrders().filter(o=>o.table===String(tableNum)).forEach(o=>GV.deleteOrder(o.id));});}
 function cConfirmClearPaid(){const n=GV.getOrders().filter(o=>o.status==='paid').length;if(!n)return;showModal('Clear All Paid Orders?',`Delete all ${n} paid order(s).`,()=>GV.deleteAllPaid());}
@@ -1299,11 +1418,13 @@ async function invMaybeSeed(){
   }catch(e){setSync('err');showToast('❌ Seed failed: '+e.message,'error');}
   finally{_invSeeding=false;}
 }
-function invClosing(it){return (Number(it.opening)||0)+(Number(it.purchases)||0)-(Number(it.sales)||0);}
+/* 3-decimal precision — 3 kg 175 g is stored and shown as 3.175 */
+function invR(n){const v=Number(n);return isNaN(v)?0:Math.round(v*1000)/1000;}
+function invClosing(it){return invR((Number(it.opening)||0)+(Number(it.purchases)||0)-(Number(it.sales)||0));}
 function invValue(it){return invClosing(it)*(Number(it.price)||0);}
 function invIsLow(it){const r=Number(it.reorder)||0;return r>0 && invClosing(it)<=r;}
 function invToggleLow(btn){_invLowOnly=!_invLowOnly;btn.classList.toggle('active',_invLowOnly);invRender();}
-function invFmt(n){const v=Number(n)||0;return Number.isInteger(v)?v.toString():v.toFixed(2).replace(/\.?0+$/,'');}
+function invFmt(n){const v=invR(n);if(Number.isInteger(v))return v.toString();return v.toFixed(3).replace(/0+$/,'').replace(/\.$/,'');}
 function invRender(){
   const q=(document.getElementById('invSearch').value||'').toLowerCase().trim();
   let items=GV.getInventory().slice().sort((a,b)=>(a.name||'').localeCompare(b.name||''));
@@ -1357,7 +1478,7 @@ async function invSave(){
   const id=document.getElementById('invId').value;
   const name=document.getElementById('invName').value.trim();
   if(!name){showToast('❌ Item name required','error');return;}
-  const num=id=>{const v=parseFloat(document.getElementById(id).value);return isNaN(v)?0:v;};
+  const num=id=>invR(parseFloat(document.getElementById(id).value));
   const data={name,opening:num('invOpening'),purchases:num('invPurchases'),sales:num('invSales'),price:num('invPrice'),reorder:num('invReorder')};
   const btn=document.getElementById('invSaveBtn');btn.disabled=true;btn.textContent='⏳ Saving…';setSync('saving');
   try{
@@ -1384,13 +1505,13 @@ function invQuick(id,mode){
 function invCloseQuick(){document.getElementById('invQuickOv').classList.remove('open');_invQuickCtx=null;}
 async function invQuickSave(){
   if(!_invQuickCtx)return;
-  const qty=parseFloat(document.getElementById('invQuickInput').value);
+  const qty=invR(parseFloat(document.getElementById('invQuickInput').value));
   const err=document.getElementById('invQuickErr');
-  if(isNaN(qty)||qty<=0){err.textContent='Enter a quantity greater than 0.';return;}
+  if(!qty||qty<=0){err.textContent='Enter a quantity greater than 0 (e.g. 3.175).';return;}
   const it=GV.getInventory().find(x=>x.id===_invQuickCtx.id);if(!it){invCloseQuick();return;}
   const data=_invQuickCtx.mode==='purchase'
-    ? {purchases:(Number(it.purchases)||0)+qty}
-    : {sales:(Number(it.sales)||0)+qty};
+    ? {purchases:invR((Number(it.purchases)||0)+qty)}
+    : {sales:invR((Number(it.sales)||0)+qty)};
   const btn=document.getElementById('invQuickBtn');btn.disabled=true;setSync('saving');
   try{
     await GV.updateInventory(it.id,data);
