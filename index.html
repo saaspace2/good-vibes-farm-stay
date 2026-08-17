@@ -470,6 +470,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     </div>
     <div class="login-brand">Good <em>Vibes</em></div>
     <div class="login-tagline">🌿 Farm Stay · Dharan-5</div>
+    <div style="font-size:10px;color:rgba(245,239,226,.28);font-family:'Space Mono',monospace;margin:-20px 0 22px;">build v5-kg</div>
     <div style="display:flex;gap:0;background:rgba(255,255,255,.06);border-radius:13px;padding:4px;margin-bottom:16px;">
       <button id="tabLoginBtn" onclick="lSwitchTab('login')" style="flex:1;padding:10px;border:none;border-radius:10px;background:var(--forest2);color:var(--cream);font-family:'Outfit';font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;">Log in</button>
       <button id="tabRegBtn" onclick="lSwitchTab('register')" style="flex:1;padding:10px;border:none;border-radius:10px;background:transparent;color:var(--muted2);font-family:'Outfit';font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;">Register waiter</button>
@@ -516,7 +517,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
       <div class="role-card" onclick="goCashier()"><div class="role-icon">💰</div><div class="role-name">Cashier</div><div class="role-desc">Generate bills & receipts</div><button class="role-pill pill-c">Enter</button></div>
       <div class="role-card" onclick="goAdmin()"><div class="role-icon">🍽️</div><div class="role-name">Office</div><div class="role-desc">Menu, staff & settings</div><button class="role-pill pill-a">Enter</button></div>
     </div>
-    <div class="home-footer">© 2025 Good Vibes Farm Stay · @goodvibesfarmstay<br><span class="logout-link" onclick="doLogout()">🚪 Log out</span></div>
+    <div class="home-footer">© 2025 Good Vibes Farm Stay · @goodvibesfarmstay<br><span style="color:rgba(245,239,226,.3);font-family:'Space Mono',monospace;font-size:10px;">build v5-kg · 3-decimal stock + fixed export</span><br><span class="logout-link" onclick="doLogout()">🚪 Log out</span></div>
   </div>
 </div>
 
@@ -1580,7 +1581,7 @@ function oDeleteStaff(id,name){showModal(`Remove "${name}"?`,'This waiter cannot
   const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
   document.getElementById('pwaManifest').href=URL.createObjectURL(blob);
   if('serviceWorker' in navigator){
-    const swCode=`const CACHE='gv-v4';
+    const swCode=`const CACHE='gv-v5-kg';
 self.addEventListener('install',e=>{self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))));self.clients.claim();});
 self.addEventListener('fetch',e=>{
